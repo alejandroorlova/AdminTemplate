@@ -1,1 +1,75 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'tailwindcss/base';
+@use 'tailwindcss/components'; 
+@use 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+  --iebem-primary: #70795b;
+  --iebem-secondary: #b29a7e;
+  --iebem-accent: #8B5CF6;
+  --iebem-dark: #374151;
+  --iebem-light: #F0FDF4;
+  --iebem-gold: #F59E0B;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  color: #374151;
+  background-color: #f9fafb;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Reset básico para formularios (reemplaza @tailwindcss/forms) */
+input, select, textarea {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Normalizar checkboxes y radios si los usas */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(139, 69, 19, 0.1);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sidebar-item {
+  transition: all 0.2s ease;
+}
+
+.sidebar-item:hover {
+  transform: translateX(2px);
+  background-color: rgba(139, 69, 19, 0.05);
+}
+
+.sidebar-item.active {
+  background-color: rgba(139, 69, 19, 0.1);
+  color: var(--iebem-dark);
+  border-right: 4px solid var(--iebem-primary);
+}
+

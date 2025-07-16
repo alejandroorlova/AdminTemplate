@@ -1,0 +1,30 @@
+.sidebar-item {
+  position: relative;
+}
+
+.sidebar-item.active {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: white !important;
+  
+  div {
+    background: rgba(255, 255, 255, 0.25) !important;
+  }
+}
+
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 32px;
+  background: white;
+  border-radius: 2px 0 0 2px;
+}
+
+/* Asegurar que el hover no sobrescriba el estado activo */
+.sidebar-item.active:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: white !important;
+}

@@ -1,0 +1,129 @@
+<!-- Header del Dashboard -->
+<div class="mb-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-2">Dashboard IEBEM</h1>
+  <p class="text-gray-600">Resumen general del sistema de nómina y administración</p>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <!-- Total Empleados -->
+  <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white hover-lift">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-blue-100 text-sm font-medium">Total Empleados</p>
+        <p class="text-3xl font-bold mt-1">{{ stats.totalEmployees | number }}</p>
+        <p class="text-blue-100 text-sm mt-2">
+          <i class="fas fa-arrow-up mr-1"></i>
+          +5% este mes
+        </p>
+      </div>
+      <div class="bg-white bg-opacity-20 p-3 rounded-xl">
+        <i class="fas fa-users text-2xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empleados Activos -->
+  <div class="bg-gradient-to-br from-iebem-primary to-green-600 rounded-2xl p-6 text-white hover-lift">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-green-100 text-sm font-medium">Empleados Activos</p>
+        <p class="text-3xl font-bold mt-1">{{ stats.activeEmployees | number }}</p>
+        <p class="text-green-100 text-sm mt-2">
+          <i class="fas fa-check-circle mr-1"></i>
+          94% del total
+        </p>
+      </div>
+      <div class="bg-white bg-opacity-20 p-3 rounded-xl">
+        <i class="fas fa-user-check text-2xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nómina Mensual -->
+  <div class="bg-gradient-to-br from-iebem-secondary to-orange-500 rounded-2xl p-6 text-white hover-lift">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-orange-100 text-sm font-medium">Nómina Mensual</p>
+        <p class="text-3xl font-bold mt-1">${{ stats.monthlyPayroll | number }}</p>
+        <p class="text-orange-100 text-sm mt-2">
+          <i class="fas fa-calendar mr-1"></i>
+          Enero 2025
+        </p>
+      </div>
+      <div class="bg-white bg-opacity-20 p-3 rounded-xl">
+        <i class="fas fa-money-bill-wave text-2xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tareas Pendientes -->
+  <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-6 text-white hover-lift">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-purple-100 text-sm font-medium">Tareas Pendientes</p>
+        <p class="text-3xl font-bold mt-1">{{ stats.pendingTasks }}</p>
+        <p class="text-purple-100 text-sm mt-2">
+          <i class="fas fa-exclamation-triangle mr-1"></i>
+          Requieren atención
+        </p>
+      </div>
+      <div class="bg-white bg-opacity-20 p-3 rounded-xl">
+        <i class="fas fa-tasks text-2xl"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grid de contenido -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- Acciones Rápidas -->
+  <div class="lg:col-span-2">
+    <div class="bg-white rounded-2xl border border-gray-100 p-6">
+      <h3 class="text-xl font-bold text-gray-800 mb-6">Acciones Rápidas</h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div *ngFor="let action of quickActions" 
+             class="p-6 border-2 border-gray-100 rounded-xl hover:border-iebem-primary hover:shadow-lg transition-all duration-200 cursor-pointer group"
+             (click)="action.action()">
+          <div class="flex items-center mb-4">
+            <div [class]="action.color + ' p-3 rounded-xl text-white group-hover:scale-110 transition-transform duration-200'">
+              <i [class]="'fas fa-' + action.icon + ' text-xl'"></i>
+            </div>
+          </div>
+          <h4 class="font-bold text-gray-800 mb-2">{{ action.title }}</h4>
+          <p class="text-gray-600 text-sm">{{ action.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empleados Recientes -->
+  <div>
+    <div class="bg-white rounded-2xl border border-gray-100 p-6">
+      <h3 class="text-xl font-bold text-gray-800 mb-6">Empleados Recientes</h3>
+      
+      <div class="space-y-4">
+        <div *ngFor="let employee of recentEmployees" 
+             class="flex items-center space-x-4 p-3 rounded-xl hover:bg-gray-50 transition-colors duration-200">
+          <div class="w-12 h-12 bg-gradient-to-br from-iebem-primary to-iebem-accent rounded-xl flex items-center justify-center text-white font-bold">
+            {{ employee.avatar }}
+          </div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-gray-800 text-sm">{{ employee.name }}</h4>
+            <p class="text-gray-500 text-xs">{{ employee.position }}</p>
+            <p class="text-gray-400 text-xs">{{ employee.department }}</p>
+          </div>
+          <span [class]="employee.status === 'Activo' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'" 
+                class="px-2 py-1 rounded-full text-xs font-medium">
+            {{ employee.status }}
+          </span>
+        </div>
+      </div>
+      
+      <button class="w-full mt-4 py-2 text-iebem-primary hover:bg-iebem-light rounded-lg font-medium transition-colors duration-200">
+        Ver todos los empleados
+      </button>
+    </div>
+  </div>
+</div>

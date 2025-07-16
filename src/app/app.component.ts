@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { LayoutComponent } from './shared/layout/layout.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  imports: [LayoutComponent],
+  template: `<app-layout></app-layout>`,
+  styles: [`
+    :host {
+      display: block;
+      height: 100vh;
+    }
+  `]
 })
 export class AppComponent {
-  title = 'iebem-admin-system';
+  title = 'IEBEM Admin System';
 }
