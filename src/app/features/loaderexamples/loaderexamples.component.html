@@ -1,0 +1,248 @@
+<p>loaderexamples works!</p>
+<div class="min-h-screen bg-gradient-to-br from-iebem-light to-white p-6">
+    <div class="max-w-6xl mx-auto space-y-8">
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-iebem-dark mb-4 font-heading">
+                Demo Fullscreen Loader
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Prueba diferentes tipos de loaders para ver cómo se comportan en tu aplicación del IEBEM
+            </p>
+        </div>
+
+        <!-- Controles de Demo -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+            <h2 class="text-2xl font-bold text-iebem-dark mb-6 font-heading">
+                <i class="fas fa-play-circle text-iebem-primary mr-3"></i>
+                Tipos de Loader
+            </h2>
+
+            <!-- Grid de botones -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+
+                <!-- Loader Básico -->
+                <div
+                    class="bg-gradient-to-br from-iebem-light/30 to-white rounded-xl p-4 border border-iebem-primary/20">
+                    <div class="text-center mb-4">
+                        <div
+                            class="w-12 h-12 bg-iebem-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-spinner text-white"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Loader Básico</h3>
+                        <p class="text-sm text-gray-600">Carga simple sin progreso</p>
+                    </div>
+                    <button (click)="showBasicLoader()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-iebem-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-iebem-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+
+                <!-- Loader con Progreso -->
+                <div
+                    class="bg-gradient-to-br from-iebem-secondary/20 to-white rounded-xl p-4 border border-iebem-secondary/20">
+                    <div class="text-center mb-4">
+                        <div
+                            class="w-12 h-12 bg-iebem-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-chart-line text-white"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Con Progreso</h3>
+                        <p class="text-sm text-gray-600">Muestra barra de progreso</p>
+                    </div>
+                    <button (click)="showProgressLoader()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-iebem-secondary text-white py-2 px-4 rounded-lg font-medium hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+
+                <!-- Loader de Subida -->
+                <div class="bg-gradient-to-br from-success/20 to-white rounded-xl p-4 border border-success/20">
+                    <div class="text-center mb-4">
+                        <div class="w-12 h-12 bg-success rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-cloud-upload-alt text-white"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Subida de Archivo</h3>
+                        <p class="text-sm text-gray-600">Para uploads con progreso</p>
+                    </div>
+                    <button (click)="showUploadLoader()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-success text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+
+                <!-- Loader de Descarga -->
+                <div class="bg-gradient-to-br from-info/20 to-white rounded-xl p-4 border border-info/20">
+                    <div class="text-center mb-4">
+                        <div class="w-12 h-12 bg-info rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-cloud-download-alt text-white"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Descarga</h3>
+                        <p class="text-sm text-gray-600">Para downloads con progreso</p>
+                    </div>
+                    <button (click)="showDownloadLoader()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-info text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+
+                <!-- Loader de Guardado -->
+                <div class="bg-gradient-to-br from-warning/20 to-white rounded-xl p-4 border border-warning/20">
+                    <div class="text-center mb-4">
+                        <div class="w-12 h-12 bg-warning rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-save text-white"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Guardando</h3>
+                        <p class="text-sm text-gray-600">Para operaciones de guardado</p>
+                    </div>
+                    <button (click)="showSavingLoader()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-warning text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+
+                <!-- Loader de Procesamiento -->
+                <div
+                    class="bg-gradient-to-br from-iebem-accent/20 to-white rounded-xl p-4 border border-iebem-accent/20">
+                    <div class="text-center mb-4">
+                        <div
+                            class="w-12 h-12 bg-iebem-accent rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-cogs text-white"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Procesando</h3>
+                        <p class="text-sm text-gray-600">Para análisis y procesamiento</p>
+                    </div>
+                    <button (click)="showProcessingLoader()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-iebem-accent text-white py-2 px-4 rounded-lg font-medium hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Botón para cancelar -->
+            <div class="flex justify-center">
+                <button (click)="cancelCurrentLoader()" [disabled]="!isAnyLoaderActive"
+                    class="bg-danger text-white px-6 py-3 rounded-xl font-medium hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-stop mr-2"></i>
+                    Cancelar Loader Actual
+                </button>
+            </div>
+        </div>
+
+        <!-- Ejemplos Específicos del Sistema IEBEM -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+            <h2 class="text-2xl font-bold text-iebem-dark mb-6 font-heading">
+                <i class="fas fa-users text-iebem-secondary mr-3"></i>
+                Casos de Uso - Sistema de Empleados
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Cargar Empleados -->
+                <div class="bg-iebem-light/20 rounded-xl p-6 border border-iebem-primary/20">
+                    <h3 class="font-bold text-iebem-dark mb-3">
+                        <i class="fas fa-database text-iebem-primary mr-2"></i>
+                        Cargar Empleados
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Simula la carga de empleados desde la base de datos del IEBEM
+                    </p>
+                    <button (click)="simulateLoadEmployees()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-iebem-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-iebem-dark transition-colors disabled:opacity-50">
+                        Cargar Empleados
+                    </button>
+                </div>
+
+                <!-- Guardar Empleado -->
+                <div class="bg-success/10 rounded-xl p-6 border border-success/20">
+                    <h3 class="font-bold text-iebem-dark mb-3">
+                        <i class="fas fa-user-plus text-success mr-2"></i>
+                        Guardar Empleado
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Simula el guardado de un nuevo empleado con validaciones
+                    </p>
+                    <button (click)="simulateSaveEmployee()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-success text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors disabled:opacity-50">
+                        Guardar Empleado
+                    </button>
+                </div>
+
+                <!-- Exportar Excel -->
+                <div class="bg-info/10 rounded-xl p-6 border border-info/20">
+                    <h3 class="font-bold text-iebem-dark mb-3">
+                        <i class="fas fa-file-excel text-info mr-2"></i>
+                        Exportar a Excel
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Genera un archivo Excel con todos los empleados registrados
+                    </p>
+                    <button (click)="simulateExportExcel()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-info text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors disabled:opacity-50">
+                        Exportar Excel
+                    </button>
+                </div>
+
+                <!-- Importar Empleados -->
+                <div class="bg-warning/10 rounded-xl p-6 border border-warning/20">
+                    <h3 class="font-bold text-iebem-dark mb-3">
+                        <i class="fas fa-file-import text-warning mr-2"></i>
+                        Importar Empleados
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Simula la importación masiva de empleados desde un archivo
+                    </p>
+                    <button (click)="simulateImportEmployees()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-warning text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600 transition-colors disabled:opacity-50">
+                        Importar Archivo
+                    </button>
+                </div>
+
+                <!-- Generar Reporte -->
+                <div class="bg-iebem-secondary/10 rounded-xl p-6 border border-iebem-secondary/20">
+                    <h3 class="font-bold text-iebem-dark mb-3">
+                        <i class="fas fa-chart-bar text-iebem-secondary mr-2"></i>
+                        Generar Reporte
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Crea un reporte completo con estadísticas de empleados
+                    </p>
+                    <button (click)="simulateGenerateReport()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-iebem-secondary text-white py-2 px-4 rounded-lg font-medium hover:opacity-80 transition-opacity disabled:opacity-50">
+                        Generar Reporte
+                    </button>
+                </div>
+
+                <!-- Backup Sistema -->
+                <div class="bg-danger/10 rounded-xl p-6 border border-danger/20">
+                    <h3 class="font-bold text-iebem-dark mb-3">
+                        <i class="fas fa-shield-alt text-danger mr-2"></i>
+                        Backup del Sistema
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Crea una copia de seguridad completa del sistema
+                    </p>
+                    <button (click)="simulateSystemBackup()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-danger text-white py-2 px-4 rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-50">
+                        Crear Backup
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado actual -->
+        <div *ngIf="isAnyLoaderActive" class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+            <div class="flex items-center">
+                <i class="fas fa-info-circle text-yellow-600 mr-3"></i>
+                <div>
+                    <p class="font-medium text-yellow-800">Loader activo</p>
+                    <p class="text-sm text-yellow-700">{{ currentLoaderType }} en ejecución...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loader Component -->
+    <app-loader [isVisible]="showLoader" [config]="currentLoaderConfig">
+    </app-loader>
+</div>

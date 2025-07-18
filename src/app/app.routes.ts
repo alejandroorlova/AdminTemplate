@@ -15,8 +15,8 @@ export const routes: Routes = [
     loadComponent: () => import('./features/modalexamples/modalexamples.component').then(m => m.ModalexamplesComponent) 
   },
   { 
-    path: 'configuration', 
-    loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) 
+    path: 'loader', 
+    loadComponent: () => import('./features/loaderexamples/loaderexamples.component').then(m => m.LoaderexamplesComponent) 
   },
   { path: '**', redirectTo: '/dashboard' }
 ];
