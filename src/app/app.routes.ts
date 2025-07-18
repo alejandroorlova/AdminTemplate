@@ -11,8 +11,8 @@ export const routes: Routes = [
     loadComponent: () => import('./features/employees/employees.component').then(m => m.EmployeesComponent) 
   },
   { 
-    path: 'payroll', 
-    loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) 
+    path: 'modal', 
+    loadComponent: () => import('./features/modalexamples/modalexamples.component').then(m => m.ModalexamplesComponent) 
   },
   { 
     path: 'configuration', 

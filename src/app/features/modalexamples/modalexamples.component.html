@@ -1,0 +1,365 @@
+ <div class="p-6 space-y-6">
+      <h1 class="text-2xl font-bold text-iebem-dark">Ejemplos de Modal - Solo Componente</h1>
+      
+      <!-- Botones para abrir diferentes modales -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- Modal de Información -->
+        <button (click)="openInfoModal()" 
+                class="bg-iebem-primary text-white px-4 py-3 rounded-xl font-medium hover:bg-iebem-dark transition-colors">
+          <i class="fas fa-info-circle mr-2"></i>
+          Modal Info
+        </button>
+        
+        <!-- Modal de Confirmación -->
+        <button (click)="openConfirmModal()" 
+                class="bg-warning text-white px-4 py-3 rounded-xl font-medium hover:bg-yellow-600 transition-colors">
+          <i class="fas fa-question-circle mr-2"></i>
+          Modal Confirmación
+        </button>
+        
+        <!-- Modal de Formulario -->
+        <button (click)="openFormModal()" 
+                class="bg-success text-white px-4 py-3 rounded-xl font-medium hover:bg-green-600 transition-colors">
+          <i class="fas fa-edit mr-2"></i>
+          Modal Formulario
+        </button>
+        
+        <!-- Modal de Eliminación -->
+        <button (click)="openDeleteModal()" 
+                class="bg-danger text-white px-4 py-3 rounded-xl font-medium hover:bg-red-600 transition-colors">
+          <i class="fas fa-trash mr-2"></i>
+          Modal Eliminar
+        </button>
+      </div>
+      
+      <!-- Lista de empleados de ejemplo -->
+      <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <h2 class="text-lg font-bold text-iebem-dark mb-4">Lista de Empleados</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div *ngFor="let employee of employees" 
+               class="bg-iebem-light bg-opacity-30 rounded-lg p-4 border border-iebem-primary border-opacity-20">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-semibold text-iebem-dark">{{ employee.name }}</h3>
+                <p class="text-sm text-gray-600">{{ employee.position }}</p>
+                <p class="text-xs text-gray-500">{{ employee.department }}</p>
+              </div>
+              <div class="flex gap-2">
+                <button (click)="viewEmployee(employee)"
+                        class="bg-info text-white w-8 h-8 rounded-lg hover:bg-blue-600 transition-colors">
+                  <i class="fas fa-eye text-xs"></i>
+                </button>
+                <button (click)="editEmployee(employee)"
+                        class="bg-iebem-secondary text-white w-8 h-8 rounded-lg hover:opacity-80 transition-opacity">
+                  <i class="fas fa-edit text-xs"></i>
+                </button>
+                <button (click)="deleteEmployee(employee)"
+                        class="bg-danger text-white w-8 h-8 rounded-lg hover:bg-red-600 transition-colors">
+                  <i class="fas fa-trash text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MODALES DECLARATIVOS -->
+      
+      <!-- 1. Modal de Información -->
+      <app-modal 
+        [isOpen]="showInfoModal"
+        title="Información del Sistema"
+        subtitle="Detalles sobre el funcionamiento del IEBEM"
+        icon="info-circle"
+        iconColor="iebem-primary"
+        [config]="infoConfig"
+        [buttons]="infoButtons"
+        (closed)="showInfoModal = false"
+        (buttonClick)="onInfoModalButton($event)">
+        
+        <div class="space-y-4">
+          <div class="bg-iebem-light bg-opacity-30 rounded-lg p-4">
+            <h4 class="font-semibold text-iebem-dark mb-2">Sistema de Gestión IEBEM</h4>
+            <p class="text-gray-700 text-sm leading-relaxed">
+              Este sistema permite gestionar de manera eficiente la información de todos los empleados 
+              del Instituto de Educación Básica del Estado de Morelos.
+            </p>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-center bg-success bg-opacity-10 rounded-lg p-3">
+              <i class="fas fa-users text-success text-2xl mb-2"></i>
+              <p class="text-sm text-gray-600">Empleados Registrados</p>
+              <p class="text-lg font-bold text-success">{{ employees.length }}</p>
+            </div>
+            <div class="text-center bg-info bg-opacity-10 rounded-lg p-3">
+              <i class="fas fa-building text-info text-2xl mb-2"></i>
+              <p class="text-sm text-gray-600">Departamentos</p>
+              <p class="text-lg font-bold text-info">4</p>
+            </div>
+          </div>
+        </div>
+      </app-modal>
+      
+      <!-- 2. Modal de Confirmación -->
+      <app-modal 
+        [isOpen]="showConfirmModal"
+        title="Confirmar Acción"
+        subtitle="¿Estás seguro de que deseas continuar?"
+        icon="question-circle"
+        iconColor="warning"
+        [config]="confirmConfig"
+        [buttons]="confirmButtons"
+        (closed)="showConfirmModal = false"
+        (buttonClick)="onConfirmModalButton($event)">
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <p class="text-yellow-800 font-medium">Esta acción realizará cambios importantes</p>
+            <p class="text-yellow-700 text-sm mt-1">
+              Se actualizarán los datos en la base de datos y se enviará una notificación.
+            </p>
+          </div>
+          
+          <div class="text-sm text-gray-600">
+            <p class="font-medium mb-2">Cambios que se realizarán:</p>
+            <ul class="space-y-1">
+              <li class="flex items-center">
+                <i class="fas fa-check text-success mr-2"></i>
+                Actualización de información
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check text-success mr-2"></i>
+                Envío de notificación por email
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check text-success mr-2"></i>
+                Registro en el historial
+              </li>
+            </ul>
+          </div>
+        </div>
+      </app-modal>
+      
+      <!-- 3. Modal de Formulario -->
+      <app-modal 
+        [isOpen]="showFormModal"
+        title="Editar Empleado"
+        subtitle="Modifica la información del empleado seleccionado"
+        icon="edit"
+        iconColor="iebem-secondary"
+        [config]="formConfig"
+        [buttons]="formButtons"
+        [loading]="formLoading"
+        (closed)="onFormModalClose()"
+        (buttonClick)="onFormModalButton($event)">
+        
+        <form [formGroup]="employeeForm" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
+              <input type="text" 
+                     formControlName="name"
+                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-iebem-primary transition-colors"
+                     placeholder="Ingrese el nombre completo">
+              <div *ngIf="employeeForm.get('name')?.invalid && employeeForm.get('name')?.touched" 
+                   class="text-danger text-xs mt-1">
+                El nombre es requerido
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input type="email" 
+                     formControlName="email"
+                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-iebem-primary transition-colors"
+                     placeholder="correo@iebem.edu.mx">
+              <div *ngIf="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched" 
+                   class="text-danger text-xs mt-1">
+                Email válido es requerido
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Puesto</label>
+              <input type="text" 
+                     formControlName="position"
+                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-iebem-primary transition-colors"
+                     placeholder="Cargo o puesto">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Departamento</label>
+              <select formControlName="department"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-iebem-primary transition-colors">
+                <option value="">Seleccionar departamento</option>
+                <option value="tecnologia">Tecnología</option>
+                <option value="recursos-humanos">Recursos Humanos</option>
+                <option value="administracion">Administración</option>
+                <option value="educacion">Educación</option>
+              </select>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Salario Mensual</label>
+            <div class="relative">
+              <span class="absolute left-3 top-2 text-gray-500">$</span>
+              <input type="number" 
+                     formControlName="salary"
+                     class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-iebem-primary transition-colors"
+                     placeholder="15000">
+            </div>
+          </div>
+        </form>
+      </app-modal>
+      
+      <!-- 4. Modal de Vista de Empleado -->
+      <app-modal 
+        [isOpen]="showViewModal"
+        title="Información del Empleado"
+        subtitle="Detalles completos del empleado"
+        icon="user"
+        iconColor="iebem-primary"
+        [config]="viewConfig"
+        [buttons]="viewButtons"
+        (closed)="showViewModal = false"
+        (buttonClick)="onViewModalButton($event)">
+        
+        <div *ngIf="selectedEmployee" class="space-y-6">
+          <!-- Header del empleado -->
+          <div class="flex items-center bg-iebem-light bg-opacity-30 rounded-lg p-4">
+            <div class="w-16 h-16 bg-iebem-primary rounded-full flex items-center justify-center mr-4">
+              <i class="fas fa-user text-white text-2xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-iebem-dark">{{ selectedEmployee.name }}</h3>
+              <p class="text-iebem-secondary font-medium">{{ selectedEmployee.position }}</p>
+              <p class="text-sm text-gray-600">{{ selectedEmployee.department }}</p>
+            </div>
+          </div>
+          
+          <!-- Información detallada -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+              <div class="bg-gray-50 rounded-lg p-4">
+                <h4 class="font-semibold text-gray-800 mb-3">Información de Contacto</h4>
+                <div class="space-y-2 text-sm">
+                  <div class="flex items-center">
+                    <i class="fas fa-envelope text-gray-400 mr-3 w-4"></i>
+                    <span>{{ selectedEmployee.email }}</span>
+                  </div>
+                  <div class="flex items-center">
+                    <i class="fas fa-phone text-gray-400 mr-3 w-4"></i>
+                    <span>{{ selectedEmployee.phone || '(777) 123-4567' }}</span>
+                  </div>
+                  <div class="flex items-center">
+                    <i class="fas fa-map-marker-alt text-gray-400 mr-3 w-4"></i>
+                    <span>Cuernavaca, Morelos</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="bg-iebem-light bg-opacity-30 rounded-lg p-4">
+                <h4 class="font-semibold text-gray-800 mb-3">Estadísticas</h4>
+                <div class="space-y-3">
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Tiempo en empresa</span>
+                    <span class="font-bold text-iebem-primary">2 años</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Evaluación</span>
+                    <span class="font-bold text-success">9.2/10</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Proyectos</span>
+                    <span class="font-bold text-info">15</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-modal>
+      
+      <!-- 5. Modal de Eliminación -->
+      <app-modal 
+        [isOpen]="showDeleteModal"
+        title="Confirmar Eliminación"
+        subtitle="Esta acción no se puede deshacer"
+        icon="exclamation-triangle"
+        iconColor="danger"
+        [config]="deleteConfig"
+        [buttons]="deleteButtons"
+        (closed)="showDeleteModal = false"
+        (buttonClick)="onDeleteModalButton($event)">
+        
+        <div *ngIf="employeeToDelete" class="space-y-4">
+          <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p class="text-red-800 font-medium">
+              ¿Estás seguro de que deseas eliminar al empleado?
+            </p>
+            <p class="text-red-600 text-sm mt-1">
+              Se eliminarán todos sus datos permanentemente.
+            </p>
+          </div>
+          
+          <!-- Información del empleado a eliminar -->
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-danger rounded-full flex items-center justify-center mr-4">
+                <i class="fas fa-user text-white"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900">{{ employeeToDelete.name }}</h4>
+                <p class="text-sm text-gray-600">{{ employeeToDelete.position }}</p>
+                <p class="text-xs text-gray-500">{{ employeeToDelete.department }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="text-sm text-gray-600">
+            <p class="font-medium mb-2">Se eliminarán:</p>
+            <ul class="space-y-1">
+              <li class="flex items-center">
+                <i class="fas fa-times text-red-500 mr-2"></i>
+                Información personal
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-times text-red-500 mr-2"></i>
+                Historial laboral
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-times text-red-500 mr-2"></i>
+                Documentos asociados
+              </li>
+            </ul>
+          </div>
+        </div>
+      </app-modal>
+      
+      <!-- Notificaciones -->
+      <div *ngIf="isNotificationVisible" 
+           class="fixed bottom-4 right-4 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-50 transform transition-all duration-300"
+           [class.translate-x-0]="isNotificationVisible"
+           [class.translate-x-full]="!isNotificationVisible">
+        <div class="flex items-center">
+          <div class="w-8 h-8 bg-success rounded-full flex items-center justify-center mr-3">
+            <i class="fas fa-check text-white text-sm"></i>
+          </div>
+          <div>
+            <p class="font-medium text-gray-900">{{ notificationMessage }}</p>
+            <p class="text-sm text-gray-600">Acción completada correctamente</p>
+          </div>
+          <button (click)="hideNotification()" 
+                  class="ml-4 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
