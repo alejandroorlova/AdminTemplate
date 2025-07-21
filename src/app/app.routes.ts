@@ -18,5 +18,9 @@ export const routes: Routes = [
     path: 'loader', 
     loadComponent: () => import('./features/loaderexamples/loaderexamples.component').then(m => m.LoaderexamplesComponent) 
   },
+  { 
+    path: 'button-examples', 
+    loadComponent: () => import('./features/buttonexamples/buttonexamples.component').then(m => m.ButtonExamplesComponent) 
+  },
   { path: '**', redirectTo: '/dashboard' }
 ];

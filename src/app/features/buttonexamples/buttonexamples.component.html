@@ -1,0 +1,430 @@
+<!-- button-examples.component.html -->
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        Button Component Showcase
+      </h1>
+      <p class="text-xl text-gray-600">
+        Sistema de botones reutilizable para IEBEM
+      </p>
+    </div>
+
+    <!-- Navegación -->
+    <div class="mb-8 bg-white rounded-2xl p-1 shadow-sm">
+      <div class="flex flex-wrap justify-center gap-2">
+        <button 
+          *ngFor="let section of sections"
+          (click)="activeSection = section.id"
+          [class]="section.id === activeSection 
+            ? 'bg-iebem-primary text-white' 
+            : 'text-gray-600 hover:text-gray-900'"
+          class="px-4 py-2 rounded-xl font-medium transition-all duration-200">
+          {{ section.name }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección: Todas las Variantes -->
+    <div *ngIf="activeSection === 'variants'" class="space-y-8">
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          🎨 Todas las Variantes
+        </h2>
+        
+        <!-- Variantes Principales -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Variantes Principales</h3>
+          <div class="flex flex-wrap gap-4">
+            <app-button variant="primary" label="Primary Botón"></app-button>
+            <app-button variant="secondary" label="Secondary Botón"></app-button>
+            <app-button variant="accent" label="Accent Botón"></app-button>
+            <app-button variant="dark" label="Dark Botón"></app-button>
+            <app-button variant="light" label="Light Botón"></app-button>
+            <app-button variant="gradient" label="Gradient Botón"></app-button>
+          </div>
+        </div>
+
+        <!-- Variantes de Estado -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Variantes de Estado</h3>
+          <div class="flex flex-wrap gap-4">
+            <app-button variant="success" label="Success Botón"></app-button>
+            <app-button variant="warning" label="Warning Botón"></app-button>
+            <app-button variant="danger" label="Danger Botón"></app-button>
+            <app-button variant="info" label="Info Botón"></app-button>
+          </div>
+        </div>
+
+        <!-- Variantes Outline -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Variantes Outline</h3>
+          <div class="flex flex-wrap gap-4">
+            <app-button variant="outline-primary" label="Outline Primary Botón"></app-button>
+            <app-button variant="outline-secondary" label="Outline Secondary Botón"></app-button>
+            <app-button variant="outline-danger" label="Outline Danger Botón"></app-button>
+          </div>
+        </div>
+
+        <!-- Variantes Especiales -->
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Variantes Especiales</h3>
+          <div class="flex flex-wrap gap-4">
+            <app-button variant="ghost" label="Ghost Botón"></app-button>
+            <app-button variant="link" label="Link Botón"></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Tamaños -->
+    <div *ngIf="activeSection === 'sizes'" class="space-y-8">
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          📏 Todos los Tamaños
+        </h2>
+        
+        <div class="space-y-6">
+          <div *ngFor="let size of sizes" class="border-b border-gray-100 pb-6 last:border-b-0">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4 capitalize">
+              Tamaño {{ size }} 
+              <span class="text-sm font-normal text-gray-500">
+                ({{ getSizeDescription(size) }})
+              </span>
+            </h3>
+            <div class="flex flex-wrap items-center gap-4">
+              <app-button variant="primary" [size]="size" label="Primary Botón"></app-button>
+              <app-button variant="secondary" [size]="size" label="Secondary Botón"></app-button>
+              <app-button variant="success" [size]="size" label="Success Botón"></app-button>
+              <app-button variant="outline-primary" [size]="size" label="Outline Botón"></app-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Con Iconos -->
+    <div *ngIf="activeSection === 'icons'" class="space-y-8">
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          🎯 Botones con Iconos
+        </h2>
+        
+        <!-- Iconos a la izquierda -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Iconos a la Izquierda</h3>
+          <div class="flex flex-wrap gap-4">
+            <app-button variant="primary" icon="fas fa-save" iconPosition="left" label="Guardar Botón"></app-button>
+            <app-button variant="success" icon="fas fa-check" iconPosition="left" label="Confirmar Botón"></app-button>
+            <app-button variant="danger" icon="fas fa-trash" iconPosition="left" label="Eliminar Botón"></app-button>
+            <app-button variant="info" icon="fas fa-download" iconPosition="left" label="Descargar Botón"></app-button>
+            <app-button variant="warning" icon="fas fa-exclamation-triangle" iconPosition="left" label="Advertencia Botón"></app-button>
+          </div>
+        </div>
+
+        <!-- Iconos a la derecha -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Iconos a la Derecha</h3>
+          <div class="flex flex-wrap gap-4">
+            <app-button variant="secondary" icon="fas fa-arrow-right" iconPosition="right" label="Siguiente Botón"></app-button>
+            <app-button variant="accent" icon="fas fa-external-link-alt" iconPosition="right" label="Abrir Botón"></app-button>
+            <app-button variant="outline-primary" icon="fas fa-share" iconPosition="right" label="Compartir Botón"></app-button>
+            <app-button variant="ghost" icon="fas fa-edit" iconPosition="right" label="Editar Botón"></app-button>
+          </div>
+        </div>
+
+        <!-- Solo iconos -->
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Solo Iconos</h3>
+          <div class="flex flex-wrap gap-4">
+            <app-button variant="primary" icon="fas fa-plus" ariaLabel="Agregar" tooltip="Agregar nuevo"></app-button>
+            <app-button variant="success" icon="fas fa-check" ariaLabel="Confirmar" tooltip="Confirmar acción"></app-button>
+            <app-button variant="danger" icon="fas fa-times" ariaLabel="Cerrar" tooltip="Cerrar ventana"></app-button>
+            <app-button variant="info" icon="fas fa-info-circle" ariaLabel="Información" tooltip="Más información"></app-button>
+            <app-button variant="warning" icon="fas fa-bell" ariaLabel="Notificación" tooltip="Ver notificaciones"></app-button>
+            <app-button variant="accent" icon="fas fa-heart" ariaLabel="Me gusta" tooltip="Me gusta"></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Estados -->
+    <div *ngIf="activeSection === 'states'" class="space-y-8">
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          ⚡ Estados de Botones
+        </h2>
+        
+        <!-- Estados normales vs especiales -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Normal -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Normal</h3>
+            <div class="space-y-3">
+              <app-button variant="primary" [fullWidth]="true" label="Normal Botón"></app-button>
+              <app-button variant="secondary" [fullWidth]="true" label="Normal Botón"></app-button>
+              <app-button variant="success" [fullWidth]="true" label="Normal Botón"></app-button>
+            </div>
+          </div>
+
+          <!-- Deshabilitado -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Deshabilitado</h3>
+            <div class="space-y-3">
+              <app-button variant="primary" [disabled]="true" [fullWidth]="true" label="Deshabilitado Botón"></app-button>
+              <app-button variant="secondary" [disabled]="true" [fullWidth]="true" label="Deshabilitado Botón"></app-button>
+              <app-button variant="success" [disabled]="true" [fullWidth]="true" label="Deshabilitado Botón"></app-button>
+            </div>
+          </div>
+
+          <!-- Loading -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Loading</h3>
+            <div class="space-y-3">
+              <app-button variant="primary" [loading]="true" [fullWidth]="true" label="Cargando Botón"></app-button>
+              <app-button variant="secondary" [loading]="true" [fullWidth]="true" label="Procesando Botón"></app-button>
+              <app-button variant="success" [loading]="true" [fullWidth]="true" label="Guardando Botón"></app-button>
+            </div>
+          </div>
+
+          <!-- Redondeados -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Redondeados</h3>
+            <div class="space-y-3">
+              <app-button variant="primary" [rounded]="true" [fullWidth]="true" label="Redondeado Botón"></app-button>
+              <app-button variant="accent" [rounded]="true" [fullWidth]="true" label="Redondeado Botón"></app-button>
+              <app-button variant="outline-primary" [rounded]="true" [fullWidth]="true" label="Redondeado Botón"></app-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ancho completo -->
+        <div class="mt-8">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Ancho Completo</h3>
+          <div class="space-y-3">
+            <app-button variant="gradient" [fullWidth]="true" icon="fas fa-rocket" size="lg" label="Botón de Ancho Completo Grande"></app-button>
+            <app-button variant="outline-primary" [fullWidth]="true" icon="fas fa-star" label="Botón de Ancho Completo Normal"></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Enlaces -->
+    <div *ngIf="activeSection === 'links'" class="space-y-8">
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          🔗 Botones como Enlaces
+        </h2>
+        
+        <div class="space-y-6">
+          <!-- Enlaces internos -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Enlaces Internos</h3>
+            <div class="flex flex-wrap gap-4">
+              <app-button variant="primary" href="/dashboard" icon="fas fa-home" iconPosition="left" label="Dashboard"></app-button>
+              <app-button variant="secondary" href="/employees" icon="fas fa-users" iconPosition="left" label="Empleados"></app-button>
+              <app-button variant="link" href="/settings" label="Configuración"></app-button>
+            </div>
+          </div>
+
+          <!-- Enlaces externos -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Enlaces Externos</h3>
+            <div class="flex flex-wrap gap-4">
+              <app-button 
+                variant="outline-primary" 
+                href="https://iebem.edu.mx" 
+                target="_blank"
+                icon="fas fa-external-link-alt" 
+                iconPosition="right"
+                label="Sitio IEBEM">
+              </app-button>
+              <app-button 
+                variant="info" 
+                href="https://github.com" 
+                target="_blank"
+                icon="fab fa-github" 
+                iconPosition="left"
+                label="GitHub">
+              </app-button>
+              <app-button 
+                variant="accent" 
+                href="mailto:contacto@iebem.edu.mx"
+                icon="fas fa-envelope" 
+                iconPosition="left"
+                label="Contacto">
+              </app-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Casos de Uso -->
+    <div *ngIf="activeSection === 'use-cases'" class="space-y-8">
+      <!-- Formulario -->
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          📝 Caso de Uso: Formulario
+        </h2>
+        <div class="bg-gray-50 p-6 rounded-xl">
+          <div class="flex flex-col sm:flex-row gap-4 justify-end">
+            <app-button variant="ghost" icon="fas fa-undo" iconPosition="left" label="Limpiar Formulario"></app-button>
+            <app-button variant="gradient" icon="fas fa-save" iconPosition="left" size="lg" label="Registrar Empleado"></app-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          📊 Caso de Uso: Tabla de Datos
+        </h2>
+        <div class="bg-gray-50 p-6 rounded-xl">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Lista de Empleados</h3>
+            <div class="flex gap-3">
+              <app-button variant="secondary" icon="fas fa-download" iconPosition="left" label="Exportar"></app-button>
+              <app-button variant="primary" icon="fas fa-plus" iconPosition="left" label="Nuevo Empleado"></app-button>
+            </div>
+          </div>
+          
+          <!-- Acciones de fila simuladas -->
+          <div class="flex gap-2">
+            <app-button variant="info" icon="fas fa-eye" size="sm" ariaLabel="Ver" tooltip="Ver detalles"></app-button>
+            <app-button variant="warning" icon="fas fa-edit" size="sm" ariaLabel="Editar" tooltip="Editar empleado"></app-button>
+            <app-button variant="danger" icon="fas fa-trash" size="sm" ariaLabel="Eliminar" tooltip="Eliminar empleado"></app-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          💬 Caso de Uso: Modal de Confirmación
+        </h2>
+        <div class="bg-gray-50 p-6 rounded-xl">
+          <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">¿Eliminar empleado?</h3>
+            <p class="text-gray-600">Esta acción no se puede deshacer</p>
+          </div>
+          <div class="flex gap-3 justify-center">
+            <app-button variant="ghost" label="Cancelar"></app-button>
+            <app-button variant="danger" icon="fas fa-trash" iconPosition="left" label="Eliminar"></app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Interactivo -->
+    <div *ngIf="activeSection === 'interactive'" class="space-y-8">
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+          🎮 Prueba Interactiva
+        </h2>
+        
+        <!-- Controles -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <!-- Variante -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Variante</label>
+            <select 
+              [(ngModel)]="selectedVariant" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-transparent">
+              <option *ngFor="let variant of allVariants" [value]="variant">
+                {{ variant }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Tamaño -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tamaño</label>
+            <select 
+              [(ngModel)]="selectedSize" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-transparent">
+              <option *ngFor="let size of sizes" [value]="size">
+                {{ size }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Icono -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Icono</label>
+            <select 
+              [(ngModel)]="selectedIcon" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-transparent">
+              <option value="">Sin icono</option>
+              <option *ngFor="let icon of iconOptions" [value]="icon.class">
+                {{ icon.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Texto del botón -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Texto del Botón</label>
+            <input 
+              type="text"
+              [(ngModel)]="buttonText"
+              placeholder="Texto personalizado"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-iebem-primary focus:border-transparent">
+          </div>
+        </div>
+
+        <!-- Opciones adicionales -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <label class="flex items-center">
+            <input type="checkbox" [(ngModel)]="isDisabled" class="mr-2">
+            <span class="text-sm text-gray-700">Deshabilitado</span>
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" [(ngModel)]="isLoading" class="mr-2">
+            <span class="text-sm text-gray-700">Loading</span>
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" [(ngModel)]="isFullWidth" class="mr-2">
+            <span class="text-sm text-gray-700">Ancho completo</span>
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" [(ngModel)]="isRounded" class="mr-2">
+            <span class="text-sm text-gray-700">Redondeado</span>
+          </label>
+        </div>
+
+        <!-- Resultado -->
+        <div class="bg-gray-50 p-8 rounded-xl text-center">
+          <h3 class="text-lg font-semibold text-gray-700 mb-6">Resultado:</h3>
+          <app-button 
+            [variant]="selectedVariant"
+            [size]="selectedSize"
+            [icon]="selectedIcon"
+            [disabled]="isDisabled"
+            [loading]="isLoading"
+            [fullWidth]="isFullWidth"
+            [rounded]="isRounded"
+            [label]="getDisplayText()"
+            (click)="onTestButtonClick()">
+          </app-button>
+          
+          <!-- Código generado -->
+          <div class="mt-6 text-left">
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Código generado:</h4>
+            <pre class="bg-gray-800 text-green-400 p-4 rounded-lg text-xs overflow-x-auto">{{ generateCode() }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-12 text-center text-gray-500">
+      <p>© 2024 IEBEM - Sistema de Componentes</p>
+    </div>
+  </div>
+</div>
