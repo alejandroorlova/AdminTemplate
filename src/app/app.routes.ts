@@ -22,5 +22,9 @@ export const routes: Routes = [
     path: 'button-examples', 
     loadComponent: () => import('./features/buttonexamples/buttonexamples.component').then(m => m.ButtonExamplesComponent) 
   },
+  { 
+    path: 'checkbox-examples', 
+    loadComponent: () => import('./features/checkbox-examples/checkbox-examples.component').then(m => m.CheckboxExamplesComponent) 
+  },
   { path: '**', redirectTo: '/dashboard' }
 ];

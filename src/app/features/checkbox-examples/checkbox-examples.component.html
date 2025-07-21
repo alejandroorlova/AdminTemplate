@@ -1,0 +1,411 @@
+<!-- checkbox-examples.component.html -->
+<div class="max-w-7xl mx-auto p-6 space-y-8">
+  <!-- Header -->
+  <div class="text-center">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">Checkbox Component</h1>
+    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+      Componente de checkbox personalizable con múltiples variantes, tamaños y estados.
+      Compatible con Angular Reactive Forms.
+    </p>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex flex-wrap justify-center gap-2 border-b border-gray-200">
+    <button 
+      *ngFor="let section of sections"
+      (click)="activeSection = section.id"
+      [class]="'px-4 py-2 text-sm font-medium rounded-t-lg transition-colors duration-200 ' +
+               (activeSection === section.id 
+                 ? 'bg-iebem-light text-iebem-primary border-b-2 border-iebem-primary font-semibold' 
+                 : 'text-gray-600 hover:text-iebem-primary hover:bg-gray-50')">
+      {{ section.name }}
+    </button>
+  </nav>
+
+  <!-- Content -->
+  <div class="space-y-8">
+
+    <!-- Variantes -->
+    <section *ngIf="activeSection === 'variants'" class="space-y-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Variantes de Color</h2>
+        <p class="text-gray-600">Diferentes estilos y colores disponibles para el checkbox</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let variant of allVariants" 
+             class="p-4 border border-gray-200 rounded-lg bg-white">
+          <div class="flex flex-col items-center space-y-3">
+            <app-checkbox
+              [variant]="variant"
+              [label]="variant.charAt(0).toUpperCase() + variant.slice(1)"
+              [(ngModel)]="isChecked">
+            </app-checkbox>
+            <code class="text-xs text-gray-600 px-2 py-1 bg-gray-100 rounded">
+              variant="{{ variant }}"
+            </code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tamaños -->
+    <section *ngIf="activeSection === 'sizes'" class="space-y-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Tamaños</h2>
+        <p class="text-gray-600">Diferentes tamaños disponibles para adaptarse a tu diseño</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div *ngFor="let size of sizes" 
+             class="p-4 border border-gray-200 rounded-lg bg-white text-center">
+          <div class="flex flex-col items-center space-y-3">
+            <app-checkbox
+              [size]="size"
+              [label]="size.toUpperCase()"
+              variant="primary"
+              [(ngModel)]="isChecked">
+            </app-checkbox>
+            <div class="text-xs text-gray-600">
+              <code class="px-2 py-1 bg-gray-100 rounded">size="{{ size }}"</code>
+              <p class="mt-1">{{ getSizeDescription(size) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estados -->
+    <section *ngIf="activeSection === 'states'" class="space-y-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Estados</h2>
+        <p class="text-gray-600">Diferentes estados del checkbox: normal, marcado, indeterminado y deshabilitado</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Normal -->
+        <div class="p-4 border border-gray-200 rounded-lg bg-white">
+          <div class="text-center space-y-3">
+            <h3 class="font-medium text-gray-900">Normal</h3>
+            <app-checkbox
+              label="Sin marcar"
+              variant="primary">
+            </app-checkbox>
+            <code class="text-xs text-gray-600 block px-2 py-1 bg-gray-100 rounded">
+              Estado por defecto
+            </code>
+          </div>
+        </div>
+
+        <!-- Marcado -->
+        <div class="p-4 border border-gray-200 rounded-lg bg-white">
+          <div class="text-center space-y-3">
+            <h3 class="font-medium text-gray-900">Marcado</h3>
+            <app-checkbox
+              label="Marcado"
+              variant="primary"
+              [checked]="true">
+            </app-checkbox>
+            <code class="text-xs text-gray-600 block px-2 py-1 bg-gray-100 rounded">
+              [checked]="true"
+            </code>
+          </div>
+        </div>
+
+        <!-- Indeterminado -->
+        <div class="p-4 border border-gray-200 rounded-lg bg-white">
+          <div class="text-center space-y-3">
+            <h3 class="font-medium text-gray-900">Indeterminado</h3>
+            <app-checkbox
+              label="Indeterminado"
+              variant="primary"
+              [indeterminate]="true">
+            </app-checkbox>
+            <code class="text-xs text-gray-600 block px-2 py-1 bg-gray-100 rounded">
+              [indeterminate]="true"
+            </code>
+          </div>
+        </div>
+
+        <!-- Deshabilitado -->
+        <div class="p-4 border border-gray-200 rounded-lg bg-white">
+          <div class="text-center space-y-3">
+            <h3 class="font-medium text-gray-900">Deshabilitado</h3>
+            <app-checkbox
+              label="Deshabilitado"
+              variant="primary"
+              [disabled]="true"
+              [checked]="true">
+            </app-checkbox>
+            <code class="text-xs text-gray-600 block px-2 py-1 bg-gray-100 rounded">
+              [disabled]="true"
+            </code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Validación -->
+    <section *ngIf="activeSection === 'validation'" class="space-y-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Validación y Ayuda</h2>
+        <p class="text-gray-600">Ejemplos con mensajes de error, ayuda y campos requeridos</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Con error -->
+        <div class="p-6 border border-gray-200 rounded-lg bg-white">
+          <h3 class="font-medium text-gray-900 mb-4">Con Error</h3>
+          <app-checkbox
+            label="Acepto los términos y condiciones"
+            variant="danger"
+            [required]="true"
+            error="Debe aceptar los términos para continuar">
+          </app-checkbox>
+        </div>
+
+        <!-- Con hint -->
+        <div class="p-6 border border-gray-200 rounded-lg bg-white">
+          <h3 class="font-medium text-gray-900 mb-4">Con Ayuda</h3>
+          <app-checkbox
+            label="Recibir notificaciones por email"
+            variant="info"
+            hint="Puede cambiar esta configuración en cualquier momento desde su perfil">
+          </app-checkbox>
+        </div>
+
+        <!-- Requerido -->
+        <div class="p-6 border border-gray-200 rounded-lg bg-white">
+          <h3 class="font-medium text-gray-900 mb-4">Campo Requerido</h3>
+          <app-checkbox
+            label="Confirmar información"
+            variant="warning"
+            [required]="true"
+            hint="Este campo es obligatorio">
+          </app-checkbox>
+        </div>
+
+        <!-- Validación exitosa -->
+        <div class="p-6 border border-gray-200 rounded-lg bg-white">
+          <h3 class="font-medium text-gray-900 mb-4">Validación Exitosa</h3>
+          <app-checkbox
+            label="Datos verificados"
+            variant="success"
+            [checked]="true"
+            hint="Información validada correctamente">
+          </app-checkbox>
+        </div>
+      </div>
+    </section>
+
+    <!-- Casos de Uso -->
+    <section *ngIf="activeSection === 'use-cases'" class="space-y-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Casos de Uso Comunes</h2>
+        <p class="text-gray-600">Ejemplos prácticos de implementación</p>
+      </div>
+
+      <div class="space-y-8">
+        <!-- Lista de permisos -->
+        <div class="p-6 border border-gray-200 rounded-lg bg-white">
+          <h3 class="font-medium text-gray-900 mb-4">Lista de Permisos</h3>
+          <div class="space-y-3">
+            <app-checkbox
+              label="Seleccionar todos"
+              variant="primary"
+              [indeterminate]="!allSelected"
+              (change)="toggleAll($event)">
+            </app-checkbox>
+            <hr class="my-4">
+            <div class="pl-6 space-y-2">
+              <app-checkbox label="Lectura" variant="success" size="sm"></app-checkbox>
+              <app-checkbox label="Escritura" variant="warning" size="sm"></app-checkbox>
+              <app-checkbox label="Eliminación" variant="danger" size="sm"></app-checkbox>
+              <app-checkbox label="Administración" variant="info" size="sm"></app-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <!-- Configuraciones -->
+        <div class="p-6 border border-gray-200 rounded-lg bg-white">
+          <h3 class="font-medium text-gray-900 mb-4">Configuraciones de Usuario</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <app-checkbox 
+              label="Notificaciones push" 
+              variant="primary"
+              hint="Recibir notificaciones en el navegador">
+            </app-checkbox>
+            <app-checkbox 
+              label="Modo oscuro" 
+              variant="dark"
+              hint="Cambiar apariencia de la aplicación">
+            </app-checkbox>
+            <app-checkbox 
+              label="Compartir datos analíticos" 
+              variant="info"
+              hint="Ayudar a mejorar la aplicación">
+            </app-checkbox>
+            <app-checkbox 
+              label="Recordar sesión" 
+              variant="success"
+              [checked]="true"
+              hint="Mantener sesión activa">
+            </app-checkbox>
+          </div>
+        </div>
+
+        <!-- Posiciones de label -->
+        <div class="p-6 border border-gray-200 rounded-lg bg-white">
+          <h3 class="font-medium text-gray-900 mb-4">Posiciones del Label</h3>
+          <div class="space-y-4">
+            <app-checkbox 
+              label="Label a la derecha (por defecto)"
+              variant="primary"
+              labelPosition="right">
+            </app-checkbox>
+            <app-checkbox 
+              label="Label a la izquierda"
+              variant="secondary"
+              labelPosition="left">
+            </app-checkbox>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Interactiva -->
+    <section *ngIf="activeSection === 'interactive'" class="space-y-6">
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Playground Interactivo</h2>
+        <p class="text-gray-600">Personaliza el checkbox y ve los cambios en tiempo real</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Controles -->
+        <div class="space-y-6">
+          <div class="p-6 border border-gray-200 rounded-lg bg-white">
+            <h3 class="font-medium text-gray-900 mb-4">Configuración</h3>
+            
+            <div class="space-y-4">
+              <!-- Variante -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Variante</label>
+                <select [(ngModel)]="selectedVariant" 
+                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-iebem-primary/50 focus:border-iebem-primary">
+                  <option *ngFor="let variant of allVariants" [value]="variant">
+                    {{ variant.charAt(0).toUpperCase() + variant.slice(1) }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Tamaño -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Tamaño</label>
+                <select [(ngModel)]="selectedSize" 
+                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-iebem-primary/50 focus:border-iebem-primary">
+                  <option *ngFor="let size of sizes" [value]="size">
+                    {{ size.toUpperCase() }} - {{ getSizeDescription(size) }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Label -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Texto del Label</label>
+                <input [(ngModel)]="checkboxLabel" 
+                       placeholder="Ingresa el texto del checkbox"
+                       class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-iebem-primary/50 focus:border-iebem-primary">
+              </div>
+
+              <!-- Posición del label -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Posición del Label</label>
+                <select [(ngModel)]="selectedLabelPosition" 
+                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-iebem-primary/50 focus:border-iebem-primary">
+                  <option value="right">Derecha</option>
+                  <option value="left">Izquierda</option>
+                </select>
+              </div>
+
+              <!-- Estados -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Estados</label>
+                <div class="space-y-2">
+                  <label class="flex items-center">
+                    <input type="checkbox" [(ngModel)]="isChecked" class="mr-2 text-iebem-primary focus:ring-iebem-primary/50">
+                    <span class="text-sm">Marcado</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" [(ngModel)]="isDisabled" class="mr-2 text-iebem-primary focus:ring-iebem-primary/50">
+                    <span class="text-sm">Deshabilitado</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" [(ngModel)]="isIndeterminate" class="mr-2 text-iebem-primary focus:ring-iebem-primary/50">
+                    <span class="text-sm">Indeterminado</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" [(ngModel)]="isRequired" class="mr-2 text-iebem-primary focus:ring-iebem-primary/50">
+                    <span class="text-sm">Requerido</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Mensajes -->
+              <div>
+                <label class="flex items-center mb-2">
+                  <input type="checkbox" [(ngModel)]="hasError" class="mr-2 text-iebem-primary focus:ring-iebem-primary/50">
+                  <span class="text-sm font-medium text-gray-700">Mostrar Error</span>
+                </label>
+                <input *ngIf="hasError" 
+                       [(ngModel)]="errorMessage" 
+                       placeholder="Mensaje de error"
+                       class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-iebem-primary/50 focus:border-iebem-primary">
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Mensaje de Ayuda</label>
+                <input [(ngModel)]="hintMessage" 
+                       placeholder="Mensaje de ayuda (opcional)"
+                       class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-iebem-primary/50 focus:border-iebem-primary">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview y código -->
+        <div class="space-y-6">
+          <!-- Preview -->
+          <div class="p-6 border border-gray-200 rounded-lg bg-white">
+            <h3 class="font-medium text-gray-900 mb-4">Vista Previa</h3>
+            <div class="flex items-center justify-center p-8 bg-gray-50 rounded-lg">
+              <app-checkbox
+                [variant]="selectedVariant"
+                [size]="selectedSize"
+                [label]="checkboxLabel || 'Checkbox de ejemplo'"
+                [labelPosition]="selectedLabelPosition"
+                [checked]="isChecked"
+                [disabled]="isDisabled"
+                [indeterminate]="isIndeterminate"
+                [required]="isRequired"
+                [error]="hasError ? (errorMessage || 'Mensaje de error') : ''"
+                [hint]="!hasError ? hintMessage : ''"
+                (change)="onCheckboxChange($event)">
+              </app-checkbox>
+            </div>
+          </div>
+
+          <!-- Código generado -->
+          <div class="p-6 border border-gray-200 rounded-lg bg-white">
+            <h3 class="font-medium text-gray-900 mb-4">Código Generado</h3>
+            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code>{{ generateCode() }}</code></pre>
+            <button class="mt-3 px-4 py-2 bg-iebem-primary text-white rounded-md hover:bg-iebem-primary/90 transition-colors duration-200"
+                    (click)="copyCode()">
+              Copiar Código
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
