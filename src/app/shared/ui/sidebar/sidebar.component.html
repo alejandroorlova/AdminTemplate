@@ -1,0 +1,302 @@
+<!-- shared/ui/sidebar/sidebar.component.html -->
+<div
+  class="sidebar-container fixed inset-y-0 left-0 z-50 bg-iebem-primary shadow-2xl transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col h-screen"
+  [class.-translate-x-full]="!isOpen" 
+  [class.translate-x-0]="isOpen"
+  [style.width]="isCollapsed ? '80px' : '256px'"
+>
+  <!-- Logo Header -->
+  <div 
+    class="flex items-center border-b border-white border-opacity-20 flex-shrink-0 transition-all duration-300 cursor-pointer group"
+    [class]="isCollapsed ? 'h-16 px-4 justify-center' : 'h-20 px-6'"
+    (click)="handleLogoClick()"
+  >
+    <div class="flex items-center" [class]="isCollapsed ? 'justify-center' : 'space-x-3'">
+      <!-- Logo Icon -->
+      <div 
+        class="bg-white bg-opacity-90 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:bg-white group-hover:scale-105"
+        [class]="isCollapsed ? 'w-10 h-10' : 'w-12 h-12'"
+      >
+        <!-- Logo Image o Icon -->
+        <img 
+          *ngIf="config.logo?.image" 
+          [src]="config.logo?.image" 
+          [alt]="config.logo?.title"
+          class="transition-all duration-300"
+          [class]="isCollapsed ? 'w-6 h-6' : 'w-8 h-8'"
+        />
+        <i 
+          *ngIf="!config.logo?.image && config.logo?.icon"
+          [class]="'fas fa-' + config.logo?.icon + ' text-iebem-primary transition-all duration-300'"
+          [class.text-xl]="!isCollapsed"
+          [class.text-lg]="isCollapsed"
+        ></i>
+      </div>
+      
+      <!-- Logo Text -->
+      <div 
+        class="text-white transition-all duration-300 overflow-hidden"
+        [class]="isCollapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto'"
+      >
+        <h1 class="text-xl font-heading font-bold tracking-wide whitespace-nowrap">
+          {{ config.logo?.title }}
+        </h1>
+        <p *ngIf="config.logo?.subtitle" class="text-xs opacity-80 font-medium whitespace-nowrap">
+          {{ config.logo?.subtitle }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Collapse Button -->
+    <button
+      *ngIf="config.collapsible && !isCollapsed"
+      type="button"
+      class="ml-auto p-2 text-white text-opacity-70 hover:text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
+      (click)="toggleCollapse(); $event.stopPropagation()"
+      aria-label="Colapsar sidebar"
+    >
+      <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+  </div>
+
+  <!-- Expand Button (when collapsed) -->
+  <div *ngIf="config.collapsible && isCollapsed" 
+       class="flex justify-center py-3 border-b border-white border-opacity-20">
+    <button
+      type="button"
+      class="p-2 text-white text-opacity-70 hover:text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
+      (click)="toggleCollapse()"
+      aria-label="Expandir sidebar"
+    >
+      <i class="fas fa-chevron-right text-sm"></i>
+    </button>
+  </div>
+
+  <!-- Navigation -->
+  <nav 
+    class="flex-1 overflow-y-auto" 
+    [class]="isCollapsed ? 'px-2' : 'px-4'"
+    role="navigation"
+    aria-label="Menu principal"
+  >
+    <div class="py-6 space-y-2">
+      <ng-container *ngFor="let item of config.items; trackBy: trackByItemId">
+        <!-- Mostrar solo si es visible -->
+        <ng-container *ngIf="isItemVisible(item)">
+          <!-- Divider -->
+          <div *ngIf="item.divider" class="my-4 border-t border-white border-opacity-20"></div>
+          
+          <!-- Menu Item -->
+          <div *ngIf="!item.divider" class="relative">
+            <!-- Parent Item -->
+            <div 
+              class="relative group"
+              [class.opacity-50]="item.disabled"
+              [class.cursor-not-allowed]="item.disabled"
+            >
+              
+              <!-- Link (if has route and no children) -->
+              <a 
+                *ngIf="item.route && !hasChildren(item)" 
+                [routerLink]="item.route" 
+                routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{ exact: false }"
+                class="flex items-center rounded-xl group transition-all duration-200 text-white text-opacity-80 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
+                [class]="getSidebarLinkClasses()"
+                [title]="getTooltipText(item)"
+                [class.pointer-events-none]="item.disabled"
+                [attr.aria-label]="item.label"
+                [target]="item.target || '_self'"
+              >
+                <div 
+                  class="bg-white bg-opacity-10 rounded-lg flex items-center justify-center group-hover:bg-white group-hover:bg-opacity-20 transition-all duration-200 flex-shrink-0"
+                  [class]="isCollapsed ? 'w-8 h-8 mr-0' : 'w-10 h-10 mr-3'"
+                >
+                  <i [class]="'fas fa-' + item.icon + ' text-lg'" [attr.aria-hidden]="true"></i>
+                </div>
+                
+                <span 
+                  class="font-medium flex-1 whitespace-nowrap overflow-hidden" 
+                  [class.hidden]="isCollapsed"
+                >
+                  {{ item.label }}
+                </span>
+                
+                <span 
+                  *ngIf="item.badge && !isCollapsed" 
+                  class="bg-white bg-opacity-20 text-white text-xs font-semibold px-2 py-1 rounded-full min-w-5 text-center"
+                  [attr.aria-label]="'Badge: ' + item.badge"
+                >
+                  {{ item.badge }}
+                </span>
+              </a>
+
+              <!-- Button (if has children or onClick) -->
+              <button 
+                *ngIf="!item.route || hasChildren(item)"
+                type="button"
+                class="w-full flex items-center rounded-xl group transition-all duration-200 text-white text-opacity-80 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                [class]="getSidebarLinkClasses()"
+                [class.bg-white]="isItemActive(item)"
+                [class.bg-opacity-15]="isItemActive(item)"
+                [class.text-white]="isItemActive(item)"
+                [disabled]="item.disabled"
+                [title]="getTooltipText(item)"
+                [attr.aria-label]="item.label"
+                [attr.aria-expanded]="hasChildren(item) ? isExpanded(item.id) : null"
+                [attr.aria-controls]="hasChildren(item) ? 'submenu-' + item.id : null"
+                (click)="handleItemClick(item)"
+              >
+                <div 
+                  class="bg-white bg-opacity-10 rounded-lg flex items-center justify-center group-hover:bg-white group-hover:bg-opacity-20 transition-all duration-200 flex-shrink-0"
+                  [class]="isCollapsed ? 'w-8 h-8 mr-0' : 'w-10 h-10 mr-3'"
+                  [class.bg-white]="isItemActive(item)"
+                  [class.bg-opacity-25]="isItemActive(item)"
+                >
+                  <i [class]="'fas fa-' + item.icon + ' text-lg'" [attr.aria-hidden]="true"></i>
+                </div>
+                
+                <span 
+                  class="font-medium flex-1 whitespace-nowrap overflow-hidden text-left" 
+                  [class.hidden]="isCollapsed"
+                >
+                  {{ item.label }}
+                </span>
+                
+                <span 
+                  *ngIf="item.badge && !isCollapsed" 
+                  class="bg-white bg-opacity-20 text-white text-xs font-semibold px-2 py-1 rounded-full min-w-5 text-center"
+                  [attr.aria-label]="'Badge: ' + item.badge"
+                >
+                  {{ item.badge }}
+                </span>
+                
+                <!-- Expand/Collapse Icon -->
+                <i 
+                  *ngIf="hasChildren(item) && !isCollapsed"
+                  class="fas fa-chevron-right text-xs ml-auto transition-transform duration-200"
+                  [class.rotate-90]="isExpanded(item.id)"
+                  [attr.aria-hidden]="true"
+                ></i>
+              </button>
+
+              <!-- Active Indicator -->
+              <div 
+                *ngIf="isItemActive(item)" 
+                class="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-l-sm"
+                aria-hidden="true"
+              ></div>
+            </div>
+
+            <!-- Children (Submenu) -->
+            <div 
+              *ngIf="hasChildren(item) && !isCollapsed" 
+              class="overflow-hidden transition-all duration-300 ease-in-out"
+              [class]="isExpanded(item.id) ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'"
+              [id]="'submenu-' + item.id"
+              role="menu"
+              [attr.aria-labelledby]="item.id + '-button'"
+            >
+              <div class="pl-2 pt-2 ml-10 border-l-2 border-white border-opacity-10 space-y-1">
+                <ng-container *ngFor="let child of item.children; trackBy: trackByItemId">
+                  <div *ngIf="isItemVisible(child)" class="relative">
+                    <a 
+                      *ngIf="child.route" 
+                      [routerLink]="child.route" 
+                      routerLinkActive="active-submenu-link"
+                      [routerLinkActiveOptions]="{ exact: false }"
+                      class="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium text-white text-opacity-70 hover:bg-white hover:bg-opacity-5 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-20 active:scale-95"
+                      [class.pointer-events-none]="child.disabled"
+                      [class.opacity-50]="child.disabled"
+                      [title]="child.tooltip || child.label"
+                      [attr.aria-label]="child.label"
+                      [target]="child.target || '_self'"
+                      role="menuitem"
+                    >
+                      <div 
+                        class="w-3 h-0.5 bg-white bg-opacity-20 rounded-full group-hover:bg-white group-hover:bg-opacity-40 transition-colors duration-200" 
+                        aria-hidden="true"
+                      ></div>
+                      <i [class]="'fas fa-' + child.icon + ' text-sm'" [attr.aria-hidden]="true"></i>
+                      <span class="flex-1">{{ child.label }}</span>
+                      <span 
+                        *ngIf="child.badge" 
+                        class="bg-white bg-opacity-15 text-white text-xs font-medium px-1.5 py-0.5 rounded-full"
+                        [attr.aria-label]="'Badge: ' + child.badge"
+                      >
+                        {{ child.badge }}
+                      </span>
+                    </a>
+
+                    <button 
+                      *ngIf="!child.route"
+                      type="button"
+                      class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium text-white text-opacity-70 hover:bg-white hover:bg-opacity-5 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-left"
+                      [disabled]="child.disabled"
+                      [title]="child.tooltip || child.label"
+                      [attr.aria-label]="child.label"
+                      (click)="handleItemClick(child)"
+                      role="menuitem"
+                    >
+                      <div 
+                        class="w-3 h-0.5 bg-white bg-opacity-20 rounded-full group-hover:bg-white group-hover:bg-opacity-40 transition-colors duration-200" 
+                        aria-hidden="true"
+                      ></div>
+                      <i [class]="'fas fa-' + child.icon + ' text-sm'" [attr.aria-hidden]="true"></i>
+                      <span class="flex-1">{{ child.label }}</span>
+                      <span 
+                        *ngIf="child.badge" 
+                        class="bg-white bg-opacity-15 text-white text-xs font-medium px-1.5 py-0.5 rounded-full"
+                        [attr.aria-label]="'Badge: ' + child.badge"
+                      >
+                        {{ child.badge }}
+                      </span>
+                    </button>
+
+                    <!-- Active Indicator for submenu -->
+                    <div 
+                      *ngIf="isItemActive(child)" 
+                      class="absolute right-2 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-white rounded-full"
+                      aria-hidden="true"
+                    ></div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </nav>
+
+  <!-- Footer -->
+  <div 
+    class="flex-shrink-0 border-t border-white border-opacity-10 transition-all duration-300"
+    [class]="isCollapsed ? 'p-2' : 'p-4'"
+  >
+    <div [class]="isCollapsed ? 'flex justify-center' : 'text-center'">
+      <div *ngIf="!isCollapsed">
+        <p *ngIf="config.version" class="text-white text-opacity-30 text-xs font-mono">
+          v{{ config.version }}
+        </p>
+        <p *ngIf="config.copyright" class="text-white text-opacity-20 text-xs mt-1">
+          {{ config.copyright }}
+        </p>
+      </div>
+      <!-- Collapsed version indicator -->
+      <div 
+        *ngIf="isCollapsed && config.version" 
+        class="w-2 h-2 bg-white bg-opacity-30 rounded-full transition-colors duration-200 hover:bg-white hover:bg-opacity-50 cursor-help"
+        [title]="'v' + config.version"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay for mobile -->
+<div 
+  *ngIf="isOpen && !isDesktop" 
+  class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden backdrop-blur-sm transition-opacity duration-300"
+  (click)="closeSidebar()"
+  aria-hidden="true"
+></div>
