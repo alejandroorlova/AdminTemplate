@@ -1,4 +1,8 @@
-// shared/ui/sidebar/sidebar.interface.ts
+// shared/ui/sidebar/sidebar.component.ts - ACTUALIZADO
+import { Component, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 export interface SidebarMenuItem {
   id: string;
@@ -14,17 +18,14 @@ export interface SidebarMenuItem {
   tooltip?: string;
   permission?: string | string[];
   target?: '_blank' | '_self';
-  order?: number; // Para ordenamiento
-  metadata?: Record<string, any>; // Datos adicionales
 }
 
 export interface SidebarLogo {
-  icon?: string;
+  icon: string;
   title: string;
   subtitle?: string;
-  image?: string; // URL de imagen del logo
+  image?: string;
   onClick?: () => void;
-  class?: string; // Clases CSS adicionales
 }
 
 export interface SidebarConfig {
@@ -34,179 +35,293 @@ export interface SidebarConfig {
   collapsible?: boolean;
   persistCollapsedState?: boolean;
   items: SidebarMenuItem[];
-  theme?: SidebarTheme;
-  animations?: SidebarAnimations;
-  accessibility?: SidebarAccessibility;
 }
 
-export interface SidebarTheme {
-  primary?: string; // Color primario
-  secondary?: string; // Color secundario
-  background?: string; // Color de fondo
-  textColor?: string; // Color del texto
-  hoverColor?: string; // Color hover
-  activeColor?: string; // Color activo
-  borderColor?: string; // Color de bordes
-  variant?: 'default' | 'compact' | 'modern' | 'minimal';
-}
+@Component({
+  selector: 'app-sidebar',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss']
+})
+export class SidebarComponent implements OnInit {
+  @Input() isOpen = true;
+  @Input() config: SidebarConfig = {
+    logo: {
+      icon: 'graduation-cap',
+      title: 'IEBEM',
+      subtitle: 'Admin Panel'
+    },
+    version: '1.0.0',
+    copyright: 'IEBEM © 2025',
+    collapsible: true,
+    persistCollapsedState: true,
+    items: []
+  };
+  
+  @Output() toggleSidebar = new EventEmitter<void>();
+  @Output() itemClick = new EventEmitter<SidebarMenuItem>();
+  @Output() collapseChange = new EventEmitter<boolean>();
+  @Output() logoClick = new EventEmitter<void>();
 
-export interface SidebarAnimations {
-  enabled?: boolean;
-  duration?: number; // en milisegundos
-  easing?: string; // función de timing CSS
-  reduceMotion?: boolean; // Respetar preferencias de usuario
-}
+  // Variables internas
+  isCollapsed = false;
+  isDesktop = true;
+  expandedItems = new Set<string>();
+  currentRoute = '';
+  version = '1.0.0'; // Mantener compatibilidad
 
-export interface SidebarAccessibility {
-  enableKeyboardNavigation?: boolean;
-  announcePageChanges?: boolean;
-  highContrast?: boolean;
-  focusManagement?: boolean;
-  screenReaderSupport?: boolean;
-}
+  constructor(private router: Router) {}
 
-export interface SidebarState {
-  isOpen: boolean;
-  isCollapsed: boolean;
-  activeItemId?: string;
-  expandedItems: Set<string>;
-  currentRoute: string;
-  lastInteraction: Date;
-}
+  ngOnInit(): void {
+    console.log('Sidebar init - isOpen:', this.isOpen); // Debug
+    
+    // Restaurar estado colapsado si está habilitado
+    if (this.config.persistCollapsedState) {
+      this.restoreCollapsedState();
+    }
 
-export interface SidebarEvents {
-  onToggle?: (isOpen: boolean) => void;
-  onCollapse?: (isCollapsed: boolean) => void;
-  onItemClick?: (item: SidebarMenuItem) => void;
-  onItemHover?: (item: SidebarMenuItem) => void;
-  onItemExpand?: (item: SidebarMenuItem, isExpanded: boolean) => void;
-  onLogoClick?: () => void;
-  onRouteChange?: (route: string) => void;
-}
+    // Subscribe to route changes
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.currentRoute = event.url;
+        this.updateExpandedItems();
+      });
 
-export interface SidebarAnalytics {
-  trackClicks?: boolean;
-  trackTimeSpent?: boolean;
-  trackNavigation?: boolean;
-  customEvents?: Record<string, any>;
-}
+    this.currentRoute = this.router.url;
+    this.updateExpandedItems();
+    this.checkScreenSize();
+    
+    // Manejar el estado del sidebar en móvil
+    this.updateBodyScroll();
+  }
 
-// Tipos para la configuración de factory
-export type SidebarRole = 'admin' | 'user' | 'guest' | 'hr' | 'finance' | 'manager';
-export type SidebarSize = 'sm' | 'md' | 'lg' | 'xl';
-export type SidebarPosition = 'left' | 'right';
-export type SidebarBehavior = 'fixed' | 'overlay' | 'push' | 'slide';
+  @HostListener('window:resize')
+  onResize(): void {
+    this.checkScreenSize();
+    this.updateBodyScroll();
+  }
 
-// Configuración avanzada
-export interface SidebarAdvancedConfig extends SidebarConfig {
-  role?: SidebarRole;
-  size?: SidebarSize;
-  position?: SidebarPosition;
-  behavior?: SidebarBehavior;
-  analytics?: SidebarAnalytics;
-  permissions?: string[];
-  customClasses?: string[];
-  onBeforeRender?: (config: SidebarConfig) => SidebarConfig;
-  onAfterRender?: (element: HTMLElement) => void;
-}
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    // Cerrar sidebar en mobile si se hace click fuera
+    if (!this.isDesktop && this.isOpen) {
+      const target = event.target as HTMLElement;
+      const sidebar = target.closest('.sidebar-container');
+      if (!sidebar) {
+        this.closeSidebar();
+      }
+    }
+  }
 
-// Utilidades para construcción de menús
-export interface MenuGroup {
-  id: string;
-  label: string;
-  icon?: string;
-  order?: number;
-  items: SidebarMenuItem[];
-  collapsed?: boolean;
-  permission?: string | string[];
-}
+  trackByItemId(index: number, item: SidebarMenuItem): string {
+    return item.id;
+  }
 
-export interface BreadcrumbItem {
-  id: string;
-  label: string;
-  route?: string;
-  icon?: string;
-}
+  hasChildren(item: SidebarMenuItem): boolean {
+    return !!(item.children && item.children.length > 0);
+  }
 
-// Configuración para diferentes roles de IEBEM
-export interface IEBEMSidebarConfig extends SidebarAdvancedConfig {
-  institution?: {
-    name: string;
-    logo?: string;
-    colors?: {
-      primary: string;
-      secondary: string;
-      accent: string;
+  isExpanded(itemId: string): boolean {
+    return this.expandedItems.has(itemId);
+  }
+
+  isItemActive(item: SidebarMenuItem): boolean {
+    if (item.route) {
+      return this.currentRoute === item.route || 
+             this.currentRoute.startsWith(item.route + '/');
+    }
+    
+    if (item.children) {
+      return item.children.some(child => this.isItemActive(child));
+    }
+    
+    return false;
+  }
+
+  isItemVisible(item: SidebarMenuItem): boolean {
+    if (item.hidden) return false;
+    
+    // Aquí podrías agregar lógica de permisos
+    // if (item.permission && !this.hasPermission(item.permission)) {
+    //   return false;
+    // }
+    
+    return true;
+  }
+
+  // Getter para el logo con valores por defecto
+  get logoConfig() {
+    return this.config.logo || {
+      icon: 'graduation-cap',
+      title: 'IEBEM',
+      subtitle: 'Admin Panel'
     };
-  };
-  modules?: {
-    hr?: boolean;
-    finance?: boolean;
-    academic?: boolean;
-    administration?: boolean;
-    reports?: boolean;
-  };
-  userInfo?: {
-    name: string;
-    role: string;
-    department?: string;
-    avatar?: string;
-  };
-}
+  }
 
-// Tipos para eventos del ciclo de vida
-export type SidebarLifecycleEvent = 
-  | 'beforeInit'
-  | 'afterInit'
-  | 'beforeDestroy'
-  | 'afterDestroy'
-  | 'beforeToggle'
-  | 'afterToggle'
-  | 'beforeCollapse'
-  | 'afterCollapse';
+  handleItemClick(item: SidebarMenuItem): void {
+    if (item.disabled) return;
 
-export interface SidebarLifecycleHook {
-  event: SidebarLifecycleEvent;
-  handler: (data?: any) => void | Promise<void>;
-}
+    // Manejar expansión/colapso de items con children
+    if (this.hasChildren(item)) {
+      this.toggleExpansion(item.id);
+    }
 
-// Configuración de responsive behavior
-export interface SidebarResponsive {
-  breakpoints?: {
-    mobile: number;
-    tablet: number;
-    desktop: number;
-  };
-  behavior?: {
-    mobile: SidebarBehavior;
-    tablet: SidebarBehavior;
-    desktop: SidebarBehavior;
-  };
-  autoCollapse?: {
-    mobile: boolean;
-    tablet: boolean;
-  };
-}
+    // Ejecutar función onClick personalizada
+    if (item.onClick) {
+      item.onClick();
+    }
 
-// Plugin system (para extensibilidad futura)
-export interface SidebarPlugin {
-  name: string;
-  version: string;
-  init: (sidebar: any) => void;
-  destroy?: () => void;
-  config?: Record<string, any>;
-}
+    // Navegar si tiene ruta y no tiene children
+    if (item.route && !this.hasChildren(item)) {
+      if (item.target === '_blank') {
+        window.open(item.route, '_blank');
+      } else {
+        this.router.navigate([item.route]);
+      }
+      
+      // Cerrar sidebar en mobile después de navegación
+      if (!this.isDesktop) {
+        this.closeSidebar();
+      }
+    }
 
-// Validación de configuración
-export interface SidebarValidationRule {
-  field: string;
-  rule: 'required' | 'unique' | 'format' | 'custom';
-  message: string;
-  validator?: (value: any) => boolean;
-}
+    // Emitir evento
+    this.itemClick.emit(item);
+  }
 
-export interface SidebarValidationResult {
-  isValid: boolean;
-  errors: string[];
-  warnings: string[];
+  handleLogoClick(): void {
+    if (this.logoConfig.onClick) {
+      this.logoConfig.onClick();
+    }
+    this.logoClick.emit();
+  }
+
+  toggleExpansion(itemId: string): void {
+    // En móvil, siempre permitir expansión
+    if (!this.isDesktop || !this.isCollapsed) {
+      if (this.expandedItems.has(itemId)) {
+        // Si está expandido, colapsarlo
+        this.expandedItems.delete(itemId);
+      } else {
+        // Si no está expandido, cerrar todos los otros y abrir este
+        this.expandedItems.clear();
+        this.expandedItems.add(itemId);
+      }
+    }
+  }
+
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+    
+    // Cerrar todos los items expandidos cuando se colapsa
+    if (this.isCollapsed) {
+      this.expandedItems.clear();
+    } else {
+      // Re-expandir items basado en ruta actual
+      this.updateExpandedItems();
+    }
+    
+    // Guardar estado si está habilitado
+    if (this.config.persistCollapsedState) {
+      this.saveCollapsedState();
+    }
+    
+    this.collapseChange.emit(this.isCollapsed);
+  }
+
+  closeSidebar(): void {
+    console.log('Sidebar closeSidebar called'); // Debug
+    this.toggleSidebar.emit();
+    this.updateBodyScroll();
+  }
+
+  private updateBodyScroll(): void {
+    console.log('UpdateBodyScroll - isDesktop:', this.isDesktop, 'isOpen:', this.isOpen); // Debug
+    
+    // Prevenir scroll del body cuando sidebar está abierto en móvil
+    if (!this.isDesktop) {
+      if (this.isOpen) {
+        document.body.classList.add('sidebar-mobile-open');
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.classList.remove('sidebar-mobile-open');
+        document.body.style.overflow = '';
+      }
+    } else {
+      // En desktop, siempre permitir scroll
+      document.body.classList.remove('sidebar-mobile-open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  getSidebarLinkClasses(): string {
+    return this.isCollapsed 
+      ? 'px-3 py-3 justify-center' 
+      : 'px-4 py-4';
+  }
+
+  getTooltipText(item: SidebarMenuItem): string | null {
+    if (this.isCollapsed) {
+      return item.tooltip || item.label;
+    }
+    return item.tooltip || null;
+  }
+
+  private updateExpandedItems(): void {
+    if (this.isCollapsed && this.isDesktop) return;
+    
+    // Encontrar items padre que deberían estar expandidos basado en la ruta actual
+    // Pero solo expandir uno a la vez
+    let foundActiveParent = false;
+    this.config.items.forEach(item => {
+      if (item.children && !foundActiveParent) {
+        const hasActiveChild = item.children.some(child => this.isItemActive(child));
+        if (hasActiveChild) {
+          this.expandedItems.clear(); // Cerrar todos los otros
+          this.expandedItems.add(item.id);
+          foundActiveParent = true;
+        }
+      }
+    });
+  }
+
+  private checkScreenSize(): void {
+    const wasDesktop = this.isDesktop;
+    this.isDesktop = window.innerWidth >= 1024; // lg breakpoint
+    
+    // En móvil, nunca colapsar el sidebar, solo cerrar/abrir
+    if (!this.isDesktop) {
+      this.isCollapsed = false;
+      // Si cambió de desktop a móvil, cerrar el sidebar
+      if (wasDesktop && !this.isDesktop) {
+        this.closeSidebar();
+      }
+    } else {
+      // Si cambió de móvil a desktop, abrir el sidebar
+      if (!wasDesktop && this.isDesktop && !this.isOpen) {
+        this.toggleSidebar.emit();
+      }
+    }
+  }
+
+  private saveCollapsedState(): void {
+    try {
+      localStorage.setItem('sidebar-collapsed', JSON.stringify(this.isCollapsed));
+    } catch (error) {
+      console.warn('Could not save sidebar collapsed state:', error);
+    }
+  }
+
+  private restoreCollapsedState(): void {
+    try {
+      const saved = localStorage.getItem('sidebar-collapsed');
+      if (saved !== null) {
+        this.isCollapsed = JSON.parse(saved);
+      }
+    } catch (error) {
+      console.warn('Could not restore sidebar collapsed state:', error);
+    }
+  }
 }

@@ -3,12 +3,16 @@
   class="sidebar-container fixed inset-y-0 left-0 z-50 bg-iebem-primary shadow-2xl transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col h-screen"
   [class.-translate-x-full]="!isOpen" 
   [class.translate-x-0]="isOpen"
-  [style.width]="isCollapsed ? '80px' : '256px'"
+  [class.lg:relative]="isDesktop"
+  [style.width]="isCollapsed ? '80px' : isDesktop ? '256px' : '280px'"
+  [attr.data-open]="isOpen"
+  [attr.data-desktop]="isDesktop"
 >
+  
   <!-- Logo Header -->
   <div 
     class="flex items-center border-b border-white border-opacity-20 flex-shrink-0 transition-all duration-300 cursor-pointer group"
-    [class]="isCollapsed ? 'h-16 px-4 justify-center' : 'h-20 px-6'"
+    [class]="isCollapsed ? 'h-16 px-4 justify-center' : (isDesktop ? 'h-20 px-6' : 'h-16 px-4')"
     (click)="handleLogoClick()"
   >
     <div class="flex items-center" [class]="isCollapsed ? 'justify-center' : 'space-x-3'">
@@ -19,15 +23,15 @@
       >
         <!-- Logo Image o Icon -->
         <img 
-          *ngIf="config.logo?.image" 
-          [src]="config.logo?.image" 
-          [alt]="config.logo?.title"
+          *ngIf="logoConfig.image" 
+          [src]="logoConfig.image" 
+          [alt]="logoConfig.title"
           class="transition-all duration-300"
           [class]="isCollapsed ? 'w-6 h-6' : 'w-8 h-8'"
         />
         <i 
-          *ngIf="!config.logo?.image && config.logo?.icon"
-          [class]="'fas fa-' + config.logo?.icon + ' text-iebem-primary transition-all duration-300'"
+          *ngIf="!logoConfig.image && logoConfig.icon"
+          [class]="'fas fa-' + logoConfig.icon + ' text-iebem-primary transition-all duration-300'"
           [class.text-xl]="!isCollapsed"
           [class.text-lg]="isCollapsed"
         ></i>
@@ -39,17 +43,17 @@
         [class]="isCollapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto'"
       >
         <h1 class="text-xl font-heading font-bold tracking-wide whitespace-nowrap">
-          {{ config.logo?.title }}
+          {{ logoConfig.title }}
         </h1>
-        <p *ngIf="config.logo?.subtitle" class="text-xs opacity-80 font-medium whitespace-nowrap">
-          {{ config.logo?.subtitle }}
+        <p *ngIf="logoConfig.subtitle" class="text-xs opacity-80 font-medium whitespace-nowrap">
+          {{ logoConfig.subtitle }}
         </p>
       </div>
     </div>
 
     <!-- Collapse Button -->
     <button
-      *ngIf="config.collapsible && !isCollapsed"
+      *ngIf="config.collapsible && !isCollapsed && isDesktop"
       type="button"
       class="ml-auto p-2 text-white text-opacity-70 hover:text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
       (click)="toggleCollapse(); $event.stopPropagation()"
@@ -57,10 +61,21 @@
     >
       <i class="fas fa-chevron-left text-sm"></i>
     </button>
+    
+    <!-- Close Button for Mobile -->
+    <button
+      *ngIf="!isDesktop"
+      type="button"
+      class="ml-auto p-2 text-white text-opacity-70 hover:text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
+      (click)="closeSidebar(); $event.stopPropagation()"
+      aria-label="Cerrar sidebar"
+    >
+      <i class="fas fa-times text-sm"></i>
+    </button>
   </div>
 
-  <!-- Expand Button (when collapsed) -->
-  <div *ngIf="config.collapsible && isCollapsed" 
+  <!-- Expand Button (when collapsed) - Solo en desktop -->
+  <div *ngIf="config.collapsible && isCollapsed && isDesktop" 
        class="flex justify-center py-3 border-b border-white border-opacity-20">
     <button
       type="button"
@@ -139,7 +154,7 @@
                 [class]="getSidebarLinkClasses()"
                 [class.bg-white]="isItemActive(item)"
                 [class.bg-opacity-15]="isItemActive(item)"
-                [class.text-white]="isItemActive(item)"
+                [class.text-white]="isItemActive(item) || true"
                 [disabled]="item.disabled"
                 [title]="getTooltipText(item)"
                 [attr.aria-label]="item.label"
@@ -188,16 +203,16 @@
               ></div>
             </div>
 
-            <!-- Children (Submenu) -->
+            <!-- Children (Submenu) - No mostrar en móvil si está colapsado -->
             <div 
-              *ngIf="hasChildren(item) && !isCollapsed" 
+              *ngIf="hasChildren(item) && (!isCollapsed || !isDesktop)" 
               class="overflow-hidden transition-all duration-300 ease-in-out"
               [class]="isExpanded(item.id) ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'"
               [id]="'submenu-' + item.id"
               role="menu"
               [attr.aria-labelledby]="item.id + '-button'"
             >
-              <div class="pl-2 pt-2 ml-10 border-l-2 border-white border-opacity-10 space-y-1">
+              <div class="pt-2 space-y-1">
                 <ng-container *ngFor="let child of item.children; trackBy: trackByItemId">
                   <div *ngIf="isItemVisible(child)" class="relative">
                     <a 
@@ -205,7 +220,7 @@
                       [routerLink]="child.route" 
                       routerLinkActive="active-submenu-link"
                       [routerLinkActiveOptions]="{ exact: false }"
-                      class="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium text-white text-opacity-70 hover:bg-white hover:bg-opacity-5 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-20 active:scale-95"
+                      class="flex items-center space-x-3 px-4 py-3 mx-2 rounded-lg text-sm font-medium text-white text-opacity-90 hover:bg-white hover:bg-opacity-20 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-20 active:scale-95"
                       [class.pointer-events-none]="child.disabled"
                       [class.opacity-50]="child.disabled"
                       [title]="child.tooltip || child.label"
@@ -213,15 +228,11 @@
                       [target]="child.target || '_self'"
                       role="menuitem"
                     >
-                      <div 
-                        class="w-3 h-0.5 bg-white bg-opacity-20 rounded-full group-hover:bg-white group-hover:bg-opacity-40 transition-colors duration-200" 
-                        aria-hidden="true"
-                      ></div>
-                      <i [class]="'fas fa-' + child.icon + ' text-sm'" [attr.aria-hidden]="true"></i>
-                      <span class="flex-1">{{ child.label }}</span>
+                      <i [class]="'fas fa-' + child.icon + ' text-sm text-white text-opacity-80'" [attr.aria-hidden]="true"></i>
+                      <span class="flex-1 text-white">{{ child.label }}</span>
                       <span 
                         *ngIf="child.badge" 
-                        class="bg-white bg-opacity-15 text-white text-xs font-medium px-1.5 py-0.5 rounded-full"
+                        class="bg-white bg-opacity-25 text-white text-xs font-medium px-2 py-1 rounded-full"
                         [attr.aria-label]="'Badge: ' + child.badge"
                       >
                         {{ child.badge }}
@@ -231,22 +242,18 @@
                     <button 
                       *ngIf="!child.route"
                       type="button"
-                      class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium text-white text-opacity-70 hover:bg-white hover:bg-opacity-5 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-left"
+                      class="w-full flex items-center space-x-3 px-4 py-3 mx-2 rounded-lg text-sm font-medium text-white text-opacity-90 hover:bg-white hover:bg-opacity-20 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-left"
                       [disabled]="child.disabled"
                       [title]="child.tooltip || child.label"
                       [attr.aria-label]="child.label"
                       (click)="handleItemClick(child)"
                       role="menuitem"
                     >
-                      <div 
-                        class="w-3 h-0.5 bg-white bg-opacity-20 rounded-full group-hover:bg-white group-hover:bg-opacity-40 transition-colors duration-200" 
-                        aria-hidden="true"
-                      ></div>
-                      <i [class]="'fas fa-' + child.icon + ' text-sm'" [attr.aria-hidden]="true"></i>
-                      <span class="flex-1">{{ child.label }}</span>
+                      <i [class]="'fas fa-' + child.icon + ' text-sm text-white text-opacity-80'" [attr.aria-hidden]="true"></i>
+                      <span class="flex-1 text-white">{{ child.label }}</span>
                       <span 
                         *ngIf="child.badge" 
-                        class="bg-white bg-opacity-15 text-white text-xs font-medium px-1.5 py-0.5 rounded-full"
+                        class="bg-white bg-opacity-25 text-white text-xs font-medium px-2 py-1 rounded-full"
                         [attr.aria-label]="'Badge: ' + child.badge"
                       >
                         {{ child.badge }}
@@ -256,7 +263,7 @@
                     <!-- Active Indicator for submenu -->
                     <div 
                       *ngIf="isItemActive(child)" 
-                      class="absolute right-2 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-white rounded-full"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white rounded-full"
                       aria-hidden="true"
                     ></div>
                   </div>
@@ -293,10 +300,12 @@
   </div>
 </div>
 
-<!-- Overlay for mobile -->
+<!-- Overlay for mobile - MEJORADO -->
 <div 
   *ngIf="isOpen && !isDesktop" 
-  class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden backdrop-blur-sm transition-opacity duration-300"
+  class="fixed inset-0 bg-black bg-opacity-60 z-30 lg:hidden backdrop-blur-sm transition-opacity duration-300"
   (click)="closeSidebar()"
+  (touchstart)="$event.preventDefault(); closeSidebar()"
   aria-hidden="true"
+  style="pointer-events: auto;"
 ></div>
