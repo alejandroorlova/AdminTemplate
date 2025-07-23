@@ -1,6 +1,6 @@
-<!-- checkbox.component.html -->
+<!-- checkbox.component.html - VERSIÓN LIMPIA DESDE CERO -->
 <div [class]="containerClasses">
-  <!-- Checkbox Input (Hidden) -->
+  <!-- Input checkbox oculto -->
   <input
     type="checkbox"
     [id]="checkboxId"
@@ -17,40 +17,31 @@
     (blur)="onBlur()"
     class="sr-only">
 
-  <!-- Custom Checkbox -->
+  <!-- Checkbox visual personalizado -->
   <div [class]="checkboxClasses" (click)="onLabelClick()">
-    <!-- Check Icon -->
+    <!-- Ícono de check -->
     <svg
       *ngIf="checked && !indeterminate"
-      [class]="iconSizeClasses"
+      [class]="iconClasses"
       viewBox="0 0 20 20"
-      fill="currentColor"
-      class="transition-all duration-200">
+      fill="currentColor">
       <path
         fill-rule="evenodd"
         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
         clip-rule="evenodd" />
     </svg>
 
-    <!-- Indeterminate Icon -->
+    <!-- Ícono de indeterminado -->
     <svg
       *ngIf="indeterminate"
-      [class]="iconSizeClasses"
+      [class]="iconClasses"
       viewBox="0 0 20 20"
-      fill="currentColor"
-      class="transition-all duration-200">
+      fill="currentColor">
       <path
         fill-rule="evenodd"
         d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
         clip-rule="evenodd" />
     </svg>
-
-    <!-- Loading Spinner (opcional) -->
-    <div
-      *ngIf="false"
-      [class]="iconSizeClasses"
-      class="animate-spin rounded-full border-2 border-transparent border-t-current">
-    </div>
   </div>
 
   <!-- Label -->
@@ -60,17 +51,17 @@
     [class]="labelClasses"
     (click)="onLabelClick()">
     {{ label }}
-    <span *ngIf="required" class="text-danger ml-1">*</span>
+    <span *ngIf="required" class="text-red-500 ml-1">*</span>
   </label>
 </div>
 
-<!-- Helper Text -->
+<!-- Texto de ayuda -->
 <div *ngIf="hasHelperText" [class]="helperTextClasses">
   <div class="flex items-start gap-1">
-    <!-- Error Icon -->
+    <!-- Ícono de error -->
     <svg
       *ngIf="error"
-      class="w-4 h-4 mt-0.5 flex-shrink-0 text-danger"
+      class="w-4 h-4 mt-0.5 flex-shrink-0 text-red-500"
       viewBox="0 0 20 20"
       fill="currentColor">
       <path
@@ -79,7 +70,7 @@
         clip-rule="evenodd" />
     </svg>
 
-    <!-- Info Icon -->
+    <!-- Ícono de información -->
     <svg
       *ngIf="hint && !error"
       class="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400"

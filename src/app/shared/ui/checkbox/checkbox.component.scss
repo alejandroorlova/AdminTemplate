@@ -1,24 +1,22 @@
-// checkbox.component.scss
+/* checkbox.component.scss - VERSIÓN LIMPIA DESDE CERO */
 
-// Variables CSS personalizadas
-:root {
-  --checkbox-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --checkbox-focus-ring: 0 0 0 3px rgb(112 121 91 / 0.1);
-  --checkbox-border-radius: 0.375rem;
+/* Variables base */
+:host {
+  display: inline-block;
 }
 
-// Animaciones personalizadas
+/* Animaciones */
 @keyframes checkIn {
   0% {
-    transform: scale(0) rotate(45deg);
+    transform: scale(0);
     opacity: 0;
   }
   50% {
-    transform: scale(1.15) rotate(45deg);
+    transform: scale(1.1);
     opacity: 1;
   }
   100% {
-    transform: scale(1) rotate(45deg);
+    transform: scale(1);
     opacity: 1;
   }
 }
@@ -34,347 +32,68 @@
   }
 }
 
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(2);
-    opacity: 0;
+/* Estilos principales del checkbox */
+.checkbox-container {
+  /* Solo estructura, sin colores forzados */
+}
+
+/* Estados de focus */
+input:focus-visible + div {
+  outline: 2px solid rgb(59, 130, 246);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgb(59, 130, 246, 0.1);
+}
+
+/* Animaciones para íconos */
+svg {
+  &:first-child {
+    animation: checkIn 0.2s ease-out;
   }
 }
 
-@keyframes gradientShift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+/* Estados hover mejorados */
+div[class*="cursor-pointer"]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-// Estilos base del checkbox
-:host {
-  display: inline-block;
-
-  .checkbox-container {
-    position: relative;
-    
-    // Estados de focus mejorados
-    input:focus + .custom-checkbox,
-    input:focus-visible + .custom-checkbox {
-      box-shadow: var(--checkbox-focus-ring);
-      outline: 2px solid transparent;
-      outline-offset: 2px;
-    }
-  }
-  
-  // Checkbox personalizado
-  .custom-checkbox {
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--checkbox-border-radius);
-    transition: var(--checkbox-transition);
-    
-    // Efecto ripple al hacer click
-    &::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: 100%;
-      background: currentColor;
-      border-radius: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      opacity: 0;
-      pointer-events: none;
-      transition: var(--checkbox-transition);
-    }
-
-    &:active::before {
-      animation: ripple 0.4s ease-out;
-    }
-    
-    // Animaciones para los iconos
-    svg {
-      transition: var(--checkbox-transition);
-      
-      &.check-icon {
-        animation: checkIn 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      }
-    }
-    
-    // Animación específica para indeterminado
-    &.indeterminate svg {
-      animation: indeterminateIn 0.2s ease-out;
-    }
-
-    // Estados hover mejorados
-    &:not(:disabled):hover {
-      transform: scale(1.05);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-  }
-  
-  // Label mejorado
-  .label {
-    transition: var(--checkbox-transition);
-    cursor: pointer;
-    user-select: none;
-    
-    &:hover {
-      color: rgb(55, 65, 81); // text-gray-700
-    }
-  }
-  
-  // Estados hover
-  &:not(.disabled) {
-    .custom-checkbox:hover {
-      transform: scale(1.05);
-    }
-    
-    .label:hover {
-      color: rgb(31, 41, 55); // text-gray-800
-    }
-  }
-  
-  // Estado deshabilitado
-  &.disabled {
-    .custom-checkbox {
-      cursor: not-allowed;
-      opacity: 0.5;
-      transform: none !important;
-      
-      &:hover {
-        box-shadow: none !important;
-      }
-    }
-    
-    .label {
-      cursor: not-allowed;
-      color: rgb(156, 163, 175); // text-gray-400
-    }
-  }
-}
-
-// Variantes con efectos especiales
-.bg-gradient-to-br {
-  background-size: 200% 200%;
-  animation: gradientShift 3s ease infinite;
+/* Estados disabled */
+div[class*="opacity-50"] {
+  cursor: not-allowed !important;
   
   &:hover {
-    animation-duration: 1.5s;
+    transform: none !important;
+    box-shadow: none !important;
   }
 }
 
-// Mejoras para tamaños específicos
-.checkbox-xl {
-  border-width: 3px;
-  
-  svg {
-    stroke-width: 2.5;
-  }
-}
-
-// Estados checked y indeterminate
-.custom-checkbox {
-  &.checked,
-  &.indeterminate {
-    border-color: currentColor;
-    
-    svg {
-      color: inherit;
-    }
-  }
-}
-
-// Responsive adjustments
+/* Responsive */
 @media (max-width: 640px) {
-  .checkbox-xl {
+  .w-8 {
     width: 1.75rem !important;
     height: 1.75rem !important;
   }
-  
-  .text-xl {
-    font-size: 1.125rem !important;
-  }
-  
-  .label {
-    font-size: 0.9rem;
-  }
 }
 
-// Accesibilidad mejorada
+/* Accesibilidad */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
     transition: none !important;
   }
   
-  .custom-checkbox:hover {
+  div[class*="cursor-pointer"]:hover {
     transform: none !important;
-  }
-  
-  .bg-gradient-to-br {
-    animation: none !important;
   }
 }
 
-// Alto contraste
+/* Alto contraste */
 @media (prefers-contrast: high) {
-  .custom-checkbox {
+  div[class*="border-"] {
     border-width: 3px !important;
-    
-    &.checked,
-    &.indeterminate {
-      background: #000 !important;
-      border-color: #000 !important;
-      color: #fff !important;
-    }
-    
-    &:not(.checked):not(.indeterminate) {
-      background: #fff !important;
-      border-color: #000 !important;
-    }
   }
   
-  .label {
+  label {
     font-weight: 700 !important;
-    color: #000 !important;
-  }
-  
-  .helper-text {
-    font-weight: 600 !important;
-    
-    &.error {
-      color: #d00 !important;
-    }
-  }
-}
-
-// Estados de focus mejorados para accesibilidad
-input:focus-visible + .custom-checkbox {
-  outline: 3px solid rgb(112, 121, 91) !important;
-  outline-offset: 2px !important;
-  box-shadow: var(--checkbox-focus-ring) !important;
-}
-
-// Tema oscuro
-@media (prefers-color-scheme: dark) {
-  :root {
-    --checkbox-focus-ring: 0 0 0 3px rgb(178 154 126 / 0.2);
-  }
-
-  .custom-checkbox {
-    border-color: rgb(107, 114, 128); // border-gray-500
-    background: rgb(55, 65, 81); // bg-gray-700
-    
-    &:not(.checked):not(.indeterminate) {
-      background: rgb(31, 41, 55); // bg-gray-800
-      border-color: rgb(75, 85, 99); // border-gray-600
-      
-      &:hover {
-        border-color: rgb(107, 114, 128); // border-gray-500
-        background: rgb(55, 65, 81); // bg-gray-700
-      }
-    }
-  }
-  
-  .label {
-    color: rgb(249, 250, 251) !important; // text-gray-50
-    
-    &.disabled {
-      color: rgb(107, 114, 128) !important; // text-gray-500
-    }
-    
-    &:hover {
-      color: rgb(255, 255, 255) !important; // text-white
-    }
-  }
-  
-  .helper-text {
-    color: rgb(209, 213, 219); // text-gray-300
-    
-    &.error {
-      color: rgb(252, 165, 165); // text-red-300
-    }
-  }
-}
-
-// Mejoras para impresión
-@media print {
-  .custom-checkbox {
-    background: white !important;
-    border: 2px solid black !important;
-    box-shadow: none !important;
-    
-    &.checked,
-    &.indeterminate {
-      background: black !important;
-      color: white !important;
-    }
-  }
-  
-  .label {
-    color: black !important;
-  }
-  
-  .helper-text {
-    color: #666 !important;
-  }
-}
-
-// Utilidades adicionales
-.checkbox-group {
-  .checkbox-item:not(:last-child) {
-    margin-bottom: 0.75rem;
-  }
-}
-
-.checkbox-inline {
-  display: inline-flex;
-  margin-right: 1rem;
-  
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-// Mejoras para estados de error
-.custom-checkbox {
-  &.error {
-    border-color: #EF4444 !important; // danger color from config
-    
-    &:focus-within {
-      box-shadow: 0 0 0 3px rgb(239 68 68 / 0.1) !important;
-    }
-  }
-}
-
-// Efectos de carga (para estados de carga futuros)
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loading-spinner {
-  animation: spin 1s linear infinite;
-}
-
-// Mejoras de interacción táctil
-@media (hover: none) {
-  .custom-checkbox:hover {
-    transform: none !important;
-    box-shadow: none !important;
-  }
-  
-  .label:hover {
-    color: inherit !important;
   }
 }

@@ -1,4 +1,4 @@
-// checkbox.component.ts
+// checkbox.component.ts - VERSIÓN DESDE CERO - LIMPIA Y FUNCIONAL
 import { 
   Component, 
   Input, 
@@ -22,6 +22,7 @@ export type CheckboxVariant =
   | 'info'
   | 'dark'
   | 'light'
+  | 'gold'
   | 'gradient';
 
 export type CheckboxSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -60,7 +61,6 @@ export class CheckboxComponent implements ControlValueAccessor {
   @Input() ariaDescribedBy: string = '';
   @Input() tabIndex: number = 0;
   
-  // Agregar input para checked para compatibilidad
   @Input() 
   set checked(value: boolean) {
     this._checked = value;
@@ -75,46 +75,85 @@ export class CheckboxComponent implements ControlValueAccessor {
   @Output() focus = new EventEmitter<void>();
   @Output() blur = new EventEmitter<void>();
 
-  // ControlValueAccessor
   private onChange = (value: boolean) => {};
   private onTouched = () => {};
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  // Genera un ID único si no se proporciona
   get checkboxId(): string {
     return this.id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
   }
 
   get containerClasses(): string {
     return [
-      'checkbox-container inline-flex items-center gap-3',
+      'inline-flex items-center gap-3',
       this.labelPosition === 'left' ? 'flex-row-reverse' : 'flex-row',
-      this.disabled ? 'disabled' : '',
-      'transition-all duration-200 ease-in-out'
+      this.disabled ? 'opacity-50 pointer-events-none' : '',
+      'transition-all duration-200'
     ].filter(Boolean).join(' ');
   }
 
   get checkboxClasses(): string {
-    return [
-      'custom-checkbox relative inline-flex items-center justify-center',
-      'border-2 rounded-md transition-all duration-200 ease-in-out',
-      'focus-within:ring-2 focus-within:ring-offset-2',
-      this.sizeClasses,
-      this.variantClasses,
-      this.stateClasses,
-      this.checked ? 'checked' : '',
-      this.indeterminate ? 'indeterminate' : ''
-    ].filter(Boolean).join(' ');
+    const baseClasses = [
+      'relative inline-flex items-center justify-center',
+      'border-2 rounded-md transition-all duration-200',
+      'cursor-pointer select-none',
+      this.sizeClasses
+    ];
+
+    // Estado no marcado
+    if (!this.checked && !this.indeterminate) {
+      baseClasses.push('border-gray-300 bg-white hover:border-gray-400');
+    } else {
+      // Estado marcado - aquí aplicamos los colores específicos
+      baseClasses.push(this.getVariantStyles());
+    }
+
+    if (this.error) {
+      baseClasses.push('!border-red-500');
+    }
+
+    return baseClasses.join(' ');
+  }
+
+  private getVariantStyles(): string {
+    const variants = {
+      primary: 'bg-iebem-primary border-iebem-primary hover:bg-iebem-primary/90',
+      secondary: 'bg-iebem-secondary border-iebem-secondary hover:bg-iebem-secondary/90',
+      accent: 'bg-iebem-accent border-iebem-accent hover:bg-iebem-accent/90',
+      success: 'bg-green-600 border-green-600 hover:bg-green-700',
+      warning: 'bg-yellow-500 border-yellow-500 hover:bg-yellow-600',
+      danger: 'bg-red-600 border-red-600 hover:bg-red-700',
+      info: 'bg-blue-600 border-blue-600 hover:bg-blue-700',
+      dark: 'bg-gray-800 border-gray-800 hover:bg-gray-900',
+      light: 'bg-gray-100 border-gray-300 hover:bg-gray-200',
+      gold: 'bg-yellow-600 border-yellow-600 hover:bg-yellow-700',
+      gradient: 'bg-gradient-to-r from-iebem-primary to-iebem-accent border-transparent hover:from-iebem-primary/90 hover:to-iebem-accent/90'
+    };
+    return variants[this.variant] || variants.primary;
   }
 
   get labelClasses(): string {
     return [
-      'label select-none transition-colors duration-200 cursor-pointer',
+      'text-gray-900 font-medium cursor-pointer select-none',
+      'transition-colors duration-200',
       this.sizeTextClasses,
-      this.disabled ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 hover:text-gray-900',
-      'font-medium leading-none'
+      this.disabled ? 'text-gray-400' : 'hover:text-gray-700'
     ].filter(Boolean).join(' ');
+  }
+
+  get iconClasses(): string {
+    const baseClasses = ['transition-all duration-200'];
+    
+    // Color del ícono basado en el fondo
+    if (this.variant === 'light') {
+      baseClasses.push('text-gray-800'); // Ícono oscuro para fondo claro
+    } else {
+      baseClasses.push('text-white'); // Ícono blanco para fondos oscuros
+    }
+    
+    baseClasses.push(this.iconSizeClasses);
+    return baseClasses.join(' ');
   }
 
   get sizeClasses(): string {
@@ -123,7 +162,7 @@ export class CheckboxComponent implements ControlValueAccessor {
       sm: 'w-5 h-5',
       md: 'w-6 h-6',
       lg: 'w-7 h-7',
-      xl: 'w-8 h-8 checkbox-xl'
+      xl: 'w-8 h-8'
     };
     return sizes[this.size];
   }
@@ -150,51 +189,15 @@ export class CheckboxComponent implements ControlValueAccessor {
     return sizes[this.size];
   }
 
-  get variantClasses(): string {
-    if (!this.checked && !this.indeterminate) {
-      return 'border-gray-300 bg-white hover:border-gray-400 hover:shadow-sm';
-    }
-
-    const variants = {
-      primary: 'bg-iebem-primary border-iebem-primary text-white focus-within:ring-iebem-primary/20 hover:bg-iebem-primary/90 hover:border-iebem-primary/90',
-      secondary: 'bg-iebem-secondary border-iebem-secondary text-white focus-within:ring-iebem-secondary/20 hover:bg-iebem-secondary/90 hover:border-iebem-secondary/90',
-      accent: 'bg-iebem-accent border-iebem-accent text-white focus-within:ring-iebem-accent/20 hover:bg-iebem-accent/90 hover:border-iebem-accent/90',
-      success: 'bg-success border-success text-white focus-within:ring-success/20 hover:bg-success/90 hover:border-success/90',
-      warning: 'bg-warning border-warning text-white focus-within:ring-warning/20 hover:bg-warning/90 hover:border-warning/90',
-      danger: 'bg-danger border-danger text-white focus-within:ring-danger/20 hover:bg-danger/90 hover:border-danger/90',
-      info: 'bg-info border-info text-white focus-within:ring-info/20 hover:bg-info/90 hover:border-info/90',
-      dark: 'bg-iebem-dark border-iebem-dark text-white focus-within:ring-iebem-dark/20 hover:bg-iebem-dark/90 hover:border-iebem-dark/90',
-      light: 'bg-iebem-light border-iebem-light text-iebem-dark focus-within:ring-iebem-primary/20 hover:bg-iebem-light/90 hover:border-iebem-light/90',
-      gradient: 'bg-gradient-to-br from-iebem-primary to-iebem-accent border-transparent text-white focus-within:ring-iebem-primary/20 hover:from-iebem-primary/90 hover:to-iebem-accent/90'
-    };
-    return variants[this.variant];
-  }
-
-  get stateClasses(): string {
-    const classes = [];
-    
-    if (this.disabled) {
-      classes.push('opacity-50 cursor-not-allowed');
-    } else {
-      classes.push('cursor-pointer');
-    }
-    
-    if (this.error) {
-      classes.push('!border-danger focus-within:!ring-danger/20');
-    }
-    
-    return classes.join(' ');
+  get helperTextClasses(): string {
+    return [
+      'mt-2 text-sm flex items-start gap-1',
+      this.error ? 'text-red-600' : 'text-gray-600'
+    ].join(' ');
   }
 
   get hasHelperText(): boolean {
     return !!(this.error || this.hint);
-  }
-
-  get helperTextClasses(): string {
-    return [
-      'helper-text mt-2 text-sm flex items-start gap-1',
-      this.error ? 'text-danger error' : 'text-gray-500'
-    ].join(' ');
   }
 
   get helperText(): string {
@@ -206,7 +209,7 @@ export class CheckboxComponent implements ControlValueAccessor {
 
     const target = event.target as HTMLInputElement;
     this.checked = target.checked;
-    this.indeterminate = false; // Reset indeterminate when user clicks
+    this.indeterminate = false;
     
     this.onChange(this.checked);
     this.change.emit(this.checked);

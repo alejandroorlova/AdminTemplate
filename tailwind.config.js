@@ -17,10 +17,12 @@ module.exports = {
         'danger': '#EF4444',
         'info': '#3B82F6',
       },
+      
       fontFamily: {
         'sans': ['Inter', 'system-ui', 'sans-serif'],
         'heading': ['Montserrat', 'sans-serif'],
       },
+      
       // NUEVAS ADICIONES RECOMENDADAS:
       animation: {
         'checkIn': 'checkIn 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
@@ -28,6 +30,7 @@ module.exports = {
         'ripple': 'ripple 0.4s ease-out',
         'gradientShift': 'gradientShift 3s ease infinite',
       },
+      
       keyframes: {
         checkIn: {
           '0%': { transform: 'scale(0) rotate(45deg)', opacity: '0' },
@@ -47,11 +50,13 @@ module.exports = {
           '50%': { 'background-position': '100% 50%' },
         }
       },
+      
       boxShadow: {
         'checkbox': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         'checkbox-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        'checkbox-focus': '0 0 0 3px rgba(112, 121, 91, 0.1)',
+        'checkbox-focus': '0 0 0 3px rgba(112, 121, 91, 0.1)', // Actualizado para primary verde
       },
+      
       spacing: {
         '18': '4.5rem',
         '88': '22rem',
