@@ -1,11 +1,12 @@
+// app.component.ts - CORREGIDO
 import { Component } from '@angular/core';
-import { LayoutComponent } from './shared/layout/layout.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [LayoutComponent],
-  template: `<app-layout></app-layout>`,
+  imports: [RouterOutlet], // ← Cambié de LayoutComponent a RouterOutlet
+  template: `<router-outlet></router-outlet>`, // ← Cambié de <app-layout> a <router-outlet>
   styles: [`
     :host {
       display: block;

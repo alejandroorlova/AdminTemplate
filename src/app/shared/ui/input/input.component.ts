@@ -6,273 +6,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-input',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="w-full relative">
-      <label *ngIf="label" [for]="id" class="block text-sm font-medium text-gray-700 mb-2">
-        {{ label }}
-        <span *ngIf="required" class="text-red-500">*</span>
-      </label>
-      
-      <div class="relative">
-        <!-- Input normal -->
-        <input 
-          #inputElement
-          [id]="id" 
-          [type]="getInputType()" 
-          [placeholder]="getPlaceholderText()"
-          [disabled]="disabled" 
-          [readonly]="readonly"
-          [class]="inputClasses" 
-          [value]="getDisplayValue()" 
-          (input)="onInput($event)" 
-          (blur)="onBlur()" 
-          (focus)="onFocus()"
-          (keydown)="onKeyDown($event)"
-          (paste)="onPaste($event)" />
-
-        <!-- Placeholder personalizado para fechas (no necesario ya) -->
-        <!--
-        <div 
-          *ngIf="type === 'date' && !value && !isFocused"
-          class="absolute inset-y-0 left-0 flex items-center pointer-events-none z-10"
-          [ngClass]="(icon && type !== 'date') ? 'pl-10' : 'pl-4'"
-        >
-          <span class="text-gray-400 select-none">{{ getPlaceholderText() }}</span>
-        </div>
-        -->
-        
-        <!-- Ícono izquierdo (no mostrar para type="date") -->
-        <div *ngIf="icon && type !== 'date'" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <i [class]="'fas fa-' + icon + ' text-gray-400'"></i>
-        </div>
-        
-        <!-- Ícono derecho o botón calendario -->
-        <div *ngIf="suffixIcon && type !== 'date'" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-          <i [class]="'fas fa-' + suffixIcon + ' text-gray-400'"></i>
-        </div>
-        
-        <!-- Botón calendario para type="date" -->
-        <div *ngIf="type === 'date'" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-          <button
-            type="button"
-            class="text-gray-400 hover:text-iebem-primary p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
-            (click)="toggleCalendar($event)"
-          >
-            <i class="fas fa-calendar text-sm"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Custom Calendar (solo para type="date") -->
-      <div 
-        *ngIf="type === 'date' && isCalendarOpen" 
-        class="absolute z-50 mt-1 bg-white border border-gray-200 rounded-2xl shadow-xl p-4 w-80"
-        [ngStyle]="getCalendarPosition()"
-      >
-        <!-- View: Calendar Days -->
-        <div *ngIf="currentView === 'days'">
-          <!-- Calendar Header -->
-          <div class="flex items-center justify-between mb-4">
-            <button 
-              type="button" 
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-              (click)="previousMonth()"
-            >
-              <i class="fas fa-chevron-left text-gray-600"></i>
-            </button>
-            
-            <div class="text-center">
-              <button 
-                type="button"
-                class="text-lg font-semibold text-gray-800 hover:text-iebem-primary transition-colors duration-200"
-                (click)="showMonthPicker()"
-              >
-                {{ getMonthName() }}
-              </button>
-              <button 
-                type="button"
-                class="text-lg font-semibold text-gray-800 hover:text-iebem-primary transition-colors duration-200 ml-2"
-                (click)="showYearPicker()"
-              >
-                {{ currentYear }}
-              </button>
-            </div>
-            
-            <button 
-              type="button" 
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-              (click)="nextMonth()"
-            >
-              <i class="fas fa-chevron-right text-gray-600"></i>
-            </button>
-          </div>
-
-          <!-- Days of Week -->
-          <div class="grid grid-cols-7 gap-1 mb-2">
-            <div *ngFor="let day of daysOfWeek" class="text-center text-xs font-medium text-gray-500 py-2">
-              {{ day }}
-            </div>
-          </div>
-
-          <!-- Calendar Days -->
-          <div class="grid grid-cols-7 gap-1">
-            <button
-              *ngFor="let day of calendarDays"
-              type="button"
-              [class]="getDayClasses(day)"
-              (click)="selectDate(day)"
-              [disabled]="!day.isCurrentMonth"
-            >
-              {{ day.number }}
-            </button>
-          </div>
-        </div>
-
-        <!-- View: Month Picker -->
-        <div *ngIf="currentView === 'months'">
-          <div class="flex items-center justify-between mb-4">
-            <button 
-              type="button" 
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-              (click)="showDayPicker()"
-            >
-              <i class="fas fa-arrow-left text-gray-600"></i>
-            </button>
-            <h3 class="text-lg font-semibold text-gray-800">{{ currentYear }}</h3>
-            <div></div>
-          </div>
-          
-          <div class="grid grid-cols-3 gap-2">
-            <button
-              *ngFor="let month of monthNames; let i = index"
-              type="button"
-              [class]="getMonthClasses(i)"
-              (click)="selectMonth(i)"
-            >
-              {{ month.substring(0, 3) }}
-            </button>
-          </div>
-        </div>
-
-        <!-- View: Year Picker -->
-        <div *ngIf="currentView === 'years'">
-          <div class="flex items-center justify-between mb-4">
-            <button 
-              type="button" 
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-              (click)="showDayPicker()"
-            >
-              <i class="fas fa-arrow-left text-gray-600"></i>
-            </button>
-            <h3 class="text-lg font-semibold text-gray-800">{{ startYear }} - {{ endYear }}</h3>
-            <div class="flex space-x-1">
-              <button 
-                type="button" 
-                class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-                (click)="previousYearRange()"
-              >
-                <i class="fas fa-chevron-left text-gray-600"></i>
-              </button>
-              <button 
-                type="button" 
-                class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-                (click)="nextYearRange()"
-              >
-                <i class="fas fa-chevron-right text-gray-600"></i>
-              </button>
-            </div>
-          </div>
-          
-          <div class="grid grid-cols-4 gap-2">
-            <button
-              *ngFor="let year of yearRange"
-              type="button"
-              [class]="getYearClasses(year)"
-              (click)="selectYear(year)"
-            >
-              {{ year }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
-          <button 
-            type="button" 
-            class="text-iebem-primary hover:text-iebem-dark text-sm font-medium"
-            (click)="selectToday()"
-          >
-            Hoy
-          </button>
-          <div class="flex space-x-2">
-            <button 
-              type="button" 
-              class="px-3 py-1 text-gray-600 hover:text-gray-800 text-sm"
-              (click)="closeCalendar()"
-            >
-              Cancelar
-            </button>
-            <button 
-              type="button" 
-              class="px-4 py-2 bg-iebem-primary text-white rounded-lg hover:bg-iebem-dark transition-colors duration-200 text-sm"
-              (click)="closeCalendar()"
-            >
-              Listo
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <p *ngIf="error" class="mt-1 text-sm text-red-600">{{ error }}</p>
-      <p *ngIf="hint && !error" class="mt-1 text-sm text-gray-500">{{ hint }}</p>
-    </div>
-
-    <!-- Estilos CSS para ocultar iconos nativos del input date -->
-    <style>
-      .date-input-no-icon::-webkit-calendar-picker-indicator {
-        display: none !important;
-        -webkit-appearance: none !important;
-      }
-      
-      .date-input-no-icon::-webkit-inner-spin-button,
-      .date-input-no-icon::-webkit-outer-spin-button {
-        display: none !important;
-        -webkit-appearance: none !important;
-      }
-      
-      .date-input-no-icon::-moz-calendar-picker-indicator {
-        display: none !important;
-      }
-
-      /* Solo ocultar placeholder nativo cuando no hay valor */
-      .date-input-no-icon:invalid::-webkit-datetime-edit-text {
-        color: transparent;
-      }
-      
-      .date-input-no-icon:invalid::-webkit-datetime-edit-month-field {
-        color: transparent;
-      }
-      
-      .date-input-no-icon:invalid::-webkit-datetime-edit-day-field {
-        color: transparent;
-      }
-      
-      .date-input-no-icon:invalid::-webkit-datetime-edit-year-field {
-        color: transparent;
-      }
-
-      /* Cuando hay valor, mostrar normalmente */
-      .date-input-no-icon:valid {
-        color: #111827 !important;
-      }
-
-      /* Para Firefox */
-      .date-input-no-icon::-moz-placeholder {
-        color: transparent !important;
-        opacity: 0;
-      }
-    </style>
-  `,
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -293,7 +28,7 @@ export class InputComponent implements ControlValueAccessor {
   @Input() icon = '';
   @Input() suffixIcon = '';
   @Input() id = '';
-  @Input() dateFormat: 'DD/MM/AAAA' | 'DD/MM/YYYY' | 'MM/DD/YYYY' | 'YYYY-MM-DD' = 'DD/MM/AAAA'; // Nuevo input
+  @Input() dateFormat: 'DD/MM/AAAA' | 'DD/MM/YYYY' | 'MM/DD/YYYY' | 'YYYY-MM-DD' = 'DD/MM/AAAA';
 
   @ViewChild('inputElement') inputElement!: ElementRef;
 
@@ -301,6 +36,9 @@ export class InputComponent implements ControlValueAccessor {
   displayValue = '';
   isFocused = false;
   hasValidDate = false;
+  
+  // Variable para controlar la visibilidad de la contraseña
+  showPassword = false;
   
   // Variables específicas para calendar
   isCalendarOpen = false;
@@ -343,6 +81,12 @@ export class InputComponent implements ControlValueAccessor {
       // Usar text cuando está vacío o escribiendo, date cuando hay valor válido
       return this.hasValidDate && !this.isFocused ? 'date' : 'text';
     }
+    
+    // Para el tipo password, alternar entre password y text según showPassword
+    if (this.type === 'password') {
+      return this.showPassword ? 'text' : 'password';
+    }
+    
     return this.type;
   }
 
@@ -365,8 +109,8 @@ export class InputComponent implements ControlValueAccessor {
     // Para type="date", no usar padding izquierdo para ícono
     const iconPadding = (this.icon && this.type !== 'date') ? '!pl-10' : '!pl-4';
     
-    // Para type="date", solo mostrar el botón del calendario
-    const suffixPadding = (this.suffixIcon && this.type !== 'date') || this.type === 'date' ? '!pr-10' : '!pr-4';
+    // Para type="date" o "password", solo mostrar el botón específico
+    const suffixPadding = (this.suffixIcon && this.type !== 'date' && this.type !== 'password') || this.type === 'date' || this.type === 'password' ? '!pr-10' : '!pr-4';
     
     const verticalPadding = '!py-3';
     const padding = `${verticalPadding} ${iconPadding} ${suffixPadding}`;
@@ -408,6 +152,11 @@ export class InputComponent implements ControlValueAccessor {
         this.closeCalendar();
       }
     }
+  }
+
+  // Método para toggle de visibilidad de contraseña
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   // Métodos para input normal
@@ -895,5 +644,3 @@ export class InputComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 }
-
-

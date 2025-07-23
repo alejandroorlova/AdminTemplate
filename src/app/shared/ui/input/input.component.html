@@ -6,16 +6,9 @@
 
     <div class="relative">
         <!-- Input normal -->
-        <input #inputElement [id]="id" [type]="type" [placeholder]="getPlaceholderText()" [disabled]="disabled"
-            [readonly]="readonly" [class]="inputClasses" [value]="value" (input)="onInput($event)" (blur)="onBlur()"
+        <input #inputElement [id]="id" [type]="getInputType()" [placeholder]="getPlaceholderText()" [disabled]="disabled"
+            [readonly]="readonly" [class]="inputClasses" [value]="getDisplayValue()" (input)="onInput($event)" (blur)="onBlur()"
             (focus)="onFocus()" (keydown)="onKeyDown($event)" (paste)="onPaste($event)" />
-
-        <!-- Placeholder personalizado para fechas -->
-        <div *ngIf="type === 'date' && !value && !isFocused"
-            class="absolute inset-y-0 left-0 flex items-center pointer-events-none"
-            [ngClass]="(icon && type !== 'date') ? 'pl-10' : 'pl-4'">
-            <span class="text-gray-400">{{ getPlaceholderText() }}</span>
-        </div>
 
         <!-- Ícono izquierdo (no mostrar para type="date") -->
         <div *ngIf="icon && type !== 'date'"
@@ -23,10 +16,20 @@
             <i [class]="'fas fa-' + icon + ' text-gray-400'"></i>
         </div>
 
-        <!-- Ícono derecho o botón calendario -->
-        <div *ngIf="suffixIcon && type !== 'date'"
+        <!-- Ícono derecho (solo para inputs que NO son password ni date) -->
+        <div *ngIf="suffixIcon && type !== 'date' && type !== 'password'"
             class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <i [class]="'fas fa-' + suffixIcon + ' text-gray-400'"></i>
+        </div>
+
+        <!-- Toggle de contraseña (automático para type="password") -->
+        <div *ngIf="type === 'password'" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+            <button type="button"
+                class="text-gray-400 hover:text-gray-600 transition-colors duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-iebem-primary focus:ring-offset-2 rounded-sm"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'" tabindex="0">
+                <i [class]="'fas fa-' + (showPassword ? 'eye-slash' : 'eye')"></i>
+            </button>
         </div>
 
         <!-- Botón calendario para type="date" -->
@@ -175,34 +178,31 @@
         display: none !important;
     }
 
-    /* Forzar placeholder personalizado */
-    .date-input-no-icon::-webkit-datetime-edit-text {
+    /* Solo ocultar placeholder nativo cuando no hay valor */
+    .date-input-no-icon:invalid::-webkit-datetime-edit-text {
         color: transparent;
     }
 
-    .date-input-no-icon::-webkit-datetime-edit-month-field {
+    .date-input-no-icon:invalid::-webkit-datetime-edit-month-field {
         color: transparent;
     }
 
-    .date-input-no-icon::-webkit-datetime-edit-day-field {
+    .date-input-no-icon:invalid::-webkit-datetime-edit-day-field {
         color: transparent;
     }
 
-    .date-input-no-icon::-webkit-datetime-edit-year-field {
+    .date-input-no-icon:invalid::-webkit-datetime-edit-year-field {
         color: transparent;
     }
 
-    .date-input-no-icon:invalid {
-        color: #9ca3af !important;
-    }
-
-    .date-input-no-icon:placeholder-shown {
-        color: #9ca3af !important;
+    /* Cuando hay valor, mostrar normalmente */
+    .date-input-no-icon:valid {
+        color: #111827 !important;
     }
 
     /* Para Firefox */
     .date-input-no-icon::-moz-placeholder {
-        color: #9ca3af !important;
-        opacity: 1;
+        color: transparent !important;
+        opacity: 0;
     }
 </style>

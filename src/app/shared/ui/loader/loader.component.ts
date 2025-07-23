@@ -1,10 +1,10 @@
-
 // fullscreen-loader.component.ts
 import { 
   Component, 
   Input, 
   OnInit, 
   OnDestroy,
+  OnChanges,
   ChangeDetectionStrategy 
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -20,6 +20,7 @@ export interface LoaderConfig {
   theme?: 'light' | 'dark';
   size?: 'sm' | 'md' | 'lg';
 }
+
 @Component({
   selector: 'app-loader',
   standalone: true,
@@ -48,7 +49,7 @@ export interface LoaderConfig {
     ])
   ]
 })
-export class LoaderComponent implements OnInit, OnDestroy {
+export class LoaderComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isVisible: boolean = false;
   @Input() config: LoaderConfig = {};
   
@@ -93,8 +94,8 @@ export class LoaderComponent implements OnInit, OnDestroy {
   get containerClasses(): string {
     const baseClasses = 'fixed inset-0 z-50 flex items-center justify-center';
     const themeClasses = this.finalConfig.theme === 'dark' 
-      ? 'bg-gray-900/95' 
-      : 'bg-white/95';
+      ? 'bg-black/70' 
+      : 'bg-black/50';
     
     return `${baseClasses} ${themeClasses} backdrop-blur-sm`;
   }

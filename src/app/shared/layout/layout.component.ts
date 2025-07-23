@@ -36,6 +36,13 @@ export class LayoutComponent {
         tooltip: 'Panel principal de control'
       },
       {
+        id: 'login',
+        label: 'Login',
+        icon: 'chart-line',
+        route: '/login',
+        tooltip: 'Iniciar sesión'
+      },
+      {
         id: 'divider-1',
         label: '',
         icon: '',
