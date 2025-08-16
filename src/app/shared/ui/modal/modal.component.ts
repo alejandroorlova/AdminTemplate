@@ -1,18 +1,20 @@
 // modal.component.ts
-import { 
-  Component, 
-  Input, 
-  Output, 
-  EventEmitter, 
-  OnInit, 
-  OnDestroy, 
-  ViewChild, 
-  ElementRef, 
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
   HostListener,
-  ChangeDetectionStrategy 
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { A11yModule } from '@angular/cdk/a11y';
 
 // Interfaces para el modal
 export interface ModalConfig {
@@ -37,7 +39,7 @@ export interface ModalButton {
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, OverlayModule, A11yModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
@@ -74,7 +76,7 @@ export interface ModalButton {
   ]
 })
 export class ModalComponent implements OnInit, OnDestroy {
-  
+
   // Input properties
   @Input() isOpen: boolean = false;
   @Input() title: string = '';
@@ -85,21 +87,25 @@ export class ModalComponent implements OnInit, OnDestroy {
   @Input() buttons: ModalButton[] = [];
   @Input() loading: boolean = false;
   @Input() customClass: string = '';
-  
+
   // Output events
   @Output() opened = new EventEmitter<void>();
   @Output() closed = new EventEmitter<void>();
   @Output() buttonClick = new EventEmitter<string>();
   @Output() backdropClick = new EventEmitter<void>();
-  
+
   // ViewChild references
   @ViewChild('modalContent', { static: false }) modalContent!: ElementRef;
   @ViewChild('firstFocusable', { static: false }) firstFocusable!: ElementRef;
-  
+  @ViewChild('dialog', { static: false }) dialogRef?: ElementRef<HTMLElement>;
+
+  private openerEl: HTMLElement | null = null;
+
+
   // Internal state
   private previousActiveElement: HTMLElement | null = null;
   private isAnimating: boolean = false;
-  
+
   // Default configuration
   private defaultConfig: ModalConfig = {
     size: 'md',
@@ -111,44 +117,61 @@ export class ModalComponent implements OnInit, OnDestroy {
     theme: 'light'
   };
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.config = { ...this.defaultConfig, ...this.config };
-    
     if (this.isOpen) {
-      this.handleOpen();
+      this.onOpenSideEffects();
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
+    if (this.isOpen) {
+      this.onCloseSideEffects();
+    }
+  }
+
+  private onOpenSideEffects(): void {
+    this.saveFocus();
+    this.disableBodyScroll();
+    // foco al contenedor accesible del modal
+    queueMicrotask(() => {
+      this.dialogRef?.nativeElement?.focus();
+    });
+    // Emit "opened" cuando termine tu animación de entrada (300ms)
+    setTimeout(() => this.opened.emit(), 300);
+  }
+
+  private onCloseSideEffects(): void {
     this.restoreFocus();
     this.enableBodyScroll();
+    // Emit "closed" cuando termine tu animación de salida (200ms)
+    setTimeout(() => this.closed.emit(), 0); // ya emites en close(), esto es redundante si lo conservas
   }
 
-  // Keyboard event handler
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
+  onEsc(): void {
     if (!this.isOpen) return;
-
-    switch (event.key) {
-      case 'Escape':
-        if (this.config.keyboard && this.config.closable) {
-          this.close();
-        }
-        break;
-      case 'Tab':
-        this.handleTabKey(event);
-        break;
+    if (this.config.keyboard && this.config.closable) {
+      this.close();
     }
   }
+
+  onBackdrop(): void {
+    this.backdropClick.emit();
+    if (this.config.backdrop && this.config.closable) {
+      this.close();
+    }
+  }
+
+
 
   // Public methods
   open() {
     if (this.isOpen || this.isAnimating) return;
-    
+
     this.isOpen = true;
     this.isAnimating = true;
     this.handleOpen();
-    
+
     setTimeout(() => {
       this.isAnimating = false;
       this.opened.emit();
@@ -157,9 +180,9 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   close() {
     if (!this.isOpen || this.isAnimating) return;
-    
+
     this.isAnimating = true;
-    
+
     setTimeout(() => {
       this.isOpen = false;
       this.isAnimating = false;
@@ -200,7 +223,7 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   getButtonClasses(button: ModalButton): string {
     const baseClasses = 'px-4 py-2 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-    
+
     const typeClasses = {
       'primary': 'bg-iebem-primary text-white hover:bg-iebem-dark focus:ring-iebem-primary',
       'secondary': 'bg-iebem-secondary text-white hover:opacity-80 focus:ring-iebem-secondary',
@@ -208,7 +231,7 @@ export class ModalComponent implements OnInit, OnDestroy {
       'success': 'bg-success text-white hover:bg-green-600 focus:ring-success',
       'warning': 'bg-warning text-white hover:bg-yellow-600 focus:ring-warning'
     };
-    
+
     const typeClass = typeClasses[button.type || 'primary'];
     return `${baseClasses} ${typeClass}`;
   }
@@ -229,7 +252,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   private handleOpen() {
     this.saveFocus();
     this.disableBodyScroll();
-    
+
     // Focus first focusable element after animation
     setTimeout(() => {
       this.focusFirstElement();
@@ -296,19 +319,4 @@ export class ModalComponent implements OnInit, OnDestroy {
     document.body.style.overflow = '';
   }
 
-  // Método público para enfocar el primer elemento
-// focusFirstElement() {
-//   if (this.firstFocusable?.nativeElement) {
-//     // Si hay un elemento marcado como #firstFocusable, enfocarlo
-//     this.firstFocusable.nativeElement.focus();
-//   } else {
-//     // Si no, buscar el primer elemento focusable en el modal
-//     const firstFocusableElement = this.modalContent?.nativeElement?.querySelector(
-//       'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-//     );
-//     if (firstFocusableElement) {
-//       (firstFocusableElement as HTMLElement).focus();
-//     }
-//   }
-// }
 }

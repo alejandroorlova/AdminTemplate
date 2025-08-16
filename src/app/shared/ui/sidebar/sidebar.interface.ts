@@ -1,5 +1,5 @@
 // shared/ui/sidebar/sidebar.component.ts - ACTUALIZADO
-import { Component, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -42,7 +42,8 @@ export interface SidebarConfig {
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarComponent implements OnInit {
   @Input() isOpen = true;

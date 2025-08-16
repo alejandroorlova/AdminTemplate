@@ -1,11 +1,13 @@
 import { Component, Input, forwardRef, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { FormFieldComponent } from '../form-field/form-field.component';
 
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormFieldComponent],
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   providers: [
@@ -14,7 +16,8 @@ import { CommonModule } from '@angular/common';
       useExisting: forwardRef(() => InputComponent),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputComponent implements ControlValueAccessor {
   @Input() label = '';

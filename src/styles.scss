@@ -21,6 +21,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.body--locked {
+  overflow: hidden;
+}
+
 /* Reset básico para formularios (reemplaza @tailwindcss/forms) */
 input, select, textarea {
   margin: 0;

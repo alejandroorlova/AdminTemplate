@@ -1,0 +1,8 @@
+<div class="space-y-1">
+  <label *ngIf="label" class="block text-sm font-medium text-gray-700" [for]="controlId">
+    {{ label }} <span *ngIf="required" class="text-red-600">*</span>
+  </label>
+  <ng-content></ng-content>
+  <p *ngIf="error" class="text-sm text-red-600">{{ error }}</p>
+  <p *ngIf="!error && hint" class="text-sm text-gray-500">{{ hint }}</p>
+</div>

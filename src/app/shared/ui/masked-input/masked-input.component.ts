@@ -1,13 +1,14 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormFieldComponent } from '../form-field/form-field.component';
 
 export type MaskType = 'phone' | 'rfc' | 'curp' | 'postal' | 'custom';
 
 @Component({
   selector: 'app-masked-input',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormFieldComponent],
   templateUrl: './masked-input.component.html',
   providers: [
     {
@@ -15,7 +16,8 @@ export type MaskType = 'phone' | 'rfc' | 'curp' | 'postal' | 'custom';
       useExisting: forwardRef(() => MaskedInputComponent),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MaskedInputComponent implements ControlValueAccessor {
   @Input() label = '';

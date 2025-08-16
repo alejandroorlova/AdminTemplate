@@ -1,6 +1,7 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormFieldComponent } from '../form-field/form-field.component';
 
 export interface SelectOption {
   value: any;
@@ -11,7 +12,7 @@ export interface SelectOption {
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormFieldComponent],
   templateUrl: './select.component.html',
   providers: [
     {
@@ -19,7 +20,8 @@ export interface SelectOption {
       useExisting: forwardRef(() => SelectComponent),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectComponent implements ControlValueAccessor {
   @Input() label = '';
@@ -33,6 +35,7 @@ export class SelectComponent implements ControlValueAccessor {
 
   value = '';
   isFocused = false;
+  trackOpt = (_: number, o: SelectOption) => o?.value ?? o;
 
   private onChangeCallback = (value: any) => {};
   private onTouchedCallback = () => {};
