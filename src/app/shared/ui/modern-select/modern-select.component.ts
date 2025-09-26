@@ -37,8 +37,8 @@ export class ModernSelectComponent implements ControlValueAccessor {
   private onTouchedCallback = () => {};
 
   get triggerClasses(): string {
-    const baseClasses = 'relative w-full cursor-pointer rounded-xl border border-gray-300 py-3 pl-4 pr-4 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-iebem-primary bg-white flex items-center justify-between transition-all duration-200';
-    const openClasses = this.isOpen ? 'ring-2 ring-iebem-primary border-iebem-primary' : '';
+    const baseClasses = 'relative w-full cursor-pointer rounded-xl !border-0 py-3 pl-4 pr-4 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-iebem-primary focus:outline-none bg-white flex items-center justify-between transition-all duration-200';
+    const openClasses = this.isOpen ? 'ring-2 ring-inset ring-iebem-primary' : '';
     return `${baseClasses} ${openClasses}`;
   }
 

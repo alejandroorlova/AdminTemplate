@@ -38,7 +38,7 @@ export class SelectComponent implements ControlValueAccessor {
   private onTouchedCallback = () => { };
 
   get selectClasses(): string {
-    const baseClasses = 'block w-full rounded-xl border-0 py-3 px-4 pr-10 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset text-gray-900 appearance-none cursor-pointer';
+    const baseClasses = 'block w-full rounded-xl !border-0 py-3 px-4 pr-10 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset focus:outline-none text-gray-900 appearance-none cursor-pointer';
 
     let stateClasses = '';
     if (this.error) {
