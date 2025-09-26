@@ -7,10 +7,12 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  TemplateRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TableUtils } from '../../utils/table.utils';
 
 // Interfaces básicas
 export interface TableColumn {
@@ -21,7 +23,10 @@ export interface TableColumn {
   sortable?: boolean;
   filterable?: boolean;
   align?: 'left' | 'center' | 'right';
+  format?: 'text' | 'date' | 'currency' | ((value: any, row: any) => string);
+  cellTemplate?: TemplateRef<any>;
 }
+
 
 export interface TableConfig {
   pagination?: {
@@ -226,17 +231,26 @@ export class TableComponent implements OnInit, OnChanges {
   formatCellValue(value: any, column: TableColumn): string {
     if (value == null) return '-';
 
+    // NUEVO: prioridad al format explícito
+    if (typeof column.format === 'function') {
+      return column.format(value, /* row no lo tienes aquí, por eso el HTML custom es mejor para casos complejos */ {} as any);
+    }
+    if (column.format === 'date') {
+      return new Date(value).toLocaleDateString('es-ES');
+    }
+    if (column.format === 'currency') {
+      const num = Number(value) || 0;
+      return num.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+    }
+
+    // lo que ya tenías:
     switch (column.type) {
       case 'date':
         return new Date(value).toLocaleDateString('es-ES');
       case 'number':
         if (typeof value === 'number') {
-          // Formato para salarios o moneda
           if (value > 1000) {
-            return new Intl.NumberFormat('es-MX', {
-              style: 'currency',
-              currency: 'MXN'
-            }).format(value);
+            return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value);
           }
           return new Intl.NumberFormat('es-ES').format(value);
         }
@@ -248,6 +262,7 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
 
+
   getCellClasses(column: TableColumn): string {
     let classes = 'px-6 py-4 whitespace-nowrap text-sm';
 
@@ -257,7 +272,7 @@ export class TableComponent implements OnInit, OnChanges {
     return classes;
   }
 
-  getBadgeClasses(value: any): string {
+  getBooleanBadgeClasses(value: any): string {
     const baseClasses = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold';
 
     // Colores usando tu paleta IEBEM
@@ -302,187 +317,6 @@ export class TableComponent implements OnInit, OnChanges {
     return row.id || index;
   }
 
-  // Métodos adicionales para agregar al table.component.ts
-
-  // Columnas prioritarias para desktop (las más importantes)
-  // getDesktopColumns(): TableColumn[] {
-  //   // En desktop mostramos las columnas más importantes
-  //   const priorityColumns = ['firstName', 'lastName', 'email', 'department', 'position', 'status'];
-
-  //   return this.columns.filter(column =>
-  //     priorityColumns.includes(column.key)
-  //   );
-  // }
-
-  // Obtener ancho responsivo para las columnas
-  // getResponsiveWidth(column: TableColumn): string {
-  //   const responsiveWidths: { [key: string]: string } = {
-  //     'firstName': '120px',
-  //     'lastName': '140px',
-  //     'email': '180px',
-  //     'phone': '120px',
-  //     'department': '130px',
-  //     'position': '140px',
-  //     'salary': '100px',
-  //     'hireDate': '100px',
-  //     'status': '90px'
-  //   };
-
-  //   return responsiveWidths[column.key] || column.width || '120px';
-  // }
-
-  // Verificar si una columna es crítica (siempre visible)
-  // isCriticalColumn(columnKey: string): boolean {
-  //   const criticalColumns = ['firstName', 'lastName', 'email', 'status'];
-  //   return criticalColumns.includes(columnKey);
-  // }
-
-  // Obtener columnas para vista móvil (solo las más críticas)
-  // getMobileColumns(): TableColumn[] {
-  //   return this.columns.filter(column =>
-  //     this.isCriticalColumn(column.key)
-  //   );
-  // }
-
-  // Método para formatear datos específicos para mobile
-  // formatMobileValue(value: any, column: TableColumn): string {
-  //   if (value == null) return '-';
-
-  //   // Para móvil, usar formatos más cortos
-  //   switch (column.type) {
-  //     case 'date':
-  //       return new Date(value).toLocaleDateString('es-ES', {
-  //         month: 'short',
-  //         day: 'numeric',
-  //         year: '2-digit'
-  //       });
-  //     case 'number':
-  //       if (typeof value === 'number' && value > 1000) {
-  //         // Formato compacto para móvil
-  //         return new Intl.NumberFormat('es-MX', {
-  //           style: 'currency',
-  //           currency: 'MXN',
-  //           notation: 'compact'
-  //         }).format(value);
-  //       }
-  //       return this.formatCellValue(value, column);
-  //     default:
-  //       return this.formatCellValue(value, column);
-  //   }
-  // }
-
-  ///////////////////////////////////
-
-
-  // Métodos adicionales para agregar al table.component.ts
-
-  // Columnas prioritarias para desktop (las más importantes)
-  // getDesktopColumns(): TableColumn[] {
-  //   // En desktop mostramos las columnas más importantes
-  //   const priorityColumns = ['firstName', 'lastName', 'email', 'department', 'position', 'status'];
-
-  //   return this.columns.filter(column =>
-  //     priorityColumns.includes(column.key)
-  //   );
-  // }
-
-  // Obtener ancho responsivo para las columnas
-  // getResponsiveWidth(column: TableColumn): string {
-  //   const responsiveWidths: { [key: string]: string } = {
-  //     'firstName': '120px',
-  //     'lastName': '140px',
-  //     'email': '180px',
-  //     'phone': '120px',
-  //     'department': '130px',
-  //     'position': '140px',
-  //     'salary': '100px',
-  //     'hireDate': '100px',
-  //     'status': '90px'
-  //   };
-
-  //   return responsiveWidths[column.key] || column.width || '120px';
-  // }
-
-  // Verificar si una columna es crítica (siempre visible)
-  // isCriticalColumn(columnKey: string): boolean {
-  //   const criticalColumns = ['firstName', 'lastName', 'email', 'status'];
-  //   return criticalColumns.includes(columnKey);
-  // }
-
-  // Obtener columnas para vista móvil (solo las más críticas)
-  // getMobileColumns(): TableColumn[] {
-  //   return this.columns.filter(column =>
-  //     this.isCriticalColumn(column.key)
-  //   );
-  // }
-
-  // Método helper para obtener la columna por key
-  // getColumnByKey(key: string): TableColumn | undefined {
-  //   return this.columns.find(col => col.key === key);
-  // }
-
-  // Método para formatear valores específicos sin necesidad del objeto TableColumn completo
-  // formatMobileValue(value: any, type: string): string {
-  //   if (value == null) return '-';
-
-  //   switch (type) {
-  //     case 'badge':
-  //       return value.toString().charAt(0).toUpperCase() + value.toString().slice(1);
-  //     case 'date':
-  //       return new Date(value).toLocaleDateString('es-ES', {
-  //         month: 'short',
-  //         day: 'numeric',
-  //         year: '2-digit'
-  //       });
-  //     case 'number':
-  //       if (typeof value === 'number' && value > 1000) {
-  //         return new Intl.NumberFormat('es-MX', {
-  //           style: 'currency',
-  //           currency: 'MXN',
-  //           notation: 'compact'
-  //         }).format(value);
-  //       }
-  //       return new Intl.NumberFormat('es-ES').format(value);
-  //     case 'currency':
-  //       return new Intl.NumberFormat('es-MX', {
-  //         style: 'currency',
-  //         currency: 'MXN'
-  //       }).format(value);
-  //     default:
-  //       return value.toString();
-  //   }
-  // }
-
-  //-------------------
-
-  // Métodos adicionales para agregar al table.component.ts
-
-  // Columnas prioritarias para desktop (las más importantes)
-  // getDesktopColumns(): TableColumn[] {
-  //   // En desktop mostramos las columnas más importantes
-  //   const priorityColumns = ['firstName', 'lastName', 'email', 'department', 'position', 'status'];
-
-  //   return this.columns.filter(column =>
-  //     priorityColumns.includes(column.key)
-  //   );
-  // }
-
-  // Obtener ancho responsivo para las columnas
-  // getResponsiveWidth(column: TableColumn): string {
-  //   const responsiveWidths: { [key: string]: string } = {
-  //     'firstName': '120px',
-  //     'lastName': '140px',
-  //     'email': '180px',
-  //     'phone': '120px',
-  //     'department': '130px',
-  //     'position': '140px',
-  //     'salary': '100px',
-  //     'hireDate': '100px',
-  //     'status': '90px'
-  //   };
-
-  //   return responsiveWidths[column.key] || column.width || '120px';
-  // }
 
   // Verificar si una columna es crítica (siempre visible)
   isCriticalColumn(columnKey: string): boolean {
@@ -502,217 +336,28 @@ export class TableComponent implements OnInit, OnChanges {
     return this.columns.find(col => col.key === key);
   }
 
-  // Método para formatear valores específicos sin necesidad del objeto TableColumn completo
-  // formatMobileValue(value: any, type: string): string {
-  //   if (value == null) return '-';
-
-  //   switch (type) {
-  //     case 'badge':
-  //       return value.toString().charAt(0).toUpperCase() + value.toString().slice(1);
-  //     case 'date':
-  //       return new Date(value).toLocaleDateString('es-ES', {
-  //         month: 'short',
-  //         day: 'numeric',
-  //         year: '2-digit'
-  //       });
-  //     case 'number':
-  //       if (typeof value === 'number' && value > 1000) {
-  //         return new Intl.NumberFormat('es-MX', {
-  //           style: 'currency',
-  //           currency: 'MXN',
-  //           notation: 'compact'
-  //         }).format(value);
-  //       }
-  //       return new Intl.NumberFormat('es-ES').format(value);
-  //     case 'currency':
-  //       return new Intl.NumberFormat('es-MX', {
-  //         style: 'currency',
-  //         currency: 'MXN'
-  //       }).format(value);
-  //     default:
-  //       return value.toString();
-  //   }
-  // }
-
-  // Método moderno para badges con colores IEBEM
-  // getModernBadgeClasses(value: any): string {
-  //   const baseClasses = 'inline-flex items-center px-3 py-2 rounded-xl text-xs font-bold shadow-lg border transition-all duration-300 hover:shadow-xl transform hover:scale-105';
-
-  //   // Colores modernos usando la paleta IEBEM
-  //   const statusColors: { [key: string]: string } = {
-  //     'active': 'bg-gradient-to-r from-success/20 to-success/10 text-success border-success/30 shadow-success/20',
-  //     'activo': 'bg-gradient-to-r from-success/20 to-success/10 text-success border-success/30 shadow-success/20',
-  //     'inactive': 'bg-gradient-to-r from-danger/20 to-danger/10 text-danger border-danger/30 shadow-danger/20',
-  //     'inactivo': 'bg-gradient-to-r from-danger/20 to-danger/10 text-danger border-danger/30 shadow-danger/20',
-  //     'pending': 'bg-gradient-to-r from-warning/20 to-warning/10 text-warning border-warning/30 shadow-warning/20',
-  //     'pendiente': 'bg-gradient-to-r from-warning/20 to-warning/10 text-warning border-warning/30 shadow-warning/20',
-  //     'completed': 'bg-gradient-to-r from-iebem-primary/20 to-iebem-primary/10 text-iebem-primary border-iebem-primary/30 shadow-iebem-primary/20',
-  //     'completado': 'bg-gradient-to-r from-iebem-primary/20 to-iebem-primary/10 text-iebem-primary border-iebem-primary/30 shadow-iebem-primary/20',
-  //     'en_proceso': 'bg-gradient-to-r from-info/20 to-info/10 text-info border-info/30 shadow-info/20',
-  //     'proceso': 'bg-gradient-to-r from-info/20 to-info/10 text-info border-info/30 shadow-info/20'
-  //   };
-
-  //   const colorClass = statusColors[value?.toString().toLowerCase()] || 'bg-gradient-to-r from-iebem-dark/20 to-iebem-dark/10 text-iebem-dark border-iebem-dark/30 shadow-iebem-dark/20';
-  //   return `${baseClasses} ${colorClass}`;
-  // }
-
-  // Método moderno para acciones con colores IEBEM
-  // getModernActionClasses(action: TableAction): string {
-  //   const baseClasses = 'inline-flex items-center justify-center border-2 font-bold';
-
-  //   switch (action.color) {
-  //     case 'primary':
-  //       return `${baseClasses} bg-gradient-to-r from-iebem-primary to-iebem-secondary text-white border-transparent hover:from-iebem-secondary hover:to-iebem-primary shadow-lg shadow-iebem-primary/30`;
-  //     case 'secondary':
-  //       return `${baseClasses} bg-gradient-to-r from-iebem-secondary to-iebem-gold text-white border-transparent hover:from-iebem-gold hover:to-iebem-secondary shadow-lg shadow-iebem-secondary/30`;
-  //     case 'danger':
-  //       return `${baseClasses} bg-gradient-to-r from-danger to-red-600 text-white border-transparent hover:from-red-600 hover:to-danger shadow-lg shadow-danger/30`;
-  //     default:
-  //       return `${baseClasses} bg-gradient-to-r from-iebem-dark to-gray-700 text-white border-transparent hover:from-gray-700 hover:to-iebem-dark shadow-lg shadow-iebem-dark/30`;
-  //   }
-  // }
-
-
-  //--------------
 
   // Métodos simplificados para agregar al table.component.ts
 
   // Columnas para desktop (las más importantes)
-  // getDesktopColumns(): TableColumn[] {
-  //   const priorityColumns = ['firstName', 'lastName', 'email', 'department', 'position', 'status'];
-  //   return this.columns.filter(column => priorityColumns.includes(column.key));
-  // }
-
-  // Ancho responsivo para columnas
-  // getResponsiveWidth(column: TableColumn): string {
-  //   const widths: { [key: string]: string } = {
-  //     'firstName': '120px',
-  //     'lastName': '140px',
-  //     'email': '180px',
-  //     'department': '130px',
-  //     'position': '140px',
-  //     'status': '90px'
-  //   };
-  //   return widths[column.key] || column.width || '120px';
-  // }
-
-  // Formatear valores para mobile
-  // formatMobileValue(value: any, type: string): string {
-  //   if (value == null) return '-';
-
-  //   switch (type) {
-  //     case 'currency':
-  //       return new Intl.NumberFormat('es-MX', {
-  //         style: 'currency',
-  //         currency: 'MXN'
-  //       }).format(value);
-  //     default:
-  //       return value.toString();
-  //   }
-  // }
-
-  // Badges modernos con colores IEBEM
-  // getModernBadgeClasses(value: any): string {
-  //   const baseClasses = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold';
-
-  //   const statusColors: { [key: string]: string } = {
-  //     'active': 'bg-success bg-opacity-20 text-success',
-  //     'activo': 'bg-success bg-opacity-20 text-success',
-  //     'inactive': 'bg-danger bg-opacity-20 text-danger',
-  //     'inactivo': 'bg-danger bg-opacity-20 text-danger',
-  //     'pending': 'bg-warning bg-opacity-20 text-warning',
-  //     'pendiente': 'bg-warning bg-opacity-20 text-warning'
-  //   };
-
-  //   const colorClass = statusColors[value?.toString().toLowerCase()] || 'bg-gray-100 text-gray-800';
-  //   return `${baseClasses} ${colorClass}`;
-  // }
-
-  // Acciones modernas con colores IEBEM
-  // getModernActionClasses(action: TableAction): string {
-  //   const baseClasses = 'border transition-all duration-200 font-medium';
-
-  //   switch (action.color) {
-  //     case 'primary':
-  //       return `${baseClasses} bg-iebem-primary text-white border-iebem-primary hover:bg-iebem-dark`;
-  //     case 'secondary':
-  //       return `${baseClasses} bg-iebem-secondary text-white border-iebem-secondary hover:opacity-80`;
-  //     case 'danger':
-  //       return `${baseClasses} bg-danger text-white border-danger hover:bg-red-600`;
-  //     default:
-  //       return `${baseClasses} bg-gray-600 text-white border-gray-600 hover:bg-gray-700`;
-  //   }
-  // }
-
-  //------------------------------
-
-  // Métodos simplificados para agregar al table.component.ts
-
-// Columnas para desktop (las más importantes)
-getDesktopColumns(): TableColumn[] {
-  const priorityColumns = ['firstName', 'lastName', 'email', 'department', 'position', 'status'];
-  return this.columns.filter(column => priorityColumns.includes(column.key));
-}
-
-// Ancho responsivo para columnas
-getResponsiveWidth(column: TableColumn): string {
-  const widths: { [key: string]: string } = {
-    'firstName': '120px',
-    'lastName': '140px', 
-    'email': '180px',
-    'department': '130px',
-    'position': '140px',
-    'status': '90px'
-  };
-  return widths[column.key] || column.width || '120px';
-}
-
-// Formatear valores para mobile
-formatMobileValue(value: any, type: string): string {
-  if (value == null) return '-';
-  
-  switch (type) {
-    case 'currency':
-      return new Intl.NumberFormat('es-MX', { 
-        style: 'currency', 
-        currency: 'MXN'
-      }).format(value);
-    default:
-      return value.toString();
+  getDesktopColumns(): TableColumn[] {
+    return TableUtils.getDesktopColumns(this.columns);
   }
-}
 
-// Badges sólidos con colores IEBEM (sin gradientes)
-getModernBadgeClasses(value: any): string {
-  const baseClasses = 'inline-flex items-center px-3 py-1 rounded-xl text-xs font-bold';
-  
-  const statusColors: { [key: string]: string } = {
-    'active': 'bg-success bg-opacity-20 text-success border border-success border-opacity-30',
-    'activo': 'bg-success bg-opacity-20 text-success border border-success border-opacity-30',
-    'inactive': 'bg-danger bg-opacity-20 text-danger border border-danger border-opacity-30',
-    'inactivo': 'bg-danger bg-opacity-20 text-danger border border-danger border-opacity-30',
-    'pending': 'bg-warning bg-opacity-20 text-warning border border-warning border-opacity-30',
-    'pendiente': 'bg-warning bg-opacity-20 text-warning border border-warning border-opacity-30'
-  };
-  
-  const colorClass = statusColors[value?.toString().toLowerCase()] || 'bg-gray-100 text-gray-800 border border-gray-300';
-  return `${baseClasses} ${colorClass}`;
-}
-
-// Acciones sólidas con colores IEBEM (como en el formulario)
-getModernActionClasses(action: TableAction): string {
-  const baseClasses = 'border transition-all duration-200 font-medium hover:shadow-lg';
-  
-  switch (action.color) {
-    case 'primary':
-      return `${baseClasses} bg-iebem-primary text-white border-iebem-primary hover:bg-iebem-dark`;
-    case 'secondary':
-      return `${baseClasses} bg-iebem-secondary text-white border-iebem-secondary hover:opacity-80`;
-    case 'danger':
-      return `${baseClasses} bg-danger text-white border-danger hover:bg-red-600`;
-    default:
-      return `${baseClasses} bg-gray-600 text-white border-gray-600 hover:bg-gray-700`;
+  getResponsiveWidth(column: TableColumn): string {
+    return TableUtils.getResponsiveWidth(column);
   }
-}
+
+  formatMobileValue(value: any, type: string): string {
+    return TableUtils.formatMobileValue(value, type);
+  }
+
+  getModernBadgeClasses(value: any): string {
+    return TableUtils.getBadgeClasses(value);
+  }
+
+  getModernActionClasses(action: TableAction): string {
+    return TableUtils.getActionClasses(action.color);
+  }
 
 }

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/projects/iebem-ui-components/src/lib/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/**)",
+      "Read(//Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/**)"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "/Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/projects/iebem-ui-components/src/lib/components/modal",
+      "/Volumes/almazan/personal/Proyectos/IEBEM/iebem-ui-library/projects/iebem-ui-components/src/lib/components/table"
+    ]
+  }
+}

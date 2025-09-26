@@ -2,14 +2,7 @@ import { Component, Input, forwardRef, ViewChild, ElementRef } from '@angular/co
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-export interface SelectOption {
-  value: any;
-  label: string;
-  disabled?: boolean;
-  icon?: string;
-  description?: string;
-}
+import { SelectOption } from '../../types/common.types';
 
 @Component({
   selector: 'app-modern-select',

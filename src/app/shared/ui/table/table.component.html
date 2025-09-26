@@ -1,25 +1,21 @@
 <!-- table.component.html - VERSIÓN LIMPIA SIN ERRORES -->
 <div class="w-full">
   <!-- Header -->
-  <div *ngIf="title || subtitle || config.filtering?.globalSearch" class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+  <div *ngIf="title || subtitle || config.filtering?.globalSearch"
+    class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
     <!-- Títulos -->
     <div class="flex-1">
       <h3 *ngIf="title" class="text-xl font-bold text-gray-800">{{ title }}</h3>
       <p *ngIf="subtitle" class="text-gray-600 mt-1">{{ subtitle }}</p>
     </div>
-    
+
     <!-- Búsqueda global -->
     <div *ngIf="config.filtering?.globalSearch" class="relative">
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <i class="fas fa-search text-gray-400 text-sm"></i>
       </div>
-      <input
-        type="text"
-        placeholder="Buscar empleado..."
-        [(ngModel)]="globalSearch"
-        (input)="onGlobalSearch()"
-        class="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-iebem-primary focus:border-iebem-primary transition-all duration-200 shadow-sm"
-      />
+      <input type="text" placeholder="Buscar empleado..." [(ngModel)]="globalSearch" (input)="onGlobalSearch()"
+        class="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-iebem-primary focus:border-iebem-primary transition-all duration-200 shadow-sm" />
     </div>
   </div>
 
@@ -44,22 +40,21 @@
             <tr>
               <!-- Columnas visibles en desktop -->
               <th *ngFor="let column of getDesktopColumns(); trackBy: trackByColumn"
-                  class="px-4 py-5 text-left text-xs font-bold text-white uppercase tracking-wider border-r border-white border-opacity-20 last:border-r-0"
-                  [style.min-width]="getResponsiveWidth(column)">
+                class="px-4 py-5 text-left text-xs font-bold text-white uppercase tracking-wider border-r border-white border-opacity-20 last:border-r-0"
+                [style.min-width]="getResponsiveWidth(column)">
                 <div class="flex items-center gap-2">
                   <span class="truncate">{{ column.title }}</span>
                   <!-- Sort button -->
-                  <button *ngIf="column.sortable && config.sorting?.enabled"
-                          (click)="onSort(column.key)"
-                          class="hover:bg-white hover:bg-opacity-20 p-1.5 rounded-lg transition-all duration-200">
+                  <button *ngIf="column.sortable && config.sorting?.enabled" (click)="onSort(column.key)"
+                    class="hover:bg-white hover:bg-opacity-20 p-1.5 rounded-lg transition-all duration-200">
                     <i [class]="getSortIcon(column.key)" class="text-xs"></i>
                   </button>
                 </div>
               </th>
-              
+
               <!-- Columna de acciones -->
-              <th *ngIf="actions.length > 0" 
-                  class="px-4 py-5 text-center text-xs font-bold text-white uppercase tracking-wider w-32">
+              <th *ngIf="actions.length > 0"
+                class="px-4 py-5 text-center text-xs font-bold text-white uppercase tracking-wider w-32">
                 <i class="fas fa-cogs mr-1"></i>
                 Acciones
               </th>
@@ -70,10 +65,11 @@
           <tbody class="bg-white divide-y divide-gray-100">
             <!-- Empty state -->
             <tr *ngIf="processedData.length === 0 && !loading">
-              <td [attr.colspan]="getDesktopColumns().length + (actions.length > 0 ? 1 : 0)" 
-                  class="px-6 py-20 text-center">
+              <td [attr.colspan]="getDesktopColumns().length + (actions.length > 0 ? 1 : 0)"
+                class="px-6 py-20 text-center">
                 <div class="flex flex-col items-center">
-                  <div class="w-20 h-20 bg-gradient-to-br from-iebem-primary to-iebem-secondary rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                  <div
+                    class="w-20 h-20 bg-gradient-to-br from-iebem-primary to-iebem-secondary rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                     <i class="fas fa-users text-white text-3xl"></i>
                   </div>
                   <h3 class="text-xl font-bold text-iebem-dark mb-3">{{ emptyMessage }}</h3>
@@ -84,65 +80,76 @@
 
             <!-- Data rows Desktop -->
             <tr *ngFor="let row of processedData; trackBy: trackByRow; let i = index"
-                class="hover:bg-iebem-light hover:bg-opacity-30 cursor-pointer transition-all duration-200 group"
-                [class.bg-gray-50]="i % 2 === 1"
-                (click)="onRowClick(row)">
-              
+              class="hover:bg-iebem-light hover:bg-opacity-30 cursor-pointer transition-all duration-200 group"
+              [class.bg-gray-50]="i % 2 === 1" (click)="onRowClick(row)">
+
               <!-- Data cells Desktop -->
-              <td *ngFor="let column of getDesktopColumns(); trackBy: trackByColumn"
-                  class="px-4 py-4 text-sm">
-                <div [ngSwitch]="column.type">
-                  <!-- Text -->
-                  <div *ngSwitchCase="'text'">
-                    <span class="text-iebem-dark font-medium group-hover:text-iebem-primary transition-colors truncate">
-                      {{ formatCellValue(getColumnValue(row, column.key), column) }}
-                    </span>
-                  </div>
+              <td *ngFor="let column of getDesktopColumns(); trackBy: trackByColumn" class="px-4 py-4 text-sm">
 
-                  <!-- Number -->
-                  <div *ngSwitchCase="'number'" class="text-right">
-                    <span class="font-mono text-iebem-dark bg-iebem-light px-3 py-1 rounded-lg text-xs">
-                      {{ formatCellValue(getColumnValue(row, column.key), column) }}
-                    </span>
-                  </div>
+                <!-- NUEVO: si la columna trae plantilla, úsala -->
+                <ng-container *ngIf="column.cellTemplate; else defaultCell" [ngTemplateOutlet]="column.cellTemplate"
+                  [ngTemplateOutletContext]="{
+                  $implicit: getColumnValue(row, column.key),
+                  row: row,
+                  col: column
+                }">
+                </ng-container>
 
-                  <!-- Date -->
-                  <div *ngSwitchCase="'date'">
-                    <div class="flex items-center">
-                      <i class="fas fa-calendar-alt text-iebem-secondary mr-2 text-xs"></i>
-                      <span class="text-iebem-dark text-xs">
+                <!-- Comportamiento por defecto (lo que ya tenías) -->
+                <ng-template #defaultCell>
+                  <div [ngSwitch]="column.type">
+                    <!-- Text -->
+                    <div *ngSwitchCase="'text'">
+                      <span
+                        class="text-iebem-dark font-medium group-hover:text-iebem-primary transition-colors truncate">
                         {{ formatCellValue(getColumnValue(row, column.key), column) }}
                       </span>
                     </div>
-                  </div>
 
-                  <!-- Boolean -->
-                  <div *ngSwitchCase="'boolean'" class="text-center">
-                    <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold"
-                          [class]="getColumnValue(row, column.key) ? 'bg-success bg-opacity-10 text-success' : 'bg-danger bg-opacity-10 text-danger'">
-                      <i [class]="getColumnValue(row, column.key) ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
-                      {{ formatCellValue(getColumnValue(row, column.key), column) }}
-                    </span>
-                  </div>
+                    <!-- Number -->
+                    <div *ngSwitchCase="'number'" class="text-right">
+                      <span class="font-mono text-iebem-dark bg-iebem-light px-3 py-1 rounded-lg text-xs">
+                        {{ formatCellValue(getColumnValue(row, column.key), column) }}
+                      </span>
+                    </div>
 
-                  <!-- Badge -->
-                  <div *ngSwitchCase="'badge'" class="text-center">
-                    <span [class]="getModernBadgeClasses(getColumnValue(row, column.key))">
-                      <span class="w-2 h-2 rounded-full bg-current mr-2"></span>
-                      <span class="text-xs font-bold">{{ formatCellValue(getColumnValue(row, column.key), column) }}</span>
-                    </span>
+                    <!-- Date -->
+                    <div *ngSwitchCase="'date'">
+                      <span class="text-gray-700">
+                        {{ formatCellValue(getColumnValue(row, column.key), column) }}
+                      </span>
+                    </div>
+
+                    <!-- Badge -->
+                    <div *ngSwitchCase="'badge'">
+                      <span
+                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-iebem-light text-iebem-dark">
+                        {{ formatCellValue(getColumnValue(row, column.key), column) }}
+                      </span>
+                    </div>
+
+                    <!-- Boolean -->
+                    <div *ngSwitchCase="'boolean'">
+                      <span [class]="getBooleanBadgeClasses(getColumnValue(row, column.key))">
+                        {{ formatCellValue(getColumnValue(row, column.key), column) }}
+                      </span>
+                    </div>
+
+                    <!-- Default -->
+                    <div *ngSwitchDefault>
+                      <span class="text-gray-700">{{ formatCellValue(getColumnValue(row, column.key), column) }}</span>
+                    </div>
                   </div>
-                </div>
+                </ng-template>
               </td>
+
 
               <!-- Actions cell Desktop -->
               <td *ngIf="actions.length > 0" class="px-4 py-4 text-center">
                 <div class="flex justify-center gap-2">
-                  <button *ngFor="let action of actions"
-                          (click)="onAction(action, row, $event)"
-                          [class]="getModernActionClasses(action)"
-                          [title]="action.label"
-                          class="w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200 hover:scale-110">
+                  <button *ngFor="let action of actions" (click)="onAction(action, row, $event)"
+                    [class]="getModernActionClasses(action)" [title]="action.label"
+                    class="w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200 hover:scale-110">
                     <i *ngIf="action.icon" [class]="'fas fa-' + action.icon + ' text-xs'"></i>
                   </button>
                 </div>
@@ -158,7 +165,8 @@
       <!-- Empty state Mobile -->
       <div *ngIf="processedData.length === 0 && !loading" class="px-6 py-20 text-center">
         <div class="flex flex-col items-center">
-          <div class="w-20 h-20 bg-gradient-to-br from-iebem-primary to-iebem-secondary rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+          <div
+            class="w-20 h-20 bg-gradient-to-br from-iebem-primary to-iebem-secondary rounded-2xl flex items-center justify-center mb-6 shadow-lg">
             <i class="fas fa-users text-white text-3xl"></i>
           </div>
           <h3 class="text-xl font-bold text-iebem-dark mb-3">{{ emptyMessage }}</h3>
@@ -169,9 +177,9 @@
       <!-- Cards Mobile -->
       <div class="divide-y divide-gray-100">
         <div *ngFor="let row of processedData; trackBy: trackByRow"
-             class="p-4 hover:bg-iebem-light hover:bg-opacity-30 transition-all duration-200 cursor-pointer"
-             (click)="onRowClick(row)">
-          
+          class="p-4 hover:bg-iebem-light hover:bg-opacity-30 transition-all duration-200 cursor-pointer"
+          (click)="onRowClick(row)">
+
           <!-- Card Header -->
           <div class="flex items-start justify-between mb-3">
             <div class="flex-1 min-w-0">
@@ -180,7 +188,7 @@
               </h3>
               <p class="text-sm text-gray-600 truncate">{{ getColumnValue(row, 'email') }}</p>
             </div>
-            
+
             <!-- Estado -->
             <div class="ml-3">
               <span [class]="getModernBadgeClasses(getColumnValue(row, 'status'))">
@@ -201,7 +209,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="bg-iebem-secondary bg-opacity-10 rounded-lg p-3">
               <div class="flex items-center">
                 <i class="fas fa-building text-iebem-secondary mr-2"></i>
@@ -211,7 +219,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="bg-info bg-opacity-10 rounded-lg p-3">
               <div class="flex items-center">
                 <i class="fas fa-phone text-info mr-2"></i>
@@ -221,13 +229,14 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="bg-success bg-opacity-10 rounded-lg p-3">
               <div class="flex items-center">
                 <i class="fas fa-dollar-sign text-success mr-2"></i>
                 <div class="min-w-0 flex-1">
                   <p class="text-xs text-gray-600">Salario</p>
-                  <p class="font-medium text-iebem-dark text-sm">{{ formatMobileValue(getColumnValue(row, 'salary'), 'currency') }}</p>
+                  <p class="font-medium text-iebem-dark text-sm">{{ formatMobileValue(getColumnValue(row, 'salary'),
+                    'currency') }}</p>
                 </div>
               </div>
             </div>
@@ -235,11 +244,9 @@
 
           <!-- Card Footer -->
           <div *ngIf="actions.length > 0" class="flex justify-end gap-2 pt-3 border-t border-gray-200">
-            <button *ngFor="let action of actions"
-                    (click)="onAction(action, row, $event)"
-                    [class]="getModernActionClasses(action)"
-                    [title]="action.label"
-                    class="w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200">
+            <button *ngFor="let action of actions" (click)="onAction(action, row, $event)"
+              [class]="getModernActionClasses(action)" [title]="action.label"
+              class="w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200">
               <i *ngIf="action.icon" [class]="'fas fa-' + action.icon + ' text-xs'"></i>
             </button>
           </div>
@@ -248,31 +255,28 @@
     </div>
 
     <!-- Footer con paginación -->
-    <div *ngIf="config.pagination?.enabled && totalItems > 0" 
-         class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+    <div *ngIf="config.pagination?.enabled && totalItems > 0" class="px-6 py-4 bg-gray-50 border-t border-gray-200">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <!-- Info de resultados -->
         <div class="text-sm font-medium text-center sm:text-left text-gray-700">
-          <span class="text-iebem-primary font-bold">{{ getStartRecord() }} - {{ getEndRecord() }}</span> 
+          <span class="text-iebem-primary font-bold">{{ getStartRecord() }} - {{ getEndRecord() }}</span>
           <span class="mx-1">de</span>
-          <span class="text-iebem-primary font-bold">{{ totalItems }}</span> 
+          <span class="text-iebem-primary font-bold">{{ totalItems }}</span>
           <span>empleados</span>
         </div>
 
         <!-- Controles de paginación -->
         <div class="flex items-center justify-center gap-2">
           <!-- Primera página -->
-          <button (click)="onPageChange(1)"
-                  [disabled]="currentPage === 1"
-                  class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-                  title="Primera página">
+          <button (click)="onPageChange(1)" [disabled]="currentPage === 1"
+            class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            title="Primera página">
             <i class="fas fa-angle-double-left"></i>
           </button>
 
           <!-- Página anterior -->
-          <button (click)="onPageChange(currentPage - 1)"
-                  [disabled]="currentPage === 1"
-                  class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
+          <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+            class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
             <i class="fas fa-angle-left"></i>
           </button>
 
@@ -282,17 +286,15 @@
           </span>
 
           <!-- Página siguiente -->
-          <button (click)="onPageChange(currentPage + 1)"
-                  [disabled]="currentPage >= getTotalPages()"
-                  class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
+          <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= getTotalPages()"
+            class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
             <i class="fas fa-angle-right"></i>
           </button>
 
           <!-- Última página -->
-          <button (click)="onPageChange(getTotalPages())"
-                  [disabled]="currentPage >= getTotalPages()"
-                  class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-                  title="Última página">
+          <button (click)="onPageChange(getTotalPages())" [disabled]="currentPage >= getTotalPages()"
+            class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            title="Última página">
             <i class="fas fa-angle-double-right"></i>
           </button>
         </div>

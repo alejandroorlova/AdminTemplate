@@ -2,17 +2,12 @@ import { Component, Input, forwardRef, ChangeDetectionStrategy } from '@angular/
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormFieldComponent } from '../form-field/form-field.component';
-
-export interface SelectOption {
-  value: any;
-  label: string;
-  disabled?: boolean;
-}
+import { SelectOption } from '../../types/common.types';
 
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [CommonModule,FormFieldComponent],
+  imports: [CommonModule, FormFieldComponent],
   templateUrl: './select.component.html',
   providers: [
     {
@@ -32,17 +27,19 @@ export class SelectComponent implements ControlValueAccessor {
   @Input() error = '';
   @Input() hint = '';
   @Input() id = '';
+  @Input() compareWith?: (a: any, b: any) => boolean;
+
 
   value = '';
   isFocused = false;
   trackOpt = (_: number, o: SelectOption) => o?.value ?? o;
 
-  private onChangeCallback = (value: any) => {};
-  private onTouchedCallback = () => {};
+  private onChangeCallback = (value: any) => { };
+  private onTouchedCallback = () => { };
 
   get selectClasses(): string {
     const baseClasses = 'block w-full rounded-xl border-0 py-3 px-4 pr-10 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset text-gray-900 appearance-none cursor-pointer';
-    
+
     let stateClasses = '';
     if (this.error) {
       stateClasses = 'ring-red-300 focus:ring-red-500 bg-red-50';
@@ -59,9 +56,13 @@ export class SelectComponent implements ControlValueAccessor {
 
   onChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
-    this.value = target.value;
+    // Considera que el primer <option> es el placeholder
+    const idx = target.selectedIndex - 1;
+    const opt = (idx >= 0 && idx < this.options.length) ? this.options[idx] : null;
+    this.value = opt ? opt.value : null;
     this.onChangeCallback(this.value);
   }
+
 
   onBlur(): void {
     this.isFocused = false;
@@ -87,4 +88,9 @@ export class SelectComponent implements ControlValueAccessor {
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
+
+  equals(a: any, b: any): boolean {
+    return this.compareWith ? this.compareWith(a, b) : a === b;
+  }
+
 }

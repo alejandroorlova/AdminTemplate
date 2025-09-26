@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 // Importar nuestros componentes UI
 import { InputComponent } from '../../shared/ui/input/input.component';
-//import { SelectComponent, SelectOption } from '../../shared/ui/select/select.component';
+import { DatePickerComponent } from '../../shared/ui/date-picker/date-picker.component';
 import { FileUploadComponent } from '../../shared/ui/file-upload/file-upload.component';
 import { MaskedInputComponent } from '../../shared/ui/masked-input/masked-input.component';
-import { ModernSelectComponent, SelectOption } from '../../shared/ui/modern-select/modern-select.component';
+import { ModernSelectComponent, SelectOption } from '../../shared';
 import { TableComponent, TableColumn, TableConfig, TableAction } from '../../shared/ui/table/table.component';
 
 @Component({
@@ -17,7 +17,7 @@ import { TableComponent, TableColumn, TableConfig, TableAction } from '../../sha
     CommonModule,
     ReactiveFormsModule,
     InputComponent,
-    ModernSelectComponent,
+    DatePickerComponent,
     ModernSelectComponent,
     FileUploadComponent,
     MaskedInputComponent,
@@ -27,6 +27,8 @@ import { TableComponent, TableColumn, TableConfig, TableAction } from '../../sha
   styleUrls: ['./employees.component.scss']
 })
 export class EmployeesComponent implements OnInit {
+
+  @ViewChild('actionsTpl') actionsTpl!: TemplateRef<any>;
 
   // Estado de la aplicación
   activeTab: 'form' | 'list' = 'form';
@@ -285,29 +287,11 @@ export class EmployeesComponent implements OnInit {
       sortable: true,
       width: '160px'
     },
-    {
-      key: 'salary',
-      title: 'Salario',
-      type: 'number',
-      align: 'right',
-      sortable: true,
-      width: '120px'
-    },
-    {
-      key: 'hireDate',
-      title: 'Ingreso',
-      type: 'date',
-      sortable: true,
-      width: '110px'
-    },
-    {
-      key: 'status',
-      title: 'Estado',
-      type: 'badge',
-      sortable: true,
-      align: 'center',
-      width: '100px'
-    }
+    { key: 'salary', title: 'Salario', type: 'number', align: 'right', sortable: true, width: '120px', format: 'currency' },
+
+    { key: 'hireDate', title: 'Ingreso', type: 'date', sortable: true, width: '110px', /* format: 'date' */ },
+    { key: 'status', title: 'Estado', type: 'badge', sortable: true, align: 'center', width: '100px' },
+    { key: 'actions', title: 'Acciones', type: 'text', align: 'center', width: '160px' }
   ];
 
   // Configuración de la tabla
@@ -351,6 +335,15 @@ export class EmployeesComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.employeeForm = this.createForm();
+  }
+
+  ngAfterViewInit(): void {
+    const cols = [...this.employeeColumns];
+    const i = cols.findIndex(c => c.key === 'actions');
+    if (i >= 0) {
+      cols[i] = { ...cols[i], cellTemplate: this.actionsTpl };
+      this.employeeColumns = cols; // dispara cambio
+    }
   }
 
   ngOnInit(): void {

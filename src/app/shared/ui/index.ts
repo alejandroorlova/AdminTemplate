@@ -11,12 +11,9 @@ export { ModalComponent } from './modal/modal.component';
 
 // SELECT (clásico)
 export { SelectComponent } from './select/select.component';
-export type { SelectOption } from './select/select.component';
 
 // MODERN SELECT
 export { ModernSelectComponent } from './modern-select/modern-select.component';
-// 👇 Alias para evitar conflicto con el SelectOption del select clásico
-export type { SelectOption as ModernSelectOption } from './modern-select/modern-select.component';
 
 export { SidebarComponent } from './sidebar/sidebar.component';
 export { TableComponent } from './table/table.component';

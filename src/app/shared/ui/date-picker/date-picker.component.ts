@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -28,13 +28,16 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
 
-  @ViewChild('dateInput') dateInput!: ElementRef;
+  @ViewChild('calendarContainer') calendarContainer!: ElementRef;
 
   selectedDate: Date | null = null;
   isOpen = false;
-  allowTyping = false;
   displayValue = '';
   currentView: 'days' | 'months' | 'years' = 'days';
+  calendarLeft = 0;
+  calendarTop = 0;
+  calendarVisible = false;
+  overlayVisible = false;
   
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
@@ -59,109 +62,24 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.updateDisplayValue();
   }
 
-  get triggerClasses(): string {
-    const baseClasses = 'relative w-full cursor-pointer rounded-xl border-0 py-3 px-4 pr-4 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset bg-white flex items-center justify-between';
+  get inputClasses(): string {
+    // Usar exactamente las mismas clases que InputComponent
+    const baseClasses = 'block w-full rounded-xl !border-0 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset focus:outline-none text-gray-900 placeholder:text-gray-400 !py-3 !px-4 !pr-10 cursor-pointer';
     
     let stateClasses = '';
     if (this.error) {
-      stateClasses = 'ring-red-300 hover:ring-red-400';
-    } else if (this.isOpen || this.allowTyping) {
-      stateClasses = 'ring-iebem-primary ring-2';
+      stateClasses = 'ring-red-300 focus:ring-red-500 bg-red-50';
+    } else if (this.isOpen) {
+      stateClasses = 'ring-iebem-primary focus:ring-iebem-primary bg-white';
     } else {
-      stateClasses = 'ring-gray-300 hover:ring-gray-400';
+      stateClasses = 'ring-gray-300 focus:ring-iebem-primary bg-white hover:ring-gray-400';
     }
 
-    const disabledClasses = this.disabled ? 'bg-gray-100 cursor-not-allowed ring-gray-200' : 'hover:shadow-md';
+    const disabledClasses = this.disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed ring-gray-200' : '';
 
     return `${baseClasses} ${stateClasses} ${disabledClasses}`;
   }
 
-  // Métodos para el modo de escritura
-  toggleTypingMode(event: Event): void {
-    event.stopPropagation();
-    this.allowTyping = !this.allowTyping;
-    
-    if (this.allowTyping) {
-      this.isOpen = false;
-      setTimeout(() => {
-        this.dateInput?.nativeElement?.focus();
-      }, 100);
-    }
-  }
-
-  onInputChange(event: any): void {
-    this.displayValue = event.target.value;
-  }
-
-  onInputBlur(): void {
-    this.parseAndSetDate();
-  }
-
-  onInputFocus(): void {
-    this.onTouchedCallback();
-  }
-
-  parseAndSetDate(): void {
-    if (!this.displayValue.trim()) {
-      this.selectedDate = null;
-      this.onChangeCallback(null);
-      return;
-    }
-
-    const date = this.parseDate(this.displayValue);
-    if (date && this.isValidDate(date)) {
-      this.selectedDate = date;
-      this.currentMonth = date.getMonth();
-      this.currentYear = date.getFullYear();
-      this.onChangeCallback(date);
-      this.generateCalendar();
-      this.updateDisplayValue();
-    } else {
-      this.updateDisplayValue();
-    }
-  }
-
-  parseDate(dateString: string): Date | null {
-    // Limpiar y normalizar la entrada
-    const cleaned = dateString.trim().replace(/\s+/g, '');
-    
-    // Patrones para diferentes formatos
-    const patterns = [
-      /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/,  // DD/MM/YYYY o DD-MM-YYYY
-      /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})$/,  // DD/MM/YY o DD-MM-YY
-    ];
-
-    for (const pattern of patterns) {
-      const match = cleaned.match(pattern);
-      if (match) {
-        const day = parseInt(match[1], 10);
-        const month = parseInt(match[2], 10) - 1; // Los meses en JS son 0-indexados
-        let year = parseInt(match[3], 10);
-        
-        // Convertir año de 2 dígitos a 4 dígitos
-        if (year < 100) {
-          year += year < 50 ? 2000 : 1900;
-        }
-        
-        const date = new Date(year, month, day);
-        
-        // Verificar que la fecha sea válida
-        if (date.getFullYear() === year && 
-            date.getMonth() === month && 
-            date.getDate() === day) {
-          return date;
-        }
-      }
-    }
-    
-    return null;
-  }
-
-  isValidDate(date: Date): boolean {
-    if (this.minDate && date < this.minDate) return false;
-    if (this.maxDate && date > this.maxDate) return false;
-    return true;
-  }
 
   updateDisplayValue(): void {
     if (this.selectedDate) {
@@ -176,17 +94,57 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (event) event.stopPropagation();
     if (this.disabled) return;
     
-    this.isOpen = !this.isOpen;
-    this.currentView = 'days';
-    
-    if (this.isOpen) {
+    if (!this.isOpen) {
+      this.isOpen = true;
+      this.currentView = 'days';
       this.generateCalendar();
+      this.calculateCalendarPosition();
+      
+      // Inicializar invisible
+      this.overlayVisible = false;
+      this.calendarVisible = false;
+      
+      // Mostrar con animación
+      setTimeout(() => {
+        this.overlayVisible = true;
+        this.calendarVisible = true;
+      }, 10);
+    } else {
+      this.closeCalendar();
+    }
+  }
+
+  private calculateCalendarPosition(): void {
+    const calendarWidth = 320; // w-80 = 320px
+    const calendarHeight = 400;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    
+    // Centrar horizontalmente
+    this.calendarLeft = Math.max(0, (viewportWidth - calendarWidth) / 2);
+    
+    // Centrar verticalmente
+    this.calendarTop = Math.max(0, (viewportHeight - calendarHeight) / 2);
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:resize', ['$event'])
+  onWindowScrollOrResize(): void {
+    if (this.isOpen) {
+      this.calculateCalendarPosition();
     }
   }
 
   closeCalendar(): void {
-    this.isOpen = false;
-    this.currentView = 'days';
+    // Ocultar con animación
+    this.overlayVisible = false;
+    this.calendarVisible = false;
+    
+    // Cerrar después de la animación
+    setTimeout(() => {
+      this.isOpen = false;
+      this.currentView = 'days';
+    }, 300);
   }
 
   showMonthPicker(): void {
@@ -298,11 +256,11 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.closeCalendar();
   }
 
-  clearDate(event: Event): void {
-    event.stopPropagation();
+  clearDate(): void {
     this.selectedDate = null;
     this.displayValue = '';
     this.onChangeCallback(null);
+    this.closeCalendar();
   }
 
   previousMonth(): void {

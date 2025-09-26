@@ -77,9 +77,14 @@
                         [error]="getFieldError('gender')"></app-modern-select>
 
                     <!-- Fecha de Nacimiento -->
-                    <app-input label="Fecha de Nacimiento" type="date" [required]="true"
-                        formControlName="birthDate" dateFormat="DD/MM/AAAA"
-                        [error]="getFieldError('birthDate')"></app-input>
+                    <app-date-picker 
+                        label="Fecha de Nacimiento" 
+                        placeholder="Selecciona tu fecha de nacimiento"
+                        [required]="true"
+                        [clearable]="true"
+                        formControlName="birthDate"
+                        [error]="getFieldError('birthDate')">
+                    </app-date-picker>
                 </div>
             </div>
 
@@ -111,9 +116,14 @@
                         hint="Salario base mensual en pesos mexicanos"></app-input>
 
                     <!-- Fecha de Contratación -->
-                    <app-input label="Fecha de Contratación" type="date" [required]="true"
-                        formControlName="hireDate" dateFormat="DD/MM/AAAA"
-                        [error]="getFieldError('hireDate')"></app-input>
+                    <app-date-picker 
+                        label="Fecha de Contratación" 
+                        placeholder="Selecciona la fecha de ingreso"
+                        [required]="true"
+                        [clearable]="true"
+                        formControlName="hireDate"
+                        [error]="getFieldError('hireDate')">
+                    </app-date-picker>
                 </div>
             </div>
 
