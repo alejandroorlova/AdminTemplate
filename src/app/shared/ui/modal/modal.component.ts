@@ -110,8 +110,8 @@ export class ModalComponent implements OnInit, OnDestroy {
   private defaultConfig: ModalConfig = {
     size: 'md',
     closable: true,
-    backdrop: true,
-    keyboard: true,
+    backdrop: false,
+    keyboard: false,
     centered: true,
     animation: 'fade',
     theme: 'light'
@@ -150,16 +150,12 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   onEsc(): void {
     if (!this.isOpen) return;
-    if (this.config.keyboard && this.config.closable) {
-      this.close();
-    }
+    // No longer closes modal on ESC key
   }
 
   onBackdrop(): void {
     this.backdropClick.emit();
-    if (this.config.backdrop && this.config.closable) {
-      this.close();
-    }
+    // No longer closes modal on backdrop click
   }
 
 
@@ -199,9 +195,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   onBackdropClick(event: MouseEvent) {
     if (event.target === event.currentTarget) {
       this.backdropClick.emit();
-      if (this.config.closable && this.config.backdrop) {
-        this.close();
-      }
+      // No longer closes modal on backdrop click
     }
   }
 
