@@ -13,7 +13,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export interface LoaderConfig {
   message?: string;
   submessage?: string;
-  type?: 'default' | 'upload' | 'download' | 'processing' | 'saving' | 'loading';
+  type?: 'default' | 'upload' | 'download' | 'processing' | 'saving' | 'loading' | 'simple';
   showProgress?: boolean;
   progress?: number;
   showCancel?: boolean;
@@ -77,9 +77,14 @@ export class LoaderComponent implements OnInit, OnDestroy, OnChanges {
       'download': 'fas fa-cloud-download-alt',
       'processing': 'fas fa-cogs',
       'saving': 'fas fa-save',
-      'loading': 'fas fa-circle-notch'
+      'loading': 'fas fa-circle-notch',
+      'simple': 'fas fa-circle-notch'
     };
     return icons[this.finalConfig.type || 'default'];
+  }
+
+  get isSimpleLoader(): boolean {
+    return this.finalConfig.type === 'simple';
   }
   
   get loaderSize(): string {

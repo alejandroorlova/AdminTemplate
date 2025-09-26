@@ -12,11 +12,72 @@
             </p>
         </div>
 
+        <!-- Loaders Simples -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 mb-8">
+            <h2 class="text-2xl font-bold text-iebem-dark mb-6 font-heading">
+                <i class="fas fa-circle-notch text-iebem-gold mr-3"></i>
+                Loaders Simples
+            </h2>
+            <p class="text-gray-600 mb-6">
+                Loaders minimalistas con círculos girando y fondo negro transparente para casos donde necesites algo más sencillo.
+            </p>
+
+            <!-- Grid de botones simples -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <!-- Loader Simple Solo -->
+                <div class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-200">
+                    <div class="text-center mb-4">
+                        <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-circle-notch text-white animate-spin"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Solo Círculos</h3>
+                        <p class="text-sm text-gray-600">Sin texto, solo animación</p>
+                    </div>
+                    <button (click)="showSimpleLoader()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-gray-700 text-white py-2 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+
+                <!-- Loader Simple con Texto -->
+                <div class="bg-gradient-to-br from-iebem-primary/10 to-white rounded-xl p-4 border border-iebem-primary/20">
+                    <div class="text-center mb-4">
+                        <div class="w-12 h-12 bg-iebem-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-circle-notch text-white animate-spin"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Con Texto</h3>
+                        <p class="text-sm text-gray-600">Círculos + mensaje simple</p>
+                    </div>
+                    <button (click)="showSimpleLoaderWithText()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-iebem-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-iebem-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+
+                <!-- Loader Simple Rápido -->
+                <div class="bg-gradient-to-br from-iebem-gold/20 to-white rounded-xl p-4 border border-iebem-gold/30">
+                    <div class="text-center mb-4">
+                        <div class="w-12 h-12 bg-iebem-gold rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-circle-notch text-white animate-spin"></i>
+                        </div>
+                        <h3 class="font-bold text-iebem-dark">Rápido</h3>
+                        <p class="text-sm text-gray-600">Para acciones muy rápidas</p>
+                    </div>
+                    <button (click)="showQuickSimpleLoader()" [disabled]="isAnyLoaderActive"
+                        class="w-full bg-iebem-gold text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Mostrar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
         <!-- Controles de Demo -->
         <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
             <h2 class="text-2xl font-bold text-iebem-dark mb-6 font-heading">
                 <i class="fas fa-play-circle text-iebem-primary mr-3"></i>
-                Tipos de Loader
+                Loaders Completos
             </h2>
 
             <!-- Grid de botones -->

@@ -1,14 +1,35 @@
 <!-- fullscreen-loader.component.html -->
-<div *ngIf="isVisible" 
+<div *ngIf="isVisible"
      [class]="containerClasses"
      [@fadeInOut]
      role="dialog"
      aria-modal="true"
      aria-labelledby="loader-message"
      (click)="$event.stopPropagation()">
-  
-  <!-- Loader Content -->
-  <div class="flex items-center justify-center min-h-screen p-4" [@scaleIn]>
+
+  <!-- Simple Loader (solo círculos) -->
+  <div *ngIf="isSimpleLoader" class="flex items-center justify-center min-h-screen" [@scaleIn]>
+    <div class="flex flex-col items-center gap-4">
+      <!-- Círculos girando -->
+      <div class="relative">
+        <!-- Círculo exterior -->
+        <div class="w-16 h-16 border-4 border-iebem-primary border-t-transparent rounded-full animate-spin"></div>
+        <!-- Círculo interior -->
+        <div class="absolute top-2 left-2 w-12 h-12 border-4 border-iebem-secondary border-b-transparent rounded-full animate-spin" style="animation-direction: reverse; animation-duration: 0.8s;"></div>
+        <!-- Círculo central -->
+        <div class="absolute top-4 left-4 w-8 h-8 border-4 border-iebem-gold border-l-transparent rounded-full animate-spin" style="animation-duration: 1.2s;"></div>
+      </div>
+
+      <!-- Texto opcional (solo si se proporciona) -->
+      <div *ngIf="finalConfig.message" class="text-center">
+        <p class="text-white font-medium text-lg">{{ finalConfig.message }}</p>
+        <p *ngIf="finalConfig.submessage" class="text-white/80 text-sm mt-1">{{ finalConfig.submessage }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader Content (loader completo original) -->
+  <div *ngIf="!isSimpleLoader" class="flex items-center justify-center min-h-screen p-4" [@scaleIn]>
     
     <!-- Main Loader Card -->
     <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 w-full max-w-sm mx-auto relative overflow-hidden">

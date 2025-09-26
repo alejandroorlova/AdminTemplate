@@ -25,6 +25,48 @@ export class LoaderexamplesComponent {
 
   // ===== LOADERS BÁSICOS =====
 
+  showSimpleLoader() {
+    this.currentLoaderType = 'Loader Simple';
+    this.currentLoaderConfig = {
+      type: 'simple'
+    };
+    this.showLoader = true;
+
+    // Auto cerrar después de 3 segundos
+    setTimeout(() => {
+      this.hideLoader();
+    }, 3000);
+  }
+
+  showSimpleLoaderWithText() {
+    this.currentLoaderType = 'Loader Simple con Texto';
+    this.currentLoaderConfig = {
+      message: 'Cargando...',
+      submessage: 'Por favor espere',
+      type: 'simple'
+    };
+    this.showLoader = true;
+
+    // Auto cerrar después de 4 segundos
+    setTimeout(() => {
+      this.hideLoader();
+    }, 4000);
+  }
+
+  showQuickSimpleLoader() {
+    this.currentLoaderType = 'Loader Simple Rápido';
+    this.currentLoaderConfig = {
+      message: 'Procesando...',
+      type: 'simple'
+    };
+    this.showLoader = true;
+
+    // Simulación muy rápida
+    setTimeout(() => {
+      this.hideLoader();
+    }, 1500);
+  }
+
   showBasicLoader() {
     this.currentLoaderType = 'Loader Básico';
     this.currentLoaderConfig = {
