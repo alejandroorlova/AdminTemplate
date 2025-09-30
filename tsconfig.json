@@ -8,8 +8,8 @@
     "strict": true,
     "paths": {
       "iebem-ui": [
-        "./projects/iebem-ui/src/public-api.ts",
-        "./dist/iebem-ui"
+        "./dist/iebem-ui",
+        "./projects/iebem-ui/src/public-api.ts"
       ]
     },
     "noImplicitOverride": true,

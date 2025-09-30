@@ -78,17 +78,17 @@
             formControlName="rememberMe">
           </app-checkbox>
           
-          <app-button
+          <app-iebem-button
             variant="link"
             size="sm"
             label="¿Olvidaste tu contraseña?"
             (click)="onForgotPassword()">
-          </app-button>
+          </app-iebem-button>
         </div>
         
         <!-- Botón de submit -->
         <div class="pt-2">
-          <app-button
+          <app-iebem-button
             type="button"
             variant="primary"
             size="lg"
@@ -98,7 +98,7 @@
             icon="fas fa-sign-in-alt"
             label="Iniciar Sesión"
             (click)="onSubmit()">
-          </app-button>
+          </app-iebem-button>
         </div>
       </form>
       
@@ -114,35 +114,35 @@
       
       <!-- Botones de login social -->
       <div class="grid grid-cols-2 gap-3">
-        <app-button
+        <app-iebem-button
           variant="outline-primary"
           size="md"
           [fullWidth]="true"
           icon="fab fa-google"
           label="Google"
           (click)="loginWithGoogle()">
-        </app-button>
+        </app-iebem-button>
         
-        <app-button
+        <app-iebem-button
           variant="outline-primary"
           size="md"
           [fullWidth]="true"
           icon="fab fa-microsoft"
           label="Microsoft"
           (click)="loginWithMicrosoft()">
-        </app-button>
+        </app-iebem-button>
       </div>
       
       <!-- Enlace a registro -->
       <div class="text-center pt-4">
         <p class="text-gray-600 text-sm">
           ¿No tienes una cuenta?
-          <app-button
+          <app-iebem-button
             variant="link"
             size="sm"
             label="Regístrate aquí"
             (click)="goToRegister()">
-          </app-button>
+          </app-iebem-button>
         </p>
       </div>
     </div>

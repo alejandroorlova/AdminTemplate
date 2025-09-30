@@ -2,6 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './design-tokens.css';
-@import './components.tailwind.css';
+/* Inline design tokens (avoid @import to ensure inclusion in CLI build) */
+:root {
+  --iebem-primary: #70795b;
+  --iebem-secondary: #b29a7e;
+  --iebem-accent: #8B5CF6;
+  --iebem-dark: #374151;
+  --iebem-light: #F0FDF4;
+  --iebem-gold: #F59E0B;
+
+  --color-success: #10B981;
+  --color-success-light: #D1FAE5;
+  --color-danger: #EF4444;
+  --color-danger-light: #FEE2E2;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FEF3C7;
+  --color-info: #3B82F6;
+  --color-info-light: #DBEAFE;
+
+  --color-gray-50: #F9FAFB;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E5E7EB;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1F2937;
+  --color-gray-900: #111827;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+
+  --border-width-thin: 1px;
+  --border-width-thick: 2px;
+  --border-radius-sm: 0.375rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+  --border-radius-2xl: 1.5rem;
+  --border-radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  --transition-fast: 150ms;
+  --transition-normal: 200ms;
+  --transition-slow: 300ms;
+  --transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --transition-ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  --z-index-dropdown: 1000;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+}
+
+/* Inline component classes (avoid @import so Tailwind CLI includes them) */
+@layer components {
+  .btn-base { @apply inline-flex items-center justify-center font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-xl; }
+  .btn-primary { @apply btn-base bg-iebem-primary text-white border border-transparent hover:bg-iebem-dark focus:ring-iebem-primary; }
+  .btn-secondary { @apply btn-base bg-iebem-secondary text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-secondary; }
+  .btn-accent { @apply btn-base bg-iebem-accent text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-accent; }
+  .btn-danger { @apply btn-base bg-danger text-white border border-transparent hover:bg-red-600 focus:ring-danger; }
+  .btn-warning { @apply btn-base bg-warning text-white border border-transparent hover:bg-yellow-600 focus:ring-warning; }
+  .btn-success { @apply btn-base bg-success text-white border border-transparent hover:bg-green-600 focus:ring-success; }
+  .btn-info { @apply btn-base bg-info text-white border border-transparent hover:bg-blue-600 focus:ring-info; }
+  .btn-dark { @apply btn-base bg-iebem-dark text-white border border-transparent hover:bg-gray-700 focus:ring-iebem-dark; }
+  .btn-light { @apply btn-base bg-iebem-light text-iebem-dark border border-iebem-primary hover:bg-green-100 focus:ring-iebem-primary; }
+  .btn-outline { @apply btn-base bg-transparent border-2 text-iebem-primary border-iebem-primary hover:bg-iebem-primary hover:text-white focus:ring-iebem-primary; }
+  .btn-outline-secondary { @apply btn-base bg-transparent border-2 text-iebem-secondary border-iebem-secondary hover:bg-iebem-secondary hover:text-white focus:ring-iebem-secondary; }
+  .btn-outline-danger { @apply btn-base bg-transparent border-2 text-danger border-danger hover:bg-danger hover:text-white focus:ring-danger; }
+  .btn-ghost { @apply btn-base bg-transparent text-iebem-primary border border-transparent hover:bg-iebem-light focus:ring-iebem-primary; }
+  .btn-link { @apply btn-base bg-transparent text-iebem-primary border-0 underline-offset-2 hover:underline focus:ring-iebem-primary p-0; }
+  .btn-shadow { @apply shadow-sm hover:shadow-md; }
+  .btn-gradient { @apply btn-base bg-gradient-to-r from-iebem-primary to-iebem-secondary text-white border border-transparent hover:shadow-lg focus:ring-iebem-primary; }
+  .btn-icon { @apply inline-flex items-center justify-center w-8 h-8 p-0 rounded-lg; }
+  .btn-xs { @apply px-2.5 py-1.5 text-xs; }
+  .btn-sm { @apply px-3 py-2 text-sm; }
+  .btn-md { @apply px-4 py-2.5 text-sm; }
+  .btn-lg { @apply px-6 py-3 text-base; }
+  .btn-xl { @apply px-8 py-4 text-lg; }
+}
 

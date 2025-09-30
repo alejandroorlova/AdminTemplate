@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 // Importar componentes personalizados
 import { InputComponent } from '../../shared/ui/input/input.component';
-import { ButtonComponent } from '../../shared/ui/button/button.component';
+import { ButtonComponent } from 'iebem-ui';
 import { CheckboxComponent } from '../../shared/ui/checkbox/checkbox.component';
 import { ModalComponent, ModalConfig, ModalButton } from '../../shared/ui/modal/modal.component';
 import { LoaderComponent, LoaderConfig } from '../../shared/ui/loader/loader.component';

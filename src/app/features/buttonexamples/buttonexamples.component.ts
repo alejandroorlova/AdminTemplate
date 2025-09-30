@@ -114,8 +114,8 @@ export class ButtonExamplesComponent {
     const attributeString = attributes.length > 0 ? ' ' + attributes.join('\n  ') : '';
     const displayText = this.getDisplayText();
     
-    return `<app-button${attributeString}>
+    return `<app-iebem-button${attributeString}>
   ${displayText}
-</app-button>`;
+</app-iebem-button>`;
   }
 }
