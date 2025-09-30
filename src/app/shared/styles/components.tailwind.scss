@@ -1,0 +1,59 @@
+/*
+  Component layer central para clases reutilizables.
+  Objetivo: eliminar duplicación de estilos entre componentes
+  y facilitar la extracción a librería.
+*/
+
+@layer components {
+  /* Botones */
+  .btn-base {
+    @apply inline-flex items-center justify-center font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-xl;
+  }
+
+  .btn-primary { @apply btn-base bg-iebem-primary text-white border border-transparent hover:bg-iebem-dark focus:ring-iebem-primary; }
+  .btn-secondary { @apply btn-base bg-iebem-secondary text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-secondary; }
+  .btn-danger { @apply btn-base bg-danger text-white border border-transparent hover:bg-red-600 focus:ring-danger; }
+  .btn-warning { @apply btn-base bg-warning text-white border border-transparent hover:bg-yellow-600 focus:ring-warning; }
+  .btn-success { @apply btn-base bg-success text-white border border-transparent hover:bg-green-600 focus:ring-success; }
+  .btn-info { @apply btn-base bg-info text-white border border-transparent hover:bg-blue-600 focus:ring-info; }
+  .btn-dark { @apply btn-base bg-iebem-dark text-white border border-transparent hover:bg-gray-700 focus:ring-iebem-dark; }
+  .btn-light { @apply btn-base bg-iebem-light text-iebem-dark border border-iebem-primary hover:bg-green-100 focus:ring-iebem-primary; }
+
+  .btn-outline { @apply btn-base bg-transparent border-2 text-iebem-primary border-iebem-primary hover:bg-iebem-primary hover:text-white focus:ring-iebem-primary; }
+  .btn-outline-secondary { @apply btn-base bg-transparent border-2 text-iebem-secondary border-iebem-secondary hover:bg-iebem-secondary hover:text-white focus:ring-iebem-secondary; }
+  .btn-outline-danger { @apply btn-base bg-transparent border-2 text-danger border-danger hover:bg-danger hover:text-white focus:ring-danger; }
+
+  .btn-ghost { @apply btn-base bg-transparent text-iebem-primary border border-transparent hover:bg-iebem-light focus:ring-iebem-primary; }
+  .btn-link { @apply btn-base bg-transparent text-iebem-primary border-0 underline-offset-2 hover:underline focus:ring-iebem-primary p-0; }
+
+  .btn-shadow { @apply shadow-sm hover:shadow-md; }
+
+  /* Tamaños de botón */
+  .btn-xs { @apply px-2.5 py-1.5 text-xs; }
+  .btn-sm { @apply px-3 py-2 text-sm; }
+  .btn-md { @apply px-4 py-2.5 text-sm; }
+  .btn-lg { @apply px-6 py-3 text-base; }
+  .btn-xl { @apply px-8 py-4 text-lg; }
+
+  /* Inputs base */
+  .input-base {
+    @apply block w-full rounded-xl border-0 py-3 px-4 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset focus:outline-none text-gray-900 placeholder:text-gray-400;
+  }
+  .input-default { @apply input-base ring-gray-300 focus:ring-iebem-primary; }
+  .input-error { @apply input-base ring-red-300 focus:ring-red-500 bg-red-50; }
+  .input-disabled { @apply bg-gray-100 text-gray-500 cursor-not-allowed ring-gray-200; }
+
+  /* Badges */
+  .badge-base { @apply inline-flex items-center font-bold rounded-xl text-xs px-3 py-1; }
+  .badge-soft-primary { @apply badge-base bg-iebem-primary/10 text-iebem-primary; }
+  .badge-soft-secondary { @apply badge-base bg-iebem-secondary/10 text-iebem-secondary; }
+  .badge-soft-success { @apply badge-base bg-success/10 text-success; }
+  .badge-soft-danger { @apply badge-base bg-danger/10 text-danger; }
+  .badge-soft-warning { @apply badge-base bg-warning/10 text-warning; }
+  .badge-solid-primary { @apply badge-base bg-iebem-primary text-white; }
+  .badge-solid-danger { @apply badge-base bg-danger text-white; }
+
+  /* Cards/containers */
+  .card-base { @apply bg-white rounded-2xl border border-gray-200 shadow-lg; }
+}
+

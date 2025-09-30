@@ -2,16 +2,12 @@
 @use 'tailwindcss/components'; 
 @use 'tailwindcss/utilities';
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+/* Design tokens (paleta y escala tipográfica/espaciado) */
+@use 'app/shared/styles/design-tokens' as *;
 
-:root {
-  --iebem-primary: #70795b;
-  --iebem-secondary: #b29a7e;
-  --iebem-accent: #8B5CF6;
-  --iebem-dark: #374151;
-  --iebem-light: #F0FDF4;
-  --iebem-gold: #F59E0B;
-}
+/* Componentes reutilizables (Tailwind @layer components) */
+@use 'app/shared/styles/components.tailwind' as *;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 body {
   font-family: 'Inter', sans-serif;
@@ -76,4 +72,3 @@ input[type="radio"] {
   color: var(--iebem-dark);
   border-right: 4px solid var(--iebem-primary);
 }
-

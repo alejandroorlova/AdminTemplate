@@ -30,23 +30,23 @@ export class CssUtils {
       primary: 'btn-primary',
       secondary: 'btn-secondary', 
       danger: 'btn-danger',
-      success: 'bg-success text-white hover:bg-green-600',
-      warning: 'bg-warning text-white hover:bg-yellow-600',
-      info: 'bg-info text-white hover:bg-blue-600',
-      dark: 'bg-gray-800 text-white hover:bg-gray-900',
-      light: 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-    };
+      success: 'btn-success',
+      warning: 'btn-warning',
+      info: 'btn-info',
+      dark: 'btn-dark',
+      light: 'btn-light'
+    } as const;
     
     const outlineMap = {
-      primary: 'btn-outline border-iebem-primary text-iebem-primary hover:bg-iebem-primary hover:text-white',
-      secondary: 'btn-outline border-iebem-secondary text-iebem-secondary hover:bg-iebem-secondary hover:text-white',
-      danger: 'btn-outline border-danger text-danger hover:bg-danger hover:text-white',
-      success: 'btn-outline border-success text-success hover:bg-success hover:text-white',
-      warning: 'btn-outline border-warning text-warning hover:bg-warning hover:text-white',
-      info: 'btn-outline border-info text-info hover:bg-info hover:text-white',
-      dark: 'btn-outline border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white',
-      light: 'btn-outline border-gray-300 text-gray-600 hover:bg-gray-100'
-    };
+      primary: 'btn-outline',
+      secondary: 'btn-outline-secondary',
+      danger: 'btn-outline-danger',
+      success: 'btn-outline', // usar primario como base si no hay variante dedicada
+      warning: 'btn-outline',
+      info: 'btn-outline',
+      dark: 'btn-outline',
+      light: 'btn-outline'
+    } as const;
     
     switch (variant) {
       case 'solid':
@@ -54,9 +54,9 @@ export class CssUtils {
       case 'outline':
         return outlineMap[color] || outlineMap.primary;
       case 'ghost':
-        return `bg-transparent text-${color} hover:bg-${color} hover:bg-opacity-10`;
+        return 'btn-ghost';
       case 'link':
-        return `bg-transparent text-${color} hover:underline p-0`;
+        return 'btn-link';
       default:
         return colorMap[color] || colorMap.primary;
     }
@@ -106,34 +106,45 @@ export class CssUtils {
   
   private static getBadgeVariantClasses(color: SystemColor, variant: string): string {
     const softMap = {
-      primary: 'bg-iebem-primary bg-opacity-10 text-iebem-primary',
-      secondary: 'bg-iebem-secondary bg-opacity-10 text-iebem-secondary',
-      success: 'badge-success',
-      danger: 'badge-danger', 
-      warning: 'badge-warning',
-      info: 'bg-info bg-opacity-10 text-info',
-      dark: 'bg-gray-800 bg-opacity-10 text-gray-800',
-      light: 'bg-gray-100 text-gray-600'
-    };
-    
+      primary: 'badge-soft-primary',
+      secondary: 'badge-soft-secondary',
+      success: 'badge-soft-success',
+      danger: 'badge-soft-danger',
+      warning: 'badge-soft-warning',
+      info: 'badge-base bg-info/10 text-info',
+      dark: 'badge-base bg-gray-800/10 text-gray-800',
+      light: 'badge-base bg-gray-100 text-gray-600'
+    } as const;
+
     const solidMap = {
-      primary: 'bg-iebem-primary text-white',
-      secondary: 'bg-iebem-secondary text-white',
-      success: 'bg-success text-white',
-      danger: 'bg-danger text-white',
-      warning: 'bg-warning text-white',
-      info: 'bg-info text-white',
-      dark: 'bg-gray-800 text-white',
-      light: 'bg-gray-200 text-gray-800'
-    };
-    
+      primary: 'badge-solid-primary',
+      secondary: 'badge-base bg-iebem-secondary text-white',
+      success: 'badge-base bg-success text-white',
+      danger: 'badge-solid-danger',
+      warning: 'badge-base bg-warning text-white',
+      info: 'badge-base bg-info text-white',
+      dark: 'badge-base bg-gray-800 text-white',
+      light: 'badge-base bg-gray-200 text-gray-800'
+    } as const;
+
+    const outlineMap = {
+      primary: 'badge-base border-2 border-iebem-primary text-iebem-primary bg-transparent',
+      secondary: 'badge-base border-2 border-iebem-secondary text-iebem-secondary bg-transparent',
+      success: 'badge-base border-2 border-success text-success bg-transparent',
+      danger: 'badge-base border-2 border-danger text-danger bg-transparent',
+      warning: 'badge-base border-2 border-warning text-warning bg-transparent',
+      info: 'badge-base border-2 border-info text-info bg-transparent',
+      dark: 'badge-base border-2 border-gray-800 text-gray-800 bg-transparent',
+      light: 'badge-base border-2 border-gray-300 text-gray-600 bg-transparent'
+    } as const;
+
     switch (variant) {
       case 'solid':
         return solidMap[color] || solidMap.primary;
       case 'soft':
         return softMap[color] || softMap.primary;
       case 'outline':
-        return `border border-${color} text-${color} bg-transparent`;
+        return outlineMap[color] || outlineMap.primary;
       default:
         return softMap[color] || softMap.primary;
     }
