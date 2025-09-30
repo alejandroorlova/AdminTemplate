@@ -59,48 +59,47 @@ export class ButtonComponent {
   @Output() click = new EventEmitter<Event>();
 
   get buttonClasses(): string {
-    return [
-      'inline-flex items-center justify-center',
-      'font-medium transition-colors duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2',
-      this.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
+    const classes = [
+      'btn-base',
       this.sizeClasses,
       this.variantClasses,
-      this.shapeClasses,
       this.widthClasses,
-      this.shadowClasses
-    ].join(' ');
+      this.shadowClasses,
+    ];
+    if (this.rounded) classes.push('rounded-full');
+    if (this.disabled) classes.push('opacity-50 cursor-not-allowed');
+    return classes.filter(Boolean).join(' ');
   }
 
   get sizeClasses(): string {
     const sizes = {
-      xs: 'px-2.5 py-1.5 text-xs',
-      sm: 'px-3 py-2 text-sm',
-      md: 'px-4 py-2.5 text-sm',
-      lg: 'px-6 py-3 text-base',
-      xl: 'px-8 py-4 text-lg'
-    };
+      xs: 'btn-xs',
+      sm: 'btn-sm',
+      md: 'btn-md',
+      lg: 'btn-lg',
+      xl: 'btn-xl'
+    } as const;
     return sizes[this.size];
   }
 
   get variantClasses(): string {
     const variants = {
-      primary: 'bg-iebem-primary text-white border border-transparent hover:bg-iebem-dark focus:ring-iebem-primary',
-      secondary: 'bg-iebem-secondary text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-secondary',
-      accent: 'bg-iebem-accent text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-accent',
-      success: 'bg-success text-white border border-transparent hover:bg-green-600 focus:ring-success',
-      warning: 'bg-warning text-white border border-transparent hover:bg-yellow-600 focus:ring-warning',
-      danger: 'bg-danger text-white border border-transparent hover:bg-red-600 focus:ring-danger',
-      info: 'bg-info text-white border border-transparent hover:bg-blue-600 focus:ring-info',
-      dark: 'bg-iebem-dark text-white border border-transparent hover:bg-gray-600 focus:ring-iebem-dark',
-      light: 'bg-iebem-light text-iebem-dark border border-iebem-primary hover:bg-green-100 focus:ring-iebem-primary',
-      'outline-primary': 'bg-transparent text-iebem-primary border-2 border-iebem-primary hover:bg-iebem-primary hover:text-white focus:ring-iebem-primary',
-      'outline-secondary': 'bg-transparent text-iebem-secondary border-2 border-iebem-secondary hover:bg-iebem-secondary hover:text-white focus:ring-iebem-secondary',
-      'outline-danger': 'bg-transparent text-danger border-2 border-danger hover:bg-danger hover:text-white focus:ring-danger',
-      ghost: 'bg-transparent text-iebem-primary border border-transparent hover:bg-iebem-light focus:ring-iebem-primary',
-      link: 'bg-transparent text-iebem-primary border-none hover:underline focus:ring-iebem-primary p-0',
-      gradient: 'bg-gradient-to-r from-iebem-primary to-iebem-secondary text-white border border-transparent hover:shadow-lg focus:ring-iebem-primary'
-    };
+      primary: 'btn-primary',
+      secondary: 'btn-secondary',
+      accent: 'btn-accent',
+      success: 'btn-success',
+      warning: 'btn-warning',
+      danger: 'btn-danger',
+      info: 'btn-info',
+      dark: 'btn-dark',
+      light: 'btn-light',
+      'outline-primary': 'btn-outline',
+      'outline-secondary': 'btn-outline-secondary',
+      'outline-danger': 'btn-outline-danger',
+      ghost: 'btn-ghost',
+      link: 'btn-link',
+      gradient: 'btn-gradient'
+    } as const;
     return variants[this.variant];
   }
 
@@ -116,7 +115,7 @@ export class ButtonComponent {
     if (!this.shadow || this.variant === 'link' || this.variant === 'ghost') {
       return '';
     }
-    return 'shadow-sm hover:shadow-md';
+    return 'btn-shadow';
   }
 
   onClick(event: Event): void {

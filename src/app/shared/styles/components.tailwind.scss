@@ -12,6 +12,7 @@
 
   .btn-primary { @apply btn-base bg-iebem-primary text-white border border-transparent hover:bg-iebem-dark focus:ring-iebem-primary; }
   .btn-secondary { @apply btn-base bg-iebem-secondary text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-secondary; }
+  .btn-accent { @apply btn-base bg-iebem-accent text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-accent; }
   .btn-danger { @apply btn-base bg-danger text-white border border-transparent hover:bg-red-600 focus:ring-danger; }
   .btn-warning { @apply btn-base bg-warning text-white border border-transparent hover:bg-yellow-600 focus:ring-warning; }
   .btn-success { @apply btn-base bg-success text-white border border-transparent hover:bg-green-600 focus:ring-success; }
@@ -27,6 +28,7 @@
   .btn-link { @apply btn-base bg-transparent text-iebem-primary border-0 underline-offset-2 hover:underline focus:ring-iebem-primary p-0; }
 
   .btn-shadow { @apply shadow-sm hover:shadow-md; }
+  .btn-gradient { @apply btn-base bg-gradient-to-r from-iebem-primary to-iebem-secondary text-white border border-transparent hover:shadow-lg focus:ring-iebem-primary; }
 
   /* Tamaños de botón */
   .btn-xs { @apply px-2.5 py-1.5 text-xs; }

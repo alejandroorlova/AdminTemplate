@@ -201,14 +201,14 @@
             <!-- Botones de Acción -->
             <div class="flex flex-col sm:flex-row gap-4 justify-end bg-gray-50 p-6 rounded-2xl">
                 <button type="button"
-                    class="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-100 transition-colors duration-200"
+                    class="btn-outline btn-md disabled:opacity-50 disabled:cursor-not-allowed"
                     (click)="onReset()" [disabled]="isSubmitting">
                     <i class="fas fa-undo mr-2"></i>
                     Limpiar Formulario
                 </button>
 
                 <button type="submit"
-                    class="px-8 py-3 bg-iebem-primary text-white rounded-xl font-medium hover:bg-iebem-dark transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    class="btn-primary btn-lg btn-shadow disabled:opacity-50 disabled:cursor-not-allowed"
                     [disabled]="employeeForm.invalid || isSubmitting">
                     <i [class]="isSubmitting ? 'fas fa-spinner fa-spin mr-2' : 'fas fa-save mr-2'"></i>
                     {{ isSubmitting ? 'Guardando...' : 'Registrar Empleado' }}
@@ -239,14 +239,14 @@
                 <div class="flex gap-3">
                     <!-- Botón exportar -->
                     <button (click)="exportEmployees()"
-                        class="inline-flex items-center px-4 py-2 bg-iebem-secondary text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                        class="btn-secondary btn-md btn-shadow">
                         <i class="fas fa-download mr-2"></i>
                         <span class="hidden sm:inline">Exportar</span>
                     </button>
 
                     <!-- Botón agregar nuevo -->
                     <button (click)="activeTab = 'form'"
-                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-iebem-primary to-iebem-secondary text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                        class="btn-gradient btn-md btn-shadow">
                         <i class="fas fa-plus mr-2"></i>
                         <span class="hidden sm:inline">Nuevo Empleado</span>
                     </button>
@@ -340,11 +340,11 @@
 
         <div class="flex gap-3 justify-end">
             <button (click)="cancelDelete()"
-                class="px-4 py-2 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200">
+                class="btn-outline btn-sm">
                 Cancelar
             </button>
             <button (click)="confirmDelete()"
-                class="px-4 py-2 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-colors duration-200">
+                class="btn-danger btn-sm btn-shadow">
                 <i class="fas fa-trash mr-2"></i>
                 Eliminar
             </button>
