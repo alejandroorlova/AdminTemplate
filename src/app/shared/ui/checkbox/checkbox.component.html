@@ -10,7 +10,8 @@
     [disabled]="disabled"
     [required]="required"
     [attr.aria-label]="ariaLabel"
-    [attr.aria-describedby]="ariaDescribedBy"
+    [attr.aria-describedby]="(ariaDescribedBy || (checkboxId + '-error ' + checkboxId + '-hint'))"
+    [attr.aria-invalid]="showError ? true : null"
     [tabindex]="tabIndex"
     (change)="onCheckboxChange($event)"
     (focus)="onFocus()"
@@ -60,7 +61,7 @@
   <div class="flex items-start gap-1">
     <!-- Ícono de error -->
     <svg
-      *ngIf="error"
+      *ngIf="showError && error"
       class="w-4 h-4 mt-0.5 flex-shrink-0 text-red-500"
       viewBox="0 0 20 20"
       fill="currentColor">
@@ -72,7 +73,7 @@
 
     <!-- Ícono de información -->
     <svg
-      *ngIf="hint && !error"
+      *ngIf="hint && !showError"
       class="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400"
       viewBox="0 0 20 20"
       fill="currentColor">
@@ -82,6 +83,6 @@
         clip-rule="evenodd" />
     </svg>
 
-    <span>{{ helperText }}</span>
+    <span [id]="checkboxId + (showError ? '-error' : '-hint')">{{ helperText }}</span>
   </div>
 </div>

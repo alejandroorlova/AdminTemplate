@@ -1,5 +1,5 @@
 <div class="w-full relative">
-    <app-form-field [label]="label" [controlId]="id" [error]="error" [hint]="hint" [required]="required">
+    <app-form-field [label]="label" [controlId]="id" [error]="error" [hint]="hint" [required]="required" [touched]="touched" [empty]="!value">
         <div class="relative">
             <!-- Input normal -->
             <input #inputElement 
@@ -9,6 +9,8 @@
                 [disabled]="disabled" 
                 [readonly]="readonly" 
                 [class]="inputClasses" 
+                [attr.aria-describedby]="id + '-error ' + id + '-hint'"
+                [attr.aria-labelledby]="id + '-label'"
                 [value]="value"
                 (input)="onInput($event)" 
                 (blur)="onBlur()" 

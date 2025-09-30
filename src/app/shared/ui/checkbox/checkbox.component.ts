@@ -60,6 +60,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   @Input() ariaLabel: string = '';
   @Input() ariaDescribedBy: string = '';
   @Input() tabIndex: number = 0;
+  touched = false;
   
   @Input() 
   set checked(value: boolean) {
@@ -82,6 +83,12 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   get checkboxId(): string {
     return this.id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  get showError(): boolean {
+    const hasExternalError = !!(this.error && this.error.trim());
+    const isEmpty = !this.checked;
+    return hasExternalError || (this.required && isEmpty && this.touched);
   }
 
   get containerClasses(): string {
@@ -109,7 +116,7 @@ export class CheckboxComponent implements ControlValueAccessor {
       baseClasses.push(this.getVariantStyles());
     }
 
-    if (this.error) {
+    if (this.showError) {
       baseClasses.push('!border-red-500');
     }
 
@@ -192,16 +199,16 @@ export class CheckboxComponent implements ControlValueAccessor {
   get helperTextClasses(): string {
     return [
       'mt-2 text-sm flex items-start gap-1',
-      this.error ? 'text-red-600' : 'text-gray-600'
+      this.showError ? 'text-red-600' : 'text-gray-600'
     ].join(' ');
   }
 
   get hasHelperText(): boolean {
-    return !!(this.error || this.hint);
+    return !!((this.showError && this.error) || (!this.showError && this.hint));
   }
 
   get helperText(): string {
-    return this.error || this.hint;
+    return this.showError ? (this.error || 'Campo requerido') : (this.hint || '');
   }
 
   onCheckboxChange(event: Event): void {
@@ -221,6 +228,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   }
 
   onBlur(): void {
+    this.touched = true;
     this.onTouched();
     this.blur.emit();
   }

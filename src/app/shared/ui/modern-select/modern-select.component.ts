@@ -2,12 +2,13 @@ import { Component, Input, forwardRef, ViewChild, ElementRef } from '@angular/co
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FormFieldComponent } from '../form-field/form-field.component';
 import { SelectOption } from '../../types/common.types';
 
 @Component({
   selector: 'app-modern-select',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FormFieldComponent],
   templateUrl: './modern-select.component.html',
   providers: [
     {

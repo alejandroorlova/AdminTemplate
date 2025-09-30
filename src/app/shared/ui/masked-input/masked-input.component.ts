@@ -37,6 +37,7 @@ export class MaskedInputComponent implements ControlValueAccessor {
   value = '';
   displayValue = '';
   isFocused = false;
+  touched = false;
   isValid: boolean | null = null;
 
   private onChange = (value: string) => {};
@@ -204,6 +205,7 @@ export class MaskedInputComponent implements ControlValueAccessor {
 
   onBlur(): void {
     this.isFocused = false;
+    this.touched = true;
     this.onTouched();
   }
 

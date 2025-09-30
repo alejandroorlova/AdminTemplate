@@ -2,11 +2,12 @@ import { Component, Input, Output, EventEmitter, forwardRef, ViewChild, ElementR
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FormFieldComponent } from '../form-field/form-field.component';
 
 @Component({
   selector: 'app-date-picker',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FormFieldComponent],
   templateUrl: './date-picker.component.html',
   providers: [
     {
@@ -32,6 +33,7 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   selectedDate: Date | null = null;
   isOpen = false;
+  touched = false;
   displayValue = '';
   currentView: 'days' | 'months' | 'years' = 'days';
   calendarLeft = 0;
@@ -62,22 +64,17 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.updateDisplayValue();
   }
 
+  get showError(): boolean {
+    const hasExternalError = !!(this.error && this.error.trim());
+    const isEmpty = !this.selectedDate;
+    return hasExternalError || (this.required && isEmpty && this.touched);
+  }
+
   get inputClasses(): string {
-    // Usar exactamente las mismas clases que InputComponent
-    const baseClasses = 'block w-full rounded-xl !border-0 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset focus:outline-none text-gray-900 placeholder:text-gray-400 !py-3 !px-4 !pr-10 cursor-pointer';
-    
-    let stateClasses = '';
-    if (this.error) {
-      stateClasses = 'ring-red-300 focus:ring-red-500 bg-red-50';
-    } else if (this.isOpen) {
-      stateClasses = 'ring-iebem-primary focus:ring-iebem-primary bg-white';
-    } else {
-      stateClasses = 'ring-gray-300 focus:ring-iebem-primary bg-white hover:ring-gray-400';
-    }
-
-    const disabledClasses = this.disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed ring-gray-200' : '';
-
-    return `${baseClasses} ${stateClasses} ${disabledClasses}`;
+    const variant = this.showError ? 'input-error' : 'input-default';
+    const padding = 'py-3 pl-4 pr-10 cursor-pointer';
+    const disabled = this.disabled ? 'input-disabled' : '';
+    return [variant, padding, disabled].filter(Boolean).join(' ');
   }
 
 
@@ -144,6 +141,8 @@ export class DatePickerComponent implements ControlValueAccessor {
     setTimeout(() => {
       this.isOpen = false;
       this.currentView = 'days';
+      this.touched = true;
+      this.onTouchedCallback();
     }, 300);
   }
 
@@ -194,23 +193,17 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   // Métodos de estilo para month y year picker
   getMonthClasses(month: number): string {
-    const baseClasses = 'p-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gray-100';
-    
-    if (month === this.currentMonth) {
-      return `${baseClasses} bg-iebem-primary text-white hover:bg-iebem-dark`;
-    }
-    
-    return `${baseClasses} text-gray-700`;
+    const classes = ['dp-month'];
+    if (month === this.currentMonth) classes.push('dp-month--selected');
+    else classes.push('text-gray-700');
+    return classes.join(' ');
   }
 
   getYearClasses(year: number): string {
-    const baseClasses = 'p-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gray-100';
-    
-    if (year === this.currentYear) {
-      return `${baseClasses} bg-iebem-primary text-white hover:bg-iebem-dark`;
-    }
-    
-    return `${baseClasses} text-gray-700`;
+    const classes = ['dp-year'];
+    if (year === this.currentYear) classes.push('dp-year--selected');
+    else classes.push('text-gray-700');
+    return classes.join(' ');
   }
 
   // Métodos existentes del calendario
@@ -231,9 +224,21 @@ export class DatePickerComponent implements ControlValueAccessor {
         number: date.getDate(),
         isCurrentMonth: date.getMonth() === this.currentMonth,
         isToday: this.isToday(date),
-        isSelected: this.isSelected(date)
+        isSelected: this.isSelected(date),
+        isOutOfRange: this.isOutOfRange(date)
       });
     }
+  }
+
+  private isOutOfRange(date: Date): boolean {
+    const d = this.stripTime(date);
+    const afterMin = this.minDate ? d >= this.stripTime(this.minDate) : true;
+    const beforeMax = this.maxDate ? d <= this.stripTime(this.maxDate) : true;
+    return !(afterMin && beforeMax);
+  }
+
+  private stripTime(d: Date): Date {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
   }
 
   selectDate(day: any): void {
@@ -306,21 +311,17 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   getDayClasses(day: any): string {
-    const baseClasses = 'w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-200';
-    
-    if (!day.isCurrentMonth) {
-      return `${baseClasses} text-gray-300 cursor-not-allowed`;
+    const classes = ['dp-day'];
+    if (!day.isCurrentMonth || day.isOutOfRange) {
+      classes.push('dp-day--other');
+    } else if (day.isSelected) {
+      classes.push('dp-day--selected');
+    } else if (day.isToday) {
+      classes.push('dp-day--today');
+    } else {
+      classes.push('dp-day--default');
     }
-    
-    if (day.isSelected) {
-      return `${baseClasses} bg-iebem-primary text-white shadow-lg`;
-    }
-    
-    if (day.isToday) {
-      return `${baseClasses} bg-iebem-light text-iebem-primary border-2 border-iebem-primary`;
-    }
-    
-    return `${baseClasses} text-gray-700 hover:bg-gray-100 cursor-pointer`;
+    return classes.join(' ');
   }
 
   // Métodos de ControlValueAccessor
@@ -332,6 +333,11 @@ export class DatePickerComponent implements ControlValueAccessor {
     }
     this.generateCalendar();
     this.updateDisplayValue();
+  }
+
+  onBlurInput(): void {
+    this.touched = true;
+    this.onTouchedCallback();
   }
 
   registerOnChange(fn: (value: any) => void): void {

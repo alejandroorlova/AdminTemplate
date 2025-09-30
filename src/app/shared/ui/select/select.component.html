@@ -1,8 +1,8 @@
 <div class="w-full">
-    <app-form-field [label]="label" [controlId]="id" [error]="error" [hint]="hint" [required]="required">
+    <app-form-field [label]="label" [controlId]="id" [error]="error" [hint]="hint" [required]="required" [touched]="touched" [empty]="!value">
         <div class="relative">
             <select [id]="id" [disabled]="disabled" [class]="selectClasses" [value]="value" (change)="onChange($event)"
-                (blur)="onBlur()" (focus)="onFocus()" [attr.aria-invalid]="showError ? true : null">
+                (blur)="onBlur()" (focus)="onFocus()" [attr.aria-invalid]="showError ? true : null" [attr.aria-describedby]="id + '-error ' + id + '-hint'" [attr.aria-labelledby]="id + '-label'">
                 <option value="" disabled>{{ placeholder }}</option>
                 <option *ngFor="let option of options;trackBy: trackOpt" [value]="option.value"
                     [disabled]="option.disabled">

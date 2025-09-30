@@ -1,9 +1,9 @@
 <div class="w-full">
     
-    <app-form-field [label]="label" [controlId]="id" [error]="error" [hint]="hint" [required]="required">
+    <app-form-field [label]="label" [controlId]="id" [error]="error" [hint]="hint" [required]="required" [touched]="touched" [empty]="!value">
         <div class="relative">
             <input [id]="id" type="text" [placeholder]="placeholder" [disabled]="disabled" [readonly]="readonly"
-                [class]="inputClasses" [value]="displayValue" (input)="onInput($event)" (blur)="onBlur()"
+                [class]="inputClasses" [attr.aria-describedby]="id + '-error ' + id + '-hint'" [attr.aria-labelledby]="id + '-label'" [value]="displayValue" (input)="onInput($event)" (blur)="onBlur()"
                 (focus)="onFocus()" (keydown)="onKeyDown($event)" />
             <div *ngIf="icon" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <i [class]="'fas fa-' + icon + ' text-gray-400'"></i>

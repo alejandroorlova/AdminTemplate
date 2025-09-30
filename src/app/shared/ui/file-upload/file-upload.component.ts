@@ -1,49 +1,52 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormFieldComponent } from '../form-field/form-field.component';
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormFieldComponent],
   template: `
     <div class="w-full">
-      <label *ngIf="label" class="block text-sm font-medium text-gray-700 mb-2">
-        {{ label }}
-        <span *ngIf="required" class="text-red-500">*</span>
-      </label>
-      
-      <div 
-        [class]="dropZoneClasses"
-        (dragover)="onDragOver($event)"
-        (dragleave)="onDragLeave($event)"
-        (drop)="onDrop($event)"
-        (click)="fileInput.click()"
-      >
-        <input 
-          #fileInput
-          type="file" 
-          class="hidden" 
-          [accept]="accept"
-          [multiple]="multiple"
-          (change)="onFileSelect($event)"
-        />
-        
-        <div class="text-center">
-          <i [class]="iconClass"></i>
-          <p class="text-gray-600 mt-3 font-medium">
-            {{ dragActive ? 'Suelta los archivos aquí' : 'Arrastra archivos aquí o' }}
-          </p>
-          <button 
-            type="button" 
-            class="text-iebem-primary hover:text-iebem-dark font-semibold mt-2 bg-iebem-light px-4 py-2 rounded-lg transition-colors duration-200"
-            *ngIf="!dragActive"
-          >
-            <i class="fas fa-folder-open mr-2"></i>
-            Seleccionar archivos
-          </button>
-          <p class="text-xs text-gray-500 mt-3" *ngIf="hint">{{ hint }}</p>
+      <app-form-field [label]="label" [controlId]="id" [required]="required" [hint]="hint" [error]="error" [touched]="touched" [empty]="selectedFiles.length === 0">
+        <div 
+          [class]="dropZoneClasses"
+          role="button"
+          tabindex="0"
+          [attr.aria-invalid]="showError ? true : null"
+          [attr.aria-describedby]="id + '-error ' + id + '-hint'"
+          [attr.aria-labelledby]="id + '-label'"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+          (click)="markTouched(); fileInput.click()"
+        >
+          <input 
+            #fileInput
+            type="file" 
+            class="hidden" 
+            [accept]="accept"
+            [multiple]="multiple"
+            (change)="onFileSelect($event)"
+            (blur)="markTouched()"
+          />
+          
+          <div class="text-center">
+            <i [class]="iconClass"></i>
+            <p class="text-gray-600 mt-3 font-medium">
+              {{ dragActive ? 'Suelta los archivos aquí' : 'Arrastra archivos aquí o' }}
+            </p>
+            <button 
+              type="button" 
+              class="text-iebem-primary hover:text-iebem-dark font-semibold mt-2 bg-iebem-light px-4 py-2 rounded-lg transition-colors duration-200"
+              *ngIf="!dragActive"
+            >
+              <i class="fas fa-folder-open mr-2"></i>
+              Seleccionar archivos
+            </button>
+          </div>
         </div>
-      </div>
+      </app-form-field>
 
       <div *ngIf="selectedFiles.length > 0" class="mt-4 space-y-3">
         <h4 class="text-sm font-medium text-gray-700">Archivos seleccionados:</h4>
@@ -69,13 +72,12 @@ import { CommonModule } from '@angular/common';
           </button>
         </div>
       </div>
-
-      <p *ngIf="error" class="mt-2 text-sm text-red-600">{{ error }}</p>
     </div>
   `
 })
 export class FileUploadComponent {
   @Input() label = '';
+  @Input() id = 'file-upload';
   @Input() accept = '*';
   @Input() multiple = false;
   @Input() required = false;
@@ -86,16 +88,26 @@ export class FileUploadComponent {
 
   selectedFiles: File[] = [];
   dragActive = false;
+  touched = false;
+
+  get showError(): boolean {
+    const hasExternalError = !!(this.error && this.error.trim());
+    const isEmpty = this.selectedFiles.length === 0;
+    return hasExternalError || (this.required && isEmpty && this.touched);
+  }
 
   get dropZoneClasses(): string {
     const baseClasses = 'border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200';
-    const stateClasses = this.dragActive 
-      ? 'border-iebem-primary bg-iebem-light scale-105' 
-      : this.error 
-        ? 'border-red-300 hover:border-red-400 bg-red-50' 
-        : 'border-gray-300 hover:border-iebem-primary hover:bg-gray-50';
+    const errorState = this.showError ? 'border-red-300 hover:border-red-400 bg-red-50' : '';
+    const dragState = this.dragActive ? 'border-iebem-primary bg-iebem-light scale-105' : '';
+    const normalState = !this.dragActive && !this.showError ? 'border-gray-300 hover:border-iebem-primary hover:bg-gray-50' : '';
+    const stateClasses = [dragState, errorState, normalState].filter(Boolean).join(' ');
     
     return `${baseClasses} ${stateClasses}`;
+  }
+
+  markTouched(): void {
+    this.touched = true;
   }
 
   get iconClass(): string {
@@ -119,12 +131,14 @@ export class FileUploadComponent {
     this.dragActive = false;
     
     const files = Array.from(event.dataTransfer?.files || []);
+    this.markTouched();
     this.handleFiles(files);
   }
 
   onFileSelect(event: Event): void {
     const target = event.target as HTMLInputElement;
     const files = Array.from(target.files || []);
+    this.markTouched();
     this.handleFiles(files);
   }
 
