@@ -13,6 +13,7 @@ import { FormFieldComponent } from '../form-field/form-field.component';
           [class]="dropZoneClasses"
           role="button"
           tabindex="0"
+          data-role="file-dropzone"
           [attr.aria-invalid]="showError ? true : null"
           [attr.aria-describedby]="id + '-error ' + id + '-hint'"
           [attr.aria-labelledby]="id + '-label'"

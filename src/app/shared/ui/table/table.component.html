@@ -20,7 +20,7 @@
   </div>
 
   <!-- Tabla Container -->
-  <div class="tbl-card">
+  <div class="tbl-card" data-role="table-card">
     <!-- Loading Overlay -->
     <div *ngIf="loading" class="relative">
       <div class="absolute inset-0 bg-white bg-opacity-95 z-10 flex items-center justify-center">
@@ -33,29 +33,54 @@
 
     <!-- Vista Desktop (md y superiores) -->
     <div class="hidden md:block">
-      <div class="tbl-scroll">
-        <table class="tbl">
+      <div class="tbl-scroll" data-role="table-scroll">
+        <table class="tbl" data-role="table">
           <!-- Header Desktop -->
-          <thead class="tbl-head" [ngClass]="{'tbl-head--sticky': config.stickyHeader}">
+          <thead class="tbl-head" [ngClass]="{
+              'tbl-head--sticky': config.stickyHeader,
+              'tbl-head--glass': config.headerStyle==='glass',
+              'tbl-head--primary': config.headerStyle==='primary',
+              'tbl-head--gradient': config.headerStyle==='gradient',
+              'tbl-head--soft': config.headerStyle==='soft'
+            }">
             <tr>
               <!-- Columnas visibles en desktop -->
               <th *ngFor="let column of getDesktopColumns(); trackBy: trackByColumn"
                 class="tbl-th"
-                [ngClass]="{'tbl-th--compact': config.compact}"
+                [ngClass]="{
+                  'tbl-th--compact': config.compact,
+                  'tbl-th--glass': config.headerStyle==='glass',
+                  'tbl-th--primary': config.headerStyle==='primary',
+                  'tbl-th--gradient': config.headerStyle==='gradient',
+                  'tbl-th--soft': config.headerStyle==='soft'
+                }"
                 [style.min-width]="getResponsiveWidth(column)">
-                <div class="flex items-center gap-2">
+                <div class="tbl-th-label">
                   <span class="truncate">{{ column.title }}</span>
                   <!-- Sort button -->
                   <button *ngIf="column.sortable && config.sorting?.enabled" (click)="onSort(column.key)"
-                    class="tbl-sort-btn">
-                    <i [class]="getSortIcon(column.key)" class="text-xs"></i>
+                    class="tbl-sort-btn"
+                    [ngClass]="{
+                      'tbl-sort-btn--glass': config.headerStyle==='glass',
+                      'tbl-sort-btn--primary': config.headerStyle==='primary',
+                      'tbl-sort-btn--gradient': config.headerStyle==='gradient',
+                      'tbl-sort-btn--soft': config.headerStyle==='soft'
+                    }"
+                    [attr.aria-sort]="sortColumn===column.key ? (sortDirection==='asc' ? 'ascending' : 'descending') : 'none'">
+                    <i [class]="getSortIcon(column.key)"></i>
                   </button>
                 </div>
               </th>
 
               <!-- Columna de acciones -->
               <th *ngIf="actions.length > 0"
-                class="tbl-th text-center w-32">
+                class="tbl-th text-center w-32"
+                [ngClass]="{
+                  'tbl-th--glass': config.headerStyle==='glass',
+                  'tbl-th--primary': config.headerStyle==='primary',
+                  'tbl-th--gradient': config.headerStyle==='gradient',
+                  'tbl-th--soft': config.headerStyle==='soft'
+                }">
                 <i class="fas fa-cogs mr-1"></i>
                 Acciones
               </th>
@@ -180,6 +205,7 @@
       <div class="divide-y divide-gray-100">
         <div *ngFor="let row of processedData; trackBy: trackByRow"
           class="tbl-mobile-card"
+          data-role="table-mobile-card"
           [ngClass]="{'tbl-mobile-card--compact': config.compact, 'tbl-mobile-card--bordered': config.bordered}"
           (click)="onRowClick(row)">
 

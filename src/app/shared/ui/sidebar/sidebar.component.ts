@@ -155,7 +155,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // y NO se hizo click en el botón del header o en el sidebar mismo
     if (!this.isDesktop && this.isOpen) {
       const target = event.target as HTMLElement;
-      const sidebar = target.closest('.sidebar-container');
+      const sidebar = target.closest('[data-role="sidebar"]');
       const headerButton = target.closest('button'); // Cualquier botón
       const header = target.closest('header'); // Todo el header
       

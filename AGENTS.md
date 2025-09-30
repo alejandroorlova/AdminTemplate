@@ -41,6 +41,23 @@
 ## UI Patterns (Resumen)
 - Botones: usa clases `btn-*` (`btn-primary|secondary|accent|success|warning|danger|info|dark|light|outline|gradient`) + tamaños `btn-sm|md|lg` y `btn-shadow` si aplica.
 - Inputs/selects/date: aplica `input-default|error|success|disabled` y envuelve con `app-form-field` pasando `touched` y `empty`.
-- Tabla: usa utilidades `tbl-*` y flags en `TableConfig` (`hoverable`, `striped`, `bordered`, `compact`, `stickyHeader`). Scroll horizontal local con `.tbl-scroll`.
+- Búsquedas: usa `search-input` (deriva de `input-default` con icono izquierdo y paddings).
+- Tabla: usa utilidades `tbl-*` y flags en `TableConfig` (`hoverable`, `striped`, `bordered`, `compact`, `stickyHeader`, `headerStyle`). Scroll horizontal local con `.tbl-scroll`. `headerStyle` por defecto: `glass` (alternativas: `primary`, `gradient`).
 - Checkbox: utiliza `chk-*` para base, variantes y tamaños.
 - Modal: `<app-modal [config]="{ size, centered, backdrop, closable, buttonsAlign }" [buttons]="[{ label, action, type, size }]>` (ver README para ejemplo rápido).
+
+Notas de Playground/Demos
+- Ejemplos interactivos (buttons/checkboxes): prefiere `btn-*`, `chk-*` e `input-default` en lugar de cadenas utilitarias inline.
+- Evita clases dinámicas no detectables por Tailwind (construidas por string); usa mapas/variants o una `safelist` si es necesario.
+
+## Data Roles (Testing/Tracking)
+- Header: `data-role="header|header-toggle|header-search|header-notifications|header-user"`.
+- Sidebar: `data-role="sidebar"`.
+- Modal: `data-role="modal-overlay|modal-wrapper|modal-card"`.
+- Loader: `data-role="loader"`.
+- Tabla: `data-role="table-card|table-scroll|table|table-mobile-card"`.
+- File Upload: `data-role="file-dropzone"`.
+
+Ejemplos (Cypress/Playwright)
+- Cypress: `cy.get('[data-role=table]').within(() => { /* ... */ })`
+- Playwright: `await page.locator('[data-role="modal-card"]').getByText('Guardar').click()`

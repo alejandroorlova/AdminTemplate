@@ -106,3 +106,36 @@ Template (HTML):
 Notas:
 - Tipos de botón: primary, secondary, success, warning, danger, info, dark, light, accent, outline.
 - Tamaños: sm | md | lg. Las clases `btn-*` y `btn-shadow` están disponibles globalmente.
+
+## Tabla (UI) – Configuración recomendada
+
+```ts
+import { TableConfig, TableColumn, TableAction } from 'src/app/shared/ui/table';
+
+columns: TableColumn[] = [
+  { key: 'name', title: 'Nombre', type: 'text', sortable: true, width: '160px' },
+  { key: 'email', title: 'Email', type: 'text', sortable: true, width: '200px' },
+  { key: 'createdAt', title: 'Alta', type: 'date', sortable: true, width: '110px' },
+];
+
+config: TableConfig = {
+  headerStyle: 'glass',     // 'glass' (default) | 'primary' | 'gradient'
+  hoverable: true,
+  striped: false,
+  bordered: false,
+  compact: false,
+  stickyHeader: true,
+  pagination: { enabled: true, pageSize: 10 },
+  sorting: { enabled: true },
+  filtering: { enabled: true, globalSearch: true },
+};
+
+actions: TableAction[] = [
+  { key: 'edit', label: 'Editar', icon: 'edit', color: 'primary' },
+  { key: 'delete', label: 'Eliminar', icon: 'trash', color: 'danger' },
+];
+```
+
+Notas:
+- El scroll horizontal es local al contenedor `.tbl-scroll`.
+- El encabezado “glass” ofrece mejor legibilidad y look moderno; usa `'primary'` para fondo sólido.

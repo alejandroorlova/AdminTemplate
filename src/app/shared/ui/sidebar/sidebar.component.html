@@ -1,12 +1,13 @@
 <!-- shared/ui/sidebar/sidebar.component.html -->
 <div
-  class="sidebar-container fixed inset-y-0 left-0 z-50 bg-iebem-primary shadow-2xl transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col h-screen"
+  class="sidebar-container sdb-container"
   [class.-translate-x-full]="!isOpen" 
   [class.translate-x-0]="isOpen"
   [class.lg:relative]="isDesktop"
   [style.width]="isCollapsed ? '80px' : isDesktop ? '256px' : '280px'"
   [attr.data-open]="isOpen"
   [attr.data-desktop]="isDesktop"
+  data-role="sidebar"
 >
   
   <!-- Logo Header -->
@@ -55,7 +56,7 @@
     <button
       *ngIf="config.collapsible && !isCollapsed && isDesktop"
       type="button"
-      class="ml-auto btn-icon"
+      class="ml-auto sdb-iconbtn"
       (click)="toggleCollapse(); $event.stopPropagation()"
       aria-label="Colapsar sidebar"
     >
@@ -66,7 +67,7 @@
     <button
       *ngIf="!isDesktop"
       type="button"
-      class="ml-auto btn-icon"
+      class="ml-auto sdb-iconbtn"
       (click)="closeSidebar(); $event.stopPropagation()"
       aria-label="Cerrar sidebar"
     >
@@ -79,7 +80,7 @@
        class="flex justify-center py-3 border-b border-white border-opacity-20">
     <button
       type="button"
-      class="btn-icon"
+      class="sdb-iconbtn"
       (click)="toggleCollapse()"
       aria-label="Expandir sidebar"
     >
@@ -116,7 +117,7 @@
                 [routerLink]="item.route" 
                 routerLinkActive="active-link"
                 [routerLinkActiveOptions]="{ exact: false }"
-                class="flex items-center rounded-xl group transition-all duration-200 text-white text-opacity-80 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
+                class="sdb-link group"
                 [class]="getSidebarLinkClasses()"
                 [title]="getTooltipText(item)"
                 [class.pointer-events-none]="item.disabled"
@@ -124,7 +125,7 @@
                 [target]="item.target || '_self'"
               >
                 <div 
-                  class="bg-white bg-opacity-10 rounded-lg flex items-center justify-center group-hover:bg-white group-hover:bg-opacity-20 transition-all duration-200 flex-shrink-0"
+                  class="sdb-icon"
                   [class]="isCollapsed ? 'w-8 h-8 mr-0' : 'w-10 h-10 mr-3'"
                 >
                   <i [class]="'fas fa-' + item.icon + ' text-lg'" [attr.aria-hidden]="true"></i>
@@ -139,7 +140,7 @@
                 
                 <span 
                   *ngIf="item.badge && !isCollapsed" 
-                  class="bg-white bg-opacity-20 text-white text-xs font-semibold px-2 py-1 rounded-full min-w-5 text-center"
+                  class="sdb-badge"
                   [attr.aria-label]="'Badge: ' + item.badge"
                 >
                   {{ item.badge }}
@@ -150,7 +151,7 @@
               <button 
                 *ngIf="!item.route || hasChildren(item)"
                 type="button"
-                class="w-full flex items-center rounded-xl group transition-all duration-200 text-white text-opacity-80 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                class="w-full sdb-link group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
                 [class]="getSidebarLinkClasses()"
                 [class.bg-white]="isItemActive(item)"
                 [class.bg-opacity-15]="isItemActive(item)"
@@ -163,7 +164,7 @@
                 (click)="handleItemClick(item)"
               >
                 <div 
-                  class="bg-white bg-opacity-10 rounded-lg flex items-center justify-center group-hover:bg-white group-hover:bg-opacity-20 transition-all duration-200 flex-shrink-0"
+                  class="sdb-icon"
                   [class]="isCollapsed ? 'w-8 h-8 mr-0' : 'w-10 h-10 mr-3'"
                   [class.bg-white]="isItemActive(item)"
                   [class.bg-opacity-25]="isItemActive(item)"
@@ -180,7 +181,7 @@
                 
                 <span 
                   *ngIf="item.badge && !isCollapsed" 
-                  class="bg-white bg-opacity-20 text-white text-xs font-semibold px-2 py-1 rounded-full min-w-5 text-center"
+                  class="sdb-badge"
                   [attr.aria-label]="'Badge: ' + item.badge"
                 >
                   {{ item.badge }}

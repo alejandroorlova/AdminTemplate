@@ -41,6 +41,7 @@ export interface TableConfig {
   bordered?: boolean;
   compact?: boolean;
   stickyHeader?: boolean;
+  headerStyle?: 'primary' | 'glass' | 'gradient' | 'soft';
   pagination?: {
     enabled: boolean;
     pageSize: number;

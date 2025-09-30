@@ -4,10 +4,10 @@
              [cdkConnectedOverlayBackdropClass]="'bg-black bg-opacity-50'">
 
   <!-- Backdrop negro transparente -->
-  <div class="modal-overlay" (click)="onBackdropClick()"
+  <div class="modal-overlay" data-role="modal-overlay" (click)="onBackdropClick()"
        [@backdropAnimation]="'in'"></div>
 
-  <div class="modal-wrapper"
+  <div class="modal-wrapper" data-role="modal-wrapper"
        role="dialog"
        aria-modal="true"
        [attr.aria-labelledby]="title ? 'modal-title' : null"
@@ -22,7 +22,7 @@
            #dialog
            cdkTrapFocus
            tabindex="-1"
-           class="modal-card transition-all duration-300 transform"
+           class="modal-card transition-all duration-300 transform" data-role="modal-card"
            [class]="getModalSizeClass() + ' ' + customClass"
            [@modalAnimation]="'in'">
 

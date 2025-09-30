@@ -73,6 +73,7 @@ export class TableComponent implements OnInit, OnChanges {
       bordered: false,
       compact: false,
       stickyHeader: false,
+      headerStyle: 'glass',
       pagination: {
         enabled: true,
         pageSize: 10
@@ -194,10 +195,19 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   getSortIcon(columnKey: string): string {
-    if (this.sortColumn === columnKey) {
-      return this.sortDirection === 'asc' ? 'fas fa-sort-up text-white' : 'fas fa-sort-down text-white';
-    }
-    return 'fas fa-sort text-white text-opacity-70';
+    const isActive = this.sortColumn === columnKey;
+    const icon = isActive ? (this.sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down') : 'fas fa-sort';
+    const style = this.config.headerStyle || 'glass';
+    const color = isActive
+      ? (style === 'glass' ? 'tbl-sort-icon--active-glass' 
+         : style === 'primary' ? 'tbl-sort-icon--active-primary' 
+         : style === 'soft' ? 'tbl-sort-icon--active-soft' 
+         : 'tbl-sort-icon--active-gradient')
+      : (style === 'glass' ? 'tbl-sort-icon--glass' 
+         : style === 'primary' ? 'tbl-sort-icon--primary' 
+         : style === 'soft' ? 'tbl-sort-icon--soft' 
+         : 'tbl-sort-icon--gradient');
+    return `${icon} tbl-sort-icon ${color}`;
   }
 
   formatCellValue(value: any, column: TableColumn): string {

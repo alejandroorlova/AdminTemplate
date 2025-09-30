@@ -297,6 +297,7 @@ export class EmployeesComponent implements OnInit {
   // Configuración de la tabla
   // Configuración de la tabla
   tableConfig: TableConfig = {
+    headerStyle: 'primary',
     pagination: {
       enabled: true,
       pageSize: 8
