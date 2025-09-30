@@ -4,10 +4,10 @@
              [cdkConnectedOverlayBackdropClass]="'bg-black bg-opacity-50'">
 
   <!-- Backdrop negro transparente -->
-  <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+  <div class="modal-overlay" (click)="onBackdropClick()"
        [@backdropAnimation]="'in'"></div>
 
-  <div class="fixed inset-0 z-50 overflow-y-auto"
+  <div class="modal-wrapper"
        role="dialog"
        aria-modal="true"
        [attr.aria-labelledby]="title ? 'modal-title' : null"
@@ -15,15 +15,14 @@
        (keydown.escape)="onEsc()">
 
     <!-- Contenedor (misma posición que antes) -->
-    <div class="relative min-h-screen flex justify-center px-4 py-6 sm:px-6 lg:px-8 pointer-events-none"
-         [class]="getModalPositionClass()">
+    <div [class]="(getModalPositionClass() === 'items-center' ? 'modal-position-center' : 'modal-position-top')">
 
       <!-- Contenido (con tus animaciones) -->
       <div #modalContent
            #dialog
            cdkTrapFocus
            tabindex="-1"
-           class="relative bg-white rounded-2xl shadow-2xl w-full transition-all duration-300 transform pointer-events-auto"
+           class="modal-card transition-all duration-300 transform"
            [class]="getModalSizeClass() + ' ' + customClass"
            [@modalAnimation]="'in'">
 
@@ -40,14 +39,14 @@
         <button *ngIf="config.closable"
                 #firstFocusable
                 type="button"
-                class="absolute top-4 right-4 z-20 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-iebem-primary focus:ring-offset-2"
+                class="modal-close"
                 (click)="close()"
                 aria-label="Cerrar modal">
           <i class="fas fa-times text-lg"></i>
         </button>
 
         <!-- Header -->
-        <div *ngIf="title || subtitle || icon" class="px-6 py-6 border-b border-gray-100">
+        <div *ngIf="title || subtitle || icon" class="modal-header">
           <div class="flex items-start gap-4">
             <div *ngIf="icon"
                  class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-iebem-light to-white rounded-xl flex items-center justify-center border border-iebem-primary border-opacity-20">
@@ -65,16 +64,16 @@
         </div>
 
         <!-- Body -->
-        <div class="px-6 py-6">
-          <div class="text-gray-700 leading-relaxed">
+        <div class="modal-body">
+          <div>
             <ng-content></ng-content>
           </div>
         </div>
 
         <!-- Footer -->
         <div *ngIf="buttons && buttons.length > 0"
-             class="px-6 py-4 bg-gradient-to-r from-gray-50 to-iebem-light bg-opacity-30 border-t border-gray-100 rounded-b-2xl">
-          <div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
+             class="modal-footer">
+          <div [class]="getFooterLayoutClasses()">
             <button *ngFor="let button of buttons; let i = index"
                     type="button"
                     [class]="getButtonClasses(button)"

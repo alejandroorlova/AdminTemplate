@@ -38,3 +38,9 @@
 - Routes lazy-load components via `loadComponent` and render under `shared/layout`.
 - Avoid hardcoding secrets; prefer environment-based or runtime config if added later. Exclude large binaries from VCS where possible.
 
+## UI Patterns (Resumen)
+- Botones: usa clases `btn-*` (`btn-primary|secondary|accent|success|warning|danger|info|dark|light|outline|gradient`) + tamaños `btn-sm|md|lg` y `btn-shadow` si aplica.
+- Inputs/selects/date: aplica `input-default|error|success|disabled` y envuelve con `app-form-field` pasando `touched` y `empty`.
+- Tabla: usa utilidades `tbl-*` y flags en `TableConfig` (`hoverable`, `striped`, `bordered`, `compact`, `stickyHeader`). Scroll horizontal local con `.tbl-scroll`.
+- Checkbox: utiliza `chk-*` para base, variantes y tamaños.
+- Modal: `<app-modal [config]="{ size, centered, backdrop, closable, buttonsAlign }" [buttons]="[{ label, action, type, size }]>` (ver README para ejemplo rápido).

@@ -57,3 +57,52 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Modal (UI) – Ejemplo rápido
+
+Importa y usa el componente con configuración y botones estandarizados (`btn-*`).
+
+TypeScript (componente):
+```ts
+import { ModalComponent } from 'src/app/shared/ui/modal/modal.component';
+
+showInfo = false;
+modalConfig = {
+  size: 'md',          // sm | md | lg | xl | full
+  centered: true,      // posicionar en centro o top
+  backdrop: true,      // clic en fondo para cerrar
+  closable: true,
+  buttonsAlign: 'end', // start | center | end
+};
+
+modalButtons = [
+  { label: 'Cancelar', action: 'cancel', type: 'outline', size: 'sm' },
+  { label: 'Guardar', action: 'save', type: 'primary', size: 'md' },
+];
+
+onModalButton(action: string) {
+  if (action === 'save') { /* ... */ }
+  this.showInfo = false;
+}
+```
+
+Template (HTML):
+```html
+<app-modal
+  [isOpen]="showInfo"
+  title="Información"
+  subtitle="Detalle del registro"
+  icon="info-circle"
+  iconColor="info"
+  [config]="modalConfig"
+  [buttons]="modalButtons"
+  (buttonClick)="onModalButton($event)"
+  (closed)="showInfo = false">
+  <p>Contenido del modal…</p>
+  <button class="btn-primary btn-sm" (click)="showInfo = false">Cerrar</button>
+</app-modal>
+```
+
+Notas:
+- Tipos de botón: primary, secondary, success, warning, danger, info, dark, light, accent, outline.
+- Tamaños: sm | md | lg. Las clases `btn-*` y `btn-shadow` están disponibles globalmente.

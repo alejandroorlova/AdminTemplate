@@ -25,15 +25,17 @@ export interface ModalConfig {
   centered?: boolean;
   animation?: 'fade' | 'slide' | 'zoom';
   theme?: 'light' | 'dark';
+  buttonsAlign?: 'start' | 'center' | 'end';
 }
 
 export interface ModalButton {
   label: string;
   action: string;
-  type?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning';
+  type?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info' | 'dark' | 'light' | 'accent' | 'outline';
   disabled?: boolean;
   loading?: boolean;
   icon?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 @Component({
@@ -114,7 +116,8 @@ export class ModalComponent implements OnInit, OnDestroy {
     keyboard: false,
     centered: true,
     animation: 'fade',
-    theme: 'light'
+    theme: 'light',
+    buttonsAlign: 'end'
   };
 
   ngOnInit(): void {
@@ -192,10 +195,10 @@ export class ModalComponent implements OnInit, OnDestroy {
     this.buttonClick.emit(action);
   }
 
-  onBackdropClick(event: MouseEvent) {
-    if (event.target === event.currentTarget) {
-      this.backdropClick.emit();
-      // No longer closes modal on backdrop click
+  onBackdropClick(event?: MouseEvent) {
+    this.backdropClick.emit();
+    if (this.config.backdrop && this.config.closable) {
+      this.close();
     }
   }
 
@@ -216,19 +219,33 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   getButtonClasses(button: ModalButton): string {
-    const baseClasses = 'px-4 py-2 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-
-    const typeClasses = {
-      'primary': 'bg-iebem-primary text-white hover:bg-iebem-dark focus:ring-iebem-primary',
-      'secondary': 'bg-iebem-secondary text-white hover:opacity-80 focus:ring-iebem-secondary',
-      'danger': 'bg-danger text-white hover:bg-red-600 focus:ring-danger',
-      'success': 'bg-success text-white hover:bg-green-600 focus:ring-success',
-      'warning': 'bg-warning text-white hover:bg-yellow-600 focus:ring-warning'
+    const map: Record<string, string> = {
+      primary: 'btn-primary',
+      secondary: 'btn-secondary',
+      danger: 'btn-danger',
+      success: 'btn-success',
+      warning: 'btn-warning',
+      info: 'btn-info',
+      dark: 'btn-dark',
+      light: 'btn-light',
+      accent: 'btn-accent',
+      outline: 'btn-outline'
     };
-
-    const typeClass = typeClasses[button.type || 'primary'];
-    return `${baseClasses} ${typeClass}`;
+    const variant = map[button.type || 'primary'] || 'btn-primary';
+    const sizeMap: Record<string, string> = { sm: 'btn-sm', md: 'btn-md', lg: 'btn-lg' };
+    const size = sizeMap[button.size || 'md'] || 'btn-md';
+    const shadow = 'btn-shadow';
+    const disabled = 'disabled:opacity-50 disabled:cursor-not-allowed';
+    return [variant, size, shadow, disabled].join(' ');
   }
+
+  getFooterLayoutClasses(): string {
+    const align = this.config.buttonsAlign || 'end';
+    const justify = align === 'start' ? 'sm:justify-start' : align === 'center' ? 'sm:justify-center' : 'sm:justify-end';
+    return ['flex flex-col sm:flex-row gap-3', justify].join(' ');
+  }
+
+  
 
   getIconColorClass(): string {
     const colorClasses = {
