@@ -55,7 +55,7 @@
     <button
       *ngIf="config.collapsible && !isCollapsed && isDesktop"
       type="button"
-      class="ml-auto p-2 text-white text-opacity-70 hover:text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
+      class="ml-auto btn-icon"
       (click)="toggleCollapse(); $event.stopPropagation()"
       aria-label="Colapsar sidebar"
     >
@@ -66,7 +66,7 @@
     <button
       *ngIf="!isDesktop"
       type="button"
-      class="ml-auto p-2 text-white text-opacity-70 hover:text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
+      class="ml-auto btn-icon"
       (click)="closeSidebar(); $event.stopPropagation()"
       aria-label="Cerrar sidebar"
     >
@@ -79,7 +79,7 @@
        class="flex justify-center py-3 border-b border-white border-opacity-20">
     <button
       type="button"
-      class="p-2 text-white text-opacity-70 hover:text-white hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-30 active:scale-95"
+      class="btn-icon"
       (click)="toggleCollapse()"
       aria-label="Expandir sidebar"
     >

@@ -101,26 +101,25 @@ export class CheckboxComponent implements ControlValueAccessor {
   }
 
   get checkboxClasses(): string {
-    const baseClasses = [
-      'relative inline-flex items-center justify-center',
-      'border-2 rounded-md transition-all duration-200',
-      'cursor-pointer select-none',
-      this.sizeClasses
-    ];
-
-    // Estado no marcado
-    if (!this.checked && !this.indeterminate) {
-      baseClasses.push('border-gray-300 bg-white hover:border-gray-400');
-    } else {
-      // Estado marcado - aquí aplicamos los colores específicos
-      baseClasses.push(this.getVariantStyles());
-    }
-
-    if (this.showError) {
-      baseClasses.push('!border-red-500');
-    }
-
-    return baseClasses.join(' ');
+    const classes = ['chk-base', this.sizeClasses];
+    const checked = this.checked || this.indeterminate;
+    const variantMap: Record<string, string> = {
+      primary: 'chk-checked-primary',
+      secondary: 'chk-checked-secondary',
+      accent: 'chk-checked-accent',
+      success: 'chk-checked-success',
+      warning: 'chk-checked-warning',
+      danger: 'chk-checked-danger',
+      info: 'chk-checked-info',
+      dark: 'chk-checked-dark',
+      light: 'chk-checked-light',
+      gold: 'chk-checked-warning',
+      gradient: 'chk-checked-primary'
+    };
+    classes.push(checked ? (variantMap[this.variant] || 'chk-checked-primary') : 'chk-unchecked');
+    if (this.showError) classes.push('chk-error');
+    if (this.disabled) classes.push('chk-disabled');
+    return classes.join(' ');
   }
 
   private getVariantStyles(): string {
@@ -165,12 +164,12 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   get sizeClasses(): string {
     const sizes = {
-      xs: 'w-4 h-4',
-      sm: 'w-5 h-5',
-      md: 'w-6 h-6',
-      lg: 'w-7 h-7',
-      xl: 'w-8 h-8'
-    };
+      xs: 'chk-xs',
+      sm: 'chk-sm',
+      md: 'chk-md',
+      lg: 'chk-lg',
+      xl: 'chk-xl'
+    } as const;
     return sizes[this.size];
   }
 

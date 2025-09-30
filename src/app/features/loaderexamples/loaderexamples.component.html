@@ -35,7 +35,7 @@
                         <p class="text-sm text-gray-600">Sin texto, solo animación</p>
                     </div>
                     <button (click)="showSimpleLoader()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-gray-700 text-white py-2 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="w-full btn-dark btn-md disabled:opacity-50 disabled:cursor-not-allowed">
                         Mostrar
                     </button>
                 </div>
@@ -50,7 +50,7 @@
                         <p class="text-sm text-gray-600">Círculos + mensaje simple</p>
                     </div>
                     <button (click)="showSimpleLoaderWithText()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-iebem-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-iebem-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="w-full btn-primary btn-md disabled:opacity-50 disabled:cursor-not-allowed">
                         Mostrar
                     </button>
                 </div>
@@ -65,7 +65,7 @@
                         <p class="text-sm text-gray-600">Para acciones muy rápidas</p>
                     </div>
                     <button (click)="showQuickSimpleLoader()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-iebem-gold text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="w-full btn-warning btn-md disabled:opacity-50 disabled:cursor-not-allowed">
                         Mostrar
                     </button>
                 </div>
@@ -142,7 +142,7 @@
                         <p class="text-sm text-gray-600">Para downloads con progreso</p>
                     </div>
                     <button (click)="showDownloadLoader()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-info text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="w-full btn-info btn-md disabled:opacity-50 disabled:cursor-not-allowed">
                         Mostrar
                     </button>
                 </div>
@@ -157,7 +157,7 @@
                         <p class="text-sm text-gray-600">Para operaciones de guardado</p>
                     </div>
                     <button (click)="showSavingLoader()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-warning text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="w-full btn-warning btn-md disabled:opacity-50 disabled:cursor-not-allowed">
                         Mostrar
                     </button>
                 </div>
@@ -174,7 +174,7 @@
                         <p class="text-sm text-gray-600">Para análisis y procesamiento</p>
                     </div>
                     <button (click)="showProcessingLoader()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-iebem-accent text-white py-2 px-4 rounded-lg font-medium hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="w-full btn-accent btn-md disabled:opacity-50 disabled:cursor-not-allowed">
                         Mostrar
                     </button>
                 </div>
@@ -183,7 +183,7 @@
             <!-- Botón para cancelar -->
             <div class="flex justify-center">
                 <button (click)="cancelCurrentLoader()" [disabled]="!isAnyLoaderActive"
-                    class="bg-danger text-white px-6 py-3 rounded-xl font-medium hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    class="btn-danger btn-lg btn-shadow disabled:opacity-50 disabled:cursor-not-allowed">
                     <i class="fas fa-stop mr-2"></i>
                     Cancelar Loader Actual
                 </button>
@@ -209,7 +209,7 @@
                         Simula la carga de empleados desde la base de datos del IEBEM
                     </p>
                     <button (click)="simulateLoadEmployees()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-iebem-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-iebem-dark transition-colors disabled:opacity-50">
+                        class="w-full btn-primary btn-md disabled:opacity-50">
                         Cargar Empleados
                     </button>
                 </div>
@@ -224,7 +224,7 @@
                         Simula el guardado de un nuevo empleado con validaciones
                     </p>
                     <button (click)="simulateSaveEmployee()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-success text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors disabled:opacity-50">
+                        class="w-full btn-success btn-md disabled:opacity-50">
                         Guardar Empleado
                     </button>
                 </div>
@@ -239,7 +239,7 @@
                         Genera un archivo Excel con todos los empleados registrados
                     </p>
                     <button (click)="simulateExportExcel()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-info text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors disabled:opacity-50">
+                        class="w-full btn-info btn-md disabled:opacity-50">
                         Exportar Excel
                     </button>
                 </div>
@@ -254,7 +254,7 @@
                         Simula la importación masiva de empleados desde un archivo
                     </p>
                     <button (click)="simulateImportEmployees()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-warning text-white py-2 px-4 rounded-lg font-medium hover:bg-yellow-600 transition-colors disabled:opacity-50">
+                        class="w-full btn-warning btn-md disabled:opacity-50">
                         Importar Archivo
                     </button>
                 </div>
@@ -269,7 +269,7 @@
                         Crea un reporte completo con estadísticas de empleados
                     </p>
                     <button (click)="simulateGenerateReport()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-iebem-secondary text-white py-2 px-4 rounded-lg font-medium hover:opacity-80 transition-opacity disabled:opacity-50">
+                        class="w-full btn-secondary btn-md disabled:opacity-50">
                         Generar Reporte
                     </button>
                 </div>
@@ -284,7 +284,7 @@
                         Crea una copia de seguridad completa del sistema
                     </p>
                     <button (click)="simulateSystemBackup()" [disabled]="isAnyLoaderActive"
-                        class="w-full bg-danger text-white py-2 px-4 rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-50">
+                        class="w-full btn-danger btn-md disabled:opacity-50">
                         Crear Backup
                     </button>
                 </div>

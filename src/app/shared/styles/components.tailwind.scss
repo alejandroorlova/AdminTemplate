@@ -29,6 +29,7 @@
 
   .btn-shadow { @apply shadow-sm hover:shadow-md; }
   .btn-gradient { @apply btn-base bg-gradient-to-r from-iebem-primary to-iebem-secondary text-white border border-transparent hover:shadow-lg focus:ring-iebem-primary; }
+  .btn-icon { @apply inline-flex items-center justify-center w-8 h-8 p-0 rounded-lg; }
 
   /* Tamaños de botón */
   .btn-xs { @apply px-2.5 py-1.5 text-xs; }
@@ -58,6 +59,29 @@
 
   /* Cards/containers */
   .card-base { @apply bg-white rounded-2xl border border-gray-200 shadow-lg; }
+}
+
+/* Checkbox component classes */
+@layer components {
+  .chk-base { @apply relative inline-flex items-center justify-center border-2 rounded-md transition-all duration-200 cursor-pointer select-none bg-white; }
+  .chk-unchecked { @apply border-gray-300 hover:border-gray-400; }
+  .chk-checked-primary { @apply bg-iebem-primary border-iebem-primary hover:bg-iebem-primary/90; }
+  .chk-checked-secondary { @apply bg-iebem-secondary border-iebem-secondary hover:bg-iebem-secondary/90; }
+  .chk-checked-accent { @apply bg-iebem-accent border-iebem-accent hover:bg-iebem-accent/90; }
+  .chk-checked-success { @apply bg-success border-success hover:bg-green-600; }
+  .chk-checked-warning { @apply bg-warning border-warning hover:bg-yellow-600; }
+  .chk-checked-danger { @apply bg-danger border-danger hover:bg-red-600; }
+  .chk-checked-info { @apply bg-info border-info hover:bg-blue-600; }
+  .chk-checked-dark { @apply bg-gray-800 border-gray-800 hover:bg-gray-900; }
+  .chk-checked-light { @apply bg-gray-100 border-gray-300 hover:bg-gray-200; }
+  .chk-error { @apply border-red-500; }
+  .chk-disabled { @apply opacity-50 pointer-events-none; }
+
+  .chk-xs { @apply w-4 h-4; }
+  .chk-sm { @apply w-5 h-5; }
+  .chk-md { @apply w-6 h-6; }
+  .chk-lg { @apply w-7 h-7; }
+  .chk-xl { @apply w-8 h-8; }
 }
 
 /* Date Picker component classes */

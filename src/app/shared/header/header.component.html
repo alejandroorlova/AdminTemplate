@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between px-6 h-full">
       <div class="flex items-center space-x-4">
         <button 
-          class="text-gray-500 hover:text-iebem-primary lg:hidden transition-colors duration-200 p-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-iebem-primary/20"
+          class="btn-ghost btn-icon lg:hidden"
           (click)="onToggleSidebar(); $event.stopPropagation()"
           type="button"
           title="Abrir menú"
@@ -31,7 +31,7 @@
 
         <!-- Notifications -->
         <button 
-          class="relative p-3 text-gray-500 hover:text-iebem-primary hover:bg-gray-50 rounded-xl transition-all duration-200"
+          class="relative btn-ghost btn-icon"
         >
           <i class="fas fa-bell text-lg"></i>
           <span class="absolute -top-1 -right-1 bg-iebem-secondary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
@@ -48,7 +48,7 @@
             <p class="font-semibold text-gray-800 text-sm">Admin IEBEM</p>
             <p class="text-xs text-gray-500">Administrador</p>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+          <button class="btn-ghost btn-icon">
             <i class="fas fa-chevron-down text-xs"></i>
           </button>
         </div>
