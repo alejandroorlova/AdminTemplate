@@ -95,3 +95,36 @@
   .fu-file-size { @apply text-xs text-gray-500; }
   .fu-remove-btn { @apply text-red-500 hover:text-red-700 hover:bg-red-100 p-2 rounded-lg transition-all duration-200; }
 }
+
+/* Table component classes */
+@layer components {
+  .tbl-card { @apply card-base; }
+  .tbl { @apply w-full; }
+  .tbl-scroll { @apply w-full max-w-full overflow-x-auto overscroll-x-contain; }
+  .tbl-head { @apply bg-iebem-primary; }
+  .tbl-th { @apply px-4 py-5 text-left text-xs font-bold text-white uppercase tracking-wider border-r last:border-r-0; border-color: rgb(255 255 255 / 0.2); }
+  .tbl-body { @apply bg-white divide-y divide-gray-100; }
+  .tbl-row { @apply transition-all duration-200; }
+  .tbl-row--hover { @apply hover:bg-iebem-light hover:bg-opacity-30; }
+  .tbl-row--clickable { @apply cursor-pointer; }
+  .tbl-td { @apply px-4 py-4 text-sm; }
+  .tbl-td--compact { @apply px-3 py-2 text-sm; }
+  .tbl-th--compact { @apply px-3 py-3; }
+  .tbl-td--bordered { @apply border-r last:border-r-0; border-color: rgb(229 231 235); }
+  .tbl-head--sticky { @apply sticky top-0 z-10; }
+  .tbl-empty { @apply px-6 py-20 text-center; }
+  .tbl-search { @apply input-default pl-10 pr-4 py-3; }
+  .tbl-search-icon { @apply absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 text-sm; }
+  .tbl-sort-btn { @apply p-1.5 rounded-lg transition-all duration-200 hover:bg-white hover:bg-opacity-20; }
+  .tbl-action-btn { @apply w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200 hover:scale-110; }
+  .pager { @apply flex items-center justify-center gap-2; }
+  .pager-btn { @apply px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200; }
+  .pager-current { @apply px-4 py-2 text-sm bg-iebem-primary text-white rounded-xl font-bold; }
+}
+
+/* Table mobile card variants */
+@layer components {
+  .tbl-mobile-card { @apply p-4 hover:bg-iebem-light hover:bg-opacity-30 transition-all duration-200 cursor-pointer rounded-2xl; }
+  .tbl-mobile-card--compact { @apply p-3; }
+  .tbl-mobile-card--bordered { @apply border border-gray-200; }
+}

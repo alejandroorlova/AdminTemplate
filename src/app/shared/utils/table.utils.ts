@@ -1,5 +1,5 @@
 // Utilidades para el componente Table
-import { TableColumn } from '../ui/table/table.component';
+import { TableColumn } from '../ui/table/table.interfaces';
 
 // Configuración de columnas responsivas
 export interface ResponsiveConfig {

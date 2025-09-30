@@ -12,7 +12,9 @@ export interface TableColumn {
   sticky?: boolean;
   align?: 'left' | 'center' | 'right';
   template?: TemplateRef<any>;
-  format?: string; // Para fechas y números
+  // Compatibilidad retro (algunos consumidores podrían usar cellTemplate)
+  cellTemplate?: TemplateRef<any>;
+  format?: string | ((value: any, row: any) => string); // Permite formateador custom
   badge?: {
     colors: { [key: string]: string };
   };

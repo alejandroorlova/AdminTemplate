@@ -13,41 +13,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableUtils } from '../../utils/table.utils';
-
-// Interfaces básicas
-export interface TableColumn {
-  key: string;
-  title: string;
-  type: 'text' | 'number' | 'date' | 'badge' | 'boolean';
-  width?: string;
-  sortable?: boolean;
-  filterable?: boolean;
-  align?: 'left' | 'center' | 'right';
-  format?: 'text' | 'date' | 'currency' | ((value: any, row: any) => string);
-  cellTemplate?: TemplateRef<any>;
-}
-
-
-export interface TableConfig {
-  pagination?: {
-    enabled: boolean;
-    pageSize: number;
-  };
-  sorting?: {
-    enabled: boolean;
-  };
-  filtering?: {
-    enabled: boolean;
-    globalSearch?: boolean;
-  };
-}
-
-export interface TableAction {
-  key: string;
-  label: string;
-  icon?: string;
-  color?: 'primary' | 'secondary' | 'danger';
-}
+import { TableColumn, TableConfig, TableAction } from './table.interfaces';
+export type { TableColumn, TableConfig, TableAction } from './table.interfaces';
 
 @Component({
   selector: 'app-table',
@@ -55,7 +22,7 @@ export interface TableAction {
   imports: [CommonModule, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './table.component.html',
-  styleUrl: './table.component.scss'  // Archivo vacío, solo Tailwind
+  styleUrls: ['./table.component.scss']  // Archivo vacío, solo Tailwind
 })
 export class TableComponent implements OnInit, OnChanges {
 
@@ -101,6 +68,11 @@ export class TableComponent implements OnInit, OnChanges {
   private initializeConfig() {
     // Configuración por defecto
     this.config = {
+      hoverable: true,
+      striped: false,
+      bordered: false,
+      compact: false,
+      stickyHeader: false,
       pagination: {
         enabled: true,
         pageSize: 10
@@ -358,6 +330,23 @@ export class TableComponent implements OnInit, OnChanges {
 
   getModernActionClasses(action: TableAction): string {
     return TableUtils.getActionClasses(action.color);
+  }
+
+  // Nuevo: usar botones estandarizados del sistema
+  getActionBtnClasses(action: TableAction): string {
+    const size = 'btn-sm';
+    const map: Record<string, string> = {
+      primary: 'btn-primary',
+      secondary: 'btn-secondary',
+      danger: 'btn-danger',
+      success: 'btn-success',
+      warning: 'btn-warning',
+      info: 'btn-info',
+      dark: 'btn-dark',
+      light: 'btn-light'
+    };
+    const base = map[(action as any).color] || 'btn-outline';
+    return `${base} ${size} tbl-action-btn`;
   }
 
 }
