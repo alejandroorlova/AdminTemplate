@@ -32,19 +32,19 @@
   <div *ngIf="!isSimpleLoader" class="flex items-center justify-center min-h-screen p-4" [@scaleIn]>
     
     <!-- Main Loader Card -->
-    <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 w-full max-w-sm mx-auto relative overflow-hidden">
+    <div class="ldr-card">
       
       <!-- Top accent bar -->
-      <div class="h-1 bg-gradient-to-r from-iebem-primary via-iebem-gold to-iebem-secondary"></div>
+      <div class="ldr-topbar"></div>
       
       <!-- Content Container -->
-      <div class="p-8 text-center">
+      <div class="ldr-body">
         
         <!-- Icon Section -->
         <div class="relative mb-8 flex justify-center">
           <div class="relative">
             <!-- Background circle -->
-            <div [class]="loaderSize + ' bg-gradient-to-br from-iebem-primary to-iebem-secondary rounded-full flex items-center justify-center shadow-lg relative'">
+            <div [class]="loaderSize + ' ldr-icon-bg'">
               <!-- Spinning border -->
               <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-white/30 animate-spin"></div>
               
@@ -64,24 +64,24 @@
         <!-- Messages Section -->
         <div class="mb-6">
           <h3 id="loader-message" 
-              class="text-lg font-bold text-gray-800 mb-2 leading-tight">
+              class="ldr-title">
             {{ finalConfig.message }}
           </h3>
           
           <p *ngIf="finalConfig.submessage" 
-             class="text-sm text-gray-600 leading-relaxed">
+             class="ldr-subtitle">
             {{ finalConfig.submessage }}
           </p>
         </div>
         
         <!-- Progress Section -->
         <div *ngIf="finalConfig.showProgress" class="mb-6">
-          <div class="flex justify-between items-center text-xs text-gray-500 mb-3">
+          <div class="ldr-progress-label">
             <span class="font-medium">Progreso</span>
             <span class="font-semibold">{{ finalConfig.progress }}%</span>
           </div>
-          <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-            <div class="h-full bg-gradient-to-r from-iebem-primary to-iebem-secondary rounded-full transition-all duration-500 ease-out relative"
+          <div class="ldr-progress-track">
+            <div class="ldr-progress-bar"
                  [style.width.%]="finalConfig.progress">
               <!-- Progress shimmer -->
               <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
@@ -92,7 +92,7 @@
         <!-- Cancel Button Section -->
         <div *ngIf="finalConfig.showCancel" class="mb-4">
           <button (click)="onCancel()"
-                  class="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-iebem-primary focus:ring-offset-2 rounded-lg">
+                  class="ldr-cancel">
             <i class="fas fa-times"></i>
             <span>Cancelar</span>
           </button>

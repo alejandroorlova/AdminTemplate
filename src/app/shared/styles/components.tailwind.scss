@@ -113,6 +113,19 @@
   .modal-close { @apply btn-ghost btn-icon absolute top-4 right-4 z-20; }
 }
 
+/* Loader component classes */
+@layer components {
+  .ldr-card { @apply bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 w-full max-w-sm mx-auto relative overflow-hidden; }
+  .ldr-topbar { @apply h-1 bg-gradient-to-r from-iebem-primary via-iebem-gold to-iebem-secondary; }
+  .ldr-body { @apply p-8 text-center; }
+  .ldr-title { @apply text-lg font-bold text-gray-800 mb-2 leading-tight; }
+  .ldr-subtitle { @apply text-sm text-gray-600 leading-relaxed; }
+  .ldr-progress-label { @apply flex justify-between items-center text-xs text-gray-500 mb-3; }
+  .ldr-progress-track { @apply w-full bg-gray-200 rounded-full h-2 overflow-hidden; }
+  .ldr-progress-bar { @apply h-full bg-gradient-to-r from-iebem-primary to-iebem-secondary rounded-full transition-all duration-500 ease-out relative; }
+  .ldr-cancel { @apply btn-outline btn-sm; }
+  .ldr-icon-bg { @apply bg-gradient-to-br from-iebem-primary to-iebem-secondary rounded-full flex items-center justify-center shadow-lg relative; }
+}
 /* File Upload component classes */
 @layer components {
   .fu-dropzone {
