@@ -2,7 +2,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ButtonComponent, ButtonVariant, ButtonSize } from '../../shared/ui/button/button.component';
+import { ButtonComponent, ButtonVariant, ButtonSize } from 'iebem-ui';
 
 @Component({
   selector: 'app-button-examples',
@@ -57,7 +57,7 @@ export class ButtonExamplesComponent {
   isRounded = false;
 
   getSizeDescription(size: ButtonSize): string {
-    const descriptions = {
+    const descriptions: Record<ButtonSize, string> = {
       xs: 'Extra pequeño - px-2.5 py-1.5',
       sm: 'Pequeño - px-3 py-2',
       md: 'Mediano - px-4 py-2.5',

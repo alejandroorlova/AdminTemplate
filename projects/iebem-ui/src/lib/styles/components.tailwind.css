@@ -1,0 +1,27 @@
+/* iebem-ui components: built with Tailwind at build time only */
+@layer components {
+  .btn-base { @apply inline-flex items-center justify-center font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-xl; }
+  .btn-primary { @apply btn-base bg-iebem-primary text-white border border-transparent hover:bg-iebem-dark focus:ring-iebem-primary; }
+  .btn-secondary { @apply btn-base bg-iebem-secondary text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-secondary; }
+  .btn-accent { @apply btn-base bg-iebem-accent text-white border border-transparent hover:bg-opacity-90 focus:ring-iebem-accent; }
+  .btn-danger { @apply btn-base bg-danger text-white border border-transparent hover:bg-red-600 focus:ring-danger; }
+  .btn-warning { @apply btn-base bg-warning text-white border border-transparent hover:bg-yellow-600 focus:ring-warning; }
+  .btn-success { @apply btn-base bg-success text-white border border-transparent hover:bg-green-600 focus:ring-success; }
+  .btn-info { @apply btn-base bg-info text-white border border-transparent hover:bg-blue-600 focus:ring-info; }
+  .btn-dark { @apply btn-base bg-iebem-dark text-white border border-transparent hover:bg-gray-700 focus:ring-iebem-dark; }
+  .btn-light { @apply btn-base bg-iebem-light text-iebem-dark border border-iebem-primary hover:bg-green-100 focus:ring-iebem-primary; }
+  .btn-outline { @apply btn-base bg-transparent border-2 text-iebem-primary border-iebem-primary hover:bg-iebem-primary hover:text-white focus:ring-iebem-primary; }
+  .btn-outline-secondary { @apply btn-base bg-transparent border-2 text-iebem-secondary border-iebem-secondary hover:bg-iebem-secondary hover:text-white focus:ring-iebem-secondary; }
+  .btn-outline-danger { @apply btn-base bg-transparent border-2 text-danger border-danger hover:bg-danger hover:text-white focus:ring-danger; }
+  .btn-ghost { @apply btn-base bg-transparent text-iebem-primary border border-transparent hover:bg-iebem-light focus:ring-iebem-primary; }
+  .btn-link { @apply btn-base bg-transparent text-iebem-primary border-0 underline-offset-2 hover:underline focus:ring-iebem-primary p-0; }
+  .btn-shadow { @apply shadow-sm hover:shadow-md; }
+  .btn-gradient { @apply btn-base bg-gradient-to-r from-iebem-primary to-iebem-secondary text-white border border-transparent hover:shadow-lg focus:ring-iebem-primary; }
+  .btn-icon { @apply inline-flex items-center justify-center w-8 h-8 p-0 rounded-lg; }
+  .btn-xs { @apply px-2.5 py-1.5 text-xs; }
+  .btn-sm { @apply px-3 py-2 text-sm; }
+  .btn-md { @apply px-4 py-2.5 text-sm; }
+  .btn-lg { @apply px-6 py-3 text-base; }
+  .btn-xl { @apply px-8 py-4 text-lg; }
+}
+

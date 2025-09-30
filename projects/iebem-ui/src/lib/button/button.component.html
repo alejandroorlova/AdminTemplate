@@ -1,0 +1,47 @@
+<!-- iebem-ui: button.component.html -->
+<div 
+  *ngIf="!href; else linkTemplate"
+  role="button"
+  [attr.tabindex]="disabled ? -1 : 0"
+  [class]="buttonClasses"
+  [attr.aria-disabled]="disabled"
+  (click)="onClick($event)"
+  (keydown.enter)="onClick($event)"
+  (keydown.space)="onClick($event)"
+  [style.cursor]="disabled ? 'not-allowed' : 'pointer'"
+  [style.user-select]="'none'"
+  [style.display]="'inline-flex'"
+  [style.align-items]="'center'"
+  [style.justify-content]="'center'"
+  [style.gap]="'0.5rem'">
+  
+  <i *ngIf="icon && iconPosition === 'left'" [class]="icon"></i>
+  
+  <span *ngIf="label">{{ label }}</span>
+  <ng-content *ngIf="!label"></ng-content>
+  
+  <i *ngIf="icon && iconPosition === 'right'" [class]="icon"></i>
+  
+</div>
+
+<ng-template #linkTemplate>
+  <a [href]="href"
+     [target]="target"
+     [class]="buttonClasses"
+     (click)="onClick($event)"
+     [style.cursor]="disabled ? 'not-allowed' : 'pointer'"
+     [style.text-decoration]="'none'"
+     [style.display]="'inline-flex'"
+     [style.align-items]="'center'"
+     [style.justify-content]="'center'"
+     [style.gap]="'0.5rem'">
+    
+    <i *ngIf="icon && iconPosition === 'left'" [class]="icon"></i>
+    
+    <span *ngIf="label">{{ label }}</span>
+    <ng-content *ngIf="!label"></ng-content>
+    
+    <i *ngIf="icon && iconPosition === 'right'" [class]="icon"></i>
+  </a>
+</ng-template>
+

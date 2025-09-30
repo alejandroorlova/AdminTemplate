@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:ui:css": "tailwindcss -c tailwind.lib.config.js -i projects/iebem-ui/src/lib/styles/index.tailwind.css -o projects/iebem-ui/src/lib/styles/iebem-ui.css --minify",
+    "build:ui": "npm run build:ui:css && ng build iebem-ui",
+    "prepublishOnly": "npm run build:ui"
   },
   "private": true,
   "dependencies": {

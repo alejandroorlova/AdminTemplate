@@ -3,10 +3,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "paths": {
       "iebem-ui": [
+        "./projects/iebem-ui/src/public-api.ts",
         "./dist/iebem-ui"
       ]
     },
