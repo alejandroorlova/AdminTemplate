@@ -27,31 +27,31 @@ export class SelectComponent implements ControlValueAccessor {
   @Input() error = '';
   @Input() hint = '';
   @Input() id = '';
+  @Input() uppercase = false; // Solo visual: transforma el texto mostrado
   @Input() compareWith?: (a: any, b: any) => boolean;
 
 
   value = '';
   isFocused = false;
+  touched = false;
   trackOpt = (_: number, o: SelectOption) => o?.value ?? o;
 
   private onChangeCallback = (value: any) => { };
   private onTouchedCallback = () => { };
 
+  get showError(): boolean {
+    const hasExternalError = !!(this.error && this.error.trim());
+    const isEmpty = this.value === null || this.value === undefined || this.value === '';
+    return hasExternalError || (this.required && isEmpty && this.touched);
+  }
+
   get selectClasses(): string {
-    const baseClasses = 'block w-full rounded-xl !border-0 py-3 px-4 pr-10 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset focus:outline-none text-gray-900 appearance-none cursor-pointer';
-
-    let stateClasses = '';
-    if (this.error) {
-      stateClasses = 'ring-red-300 focus:ring-red-500 bg-red-50';
-    } else if (this.isFocused) {
-      stateClasses = 'ring-iebem-primary focus:ring-iebem-primary bg-white';
-    } else {
-      stateClasses = 'ring-gray-300 focus:ring-iebem-primary bg-white hover:ring-gray-400';
-    }
-
-    const disabledClasses = this.disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed ring-gray-200' : '';
-
-    return `${baseClasses} ${stateClasses} ${disabledClasses}`;
+    const variant = this.showError ? 'input-error' : 'input-default';
+    const padding = 'py-3 pl-4 pr-10'; // espacio para el ícono de chevron
+    const disabled = this.disabled ? 'input-disabled' : '';
+    const transform = this.uppercase ? 'uppercase' : '';
+    const base = 'appearance-none cursor-pointer';
+    return [variant, padding, disabled, transform, base].filter(Boolean).join(' ');
   }
 
   onChange(event: Event): void {
@@ -66,6 +66,7 @@ export class SelectComponent implements ControlValueAccessor {
 
   onBlur(): void {
     this.isFocused = false;
+    this.touched = true;
     this.onTouchedCallback();
   }
 

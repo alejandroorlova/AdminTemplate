@@ -30,16 +30,24 @@ export class ModernSelectComponent implements ControlValueAccessor {
 
   value: any = null;
   isOpen = false;
+  touched = false;
   searchTerm = '';
   selectedOption: SelectOption | null = null;
 
   private onChangeCallback = (value: any) => {};
   private onTouchedCallback = () => {};
 
+  get showError(): boolean {
+    const hasExternalError = !!(this.error && this.error.trim());
+    const isEmpty = this.value === null || this.value === undefined || this.value === '';
+    return hasExternalError || (this.required && isEmpty && this.touched);
+  }
+
   get triggerClasses(): string {
-    const baseClasses = 'relative w-full cursor-pointer rounded-xl !border-0 py-3 pl-4 pr-4 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-iebem-primary focus:outline-none bg-white flex items-center justify-between transition-all duration-200';
+    const variant = this.showError ? 'input-error' : 'input-default';
+    const layout = 'relative w-full flex items-center justify-between cursor-pointer';
     const openClasses = this.isOpen ? 'ring-2 ring-inset ring-iebem-primary' : '';
-    return `${baseClasses} ${openClasses}`;
+    return [variant, layout, openClasses].filter(Boolean).join(' ');
   }
 
   get arrowClasses(): string {
@@ -48,23 +56,24 @@ export class ModernSelectComponent implements ControlValueAccessor {
   }
 
   toggleDropdown(): void {
-    this.isOpen = !this.isOpen;
-    
     if (this.isOpen) {
-      this.searchTerm = '';
-      
-      // Focus en el input de búsqueda si está habilitado
-      if (this.searchable) {
-        setTimeout(() => {
-          this.searchInput?.nativeElement?.focus();
-        }, 100);
-      }
+      this.closeDropdown();
+      return;
+    }
+    this.isOpen = true;
+    this.searchTerm = '';
+    if (this.searchable) {
+      setTimeout(() => {
+        this.searchInput?.nativeElement?.focus();
+      }, 100);
     }
   }
 
   closeDropdown(): void {
     this.isOpen = false;
     this.searchTerm = '';
+    this.touched = true;
+    this.onTouchedCallback();
   }
 
   selectOption(option: SelectOption): void {

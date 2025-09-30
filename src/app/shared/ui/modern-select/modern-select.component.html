@@ -8,6 +8,7 @@
   <div 
     [class]="triggerClasses"
     (click)="toggleDropdown()"
+    [attr.aria-invalid]="showError ? true : null"
   >
     <div class="flex items-center flex-1 min-w-0">
       <!-- Selected Value -->
@@ -26,6 +27,9 @@
       <i [class]="arrowClasses"></i>
     </div>
   </div>
+
+  <!-- Mensaje de error (cuando aplica) -->
+  <p *ngIf="showError" class="mt-1 text-sm text-red-600">{{ error || 'Campo requerido' }}</p>
 
   <!-- Dropdown -->
   <div 
