@@ -25,6 +25,7 @@ export class InputComponent extends FormControlBase implements OnInit {
   @Input() label = '';
   @Input() type: InputType = 'text';
   @Input() placeholder = '';
+  @Input() uppercase = false; // Transforma a MAYÚSCULAS si es true (excepto password)
   @Input() override set disabled(value: boolean) {
     this._disabled = value;
   }
@@ -73,8 +74,9 @@ export class InputComponent extends FormControlBase implements OnInit {
 
     // Estado disabled coherente
     const disabled = this.disabled ? 'input-disabled' : '';
+    const transform = this.uppercase && this.type !== 'password' ? 'uppercase' : '';
 
-    return [variant, padLeft, padRight, padY, disabled].filter(Boolean).join(' ');
+    return [variant, padLeft, padRight, padY, disabled, transform].filter(Boolean).join(' ');
   }
 
 
@@ -84,7 +86,13 @@ export class InputComponent extends FormControlBase implements OnInit {
 
   onInput(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.onInputHandler(target.value);
+    const raw = target.value;
+    const next = this.uppercase && this.type !== 'password' ? raw.toUpperCase() : raw;
+    // Reflejar la transformación en el input si cambió
+    if (next !== raw) {
+      target.value = next;
+    }
+    this.onInputHandler(next);
   }
 
 
@@ -100,6 +108,7 @@ export class InputComponent extends FormControlBase implements OnInit {
 
 
   override writeValue(value: string): void {
-    super.writeValue(value);
+    const next = this.uppercase && this.type !== 'password' ? (value ? value.toUpperCase() : value) : value;
+    super.writeValue(next as string);
   }
 }

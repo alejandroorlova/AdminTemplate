@@ -24,6 +24,7 @@ export class MaskedInputComponent implements ControlValueAccessor {
   @Input() maskType: MaskType = 'custom';
   @Input() customMask = '';
   @Input() placeholder = '';
+  @Input() uppercase = true; // por defecto true para mantener RFC/CURP en mayúsculas
   @Input() disabled = false;
   @Input() readonly = false;
   @Input() required = false;
@@ -77,23 +78,22 @@ export class MaskedInputComponent implements ControlValueAccessor {
   }
 
   get inputClasses(): string {
-    const baseClasses = 'block w-full rounded-xl border-0 py-3 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset text-gray-900 placeholder:text-gray-400 font-mono';
-    const iconPadding = this.icon ? 'pl-10 pr-10' : 'pl-4 pr-10';
-    
-    let stateClasses = '';
-    if (this.error) {
-      stateClasses = 'ring-red-300 focus:ring-red-500 bg-red-50';
-    } else if (this.isValid === true) {
-      stateClasses = 'ring-green-300 focus:ring-green-500 bg-green-50';
-    } else if (this.isFocused) {
-      stateClasses = 'ring-iebem-primary focus:ring-iebem-primary bg-white';
-    } else {
-      stateClasses = 'ring-gray-300 focus:ring-iebem-primary bg-white hover:ring-gray-400';
-    }
+    // Base y variantes estandarizadas
+    const variant = this.error
+      ? 'input-error'
+      : this.isValid === true
+        ? 'input-success'
+        : 'input-default';
 
-    const disabledClasses = this.disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed ring-gray-200' : '';
+    // Reservar espacio para iconos
+    const padLeft = this.icon ? 'pl-10' : 'pl-4';
+    const padRight = 'pr-10'; // siempre reservamos para el icono de validación
+    const padY = 'py-3';
 
-    return `${baseClasses} ${iconPadding} ${stateClasses} ${disabledClasses}`;
+    const disabled = this.disabled ? 'input-disabled' : '';
+    const transform = this.uppercase ? 'uppercase' : '';
+
+    return [variant, padLeft, padRight, padY, disabled, 'font-mono', transform].filter(Boolean).join(' ');
   }
 
   onInput(event: Event): void {
@@ -148,7 +148,8 @@ export class MaskedInputComponent implements ControlValueAccessor {
   }
 
   private applyMask(value: string): string {
-    const cleanValue = value.replace(/[^\w]/g, '').toUpperCase();
+    const raw = value.replace(/[^\w]/g, '');
+    const cleanValue = this.uppercase ? raw.toUpperCase() : raw;
     const mask = this.currentMask;
     let maskedValue = '';
     let valueIndex = 0;
