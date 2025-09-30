@@ -63,25 +63,18 @@ export class InputComponent extends FormControlBase implements OnInit {
 
 
   get inputClasses(): string {
-    const baseClasses = 'block w-full rounded-xl !border-0 shadow-sm ring-1 ring-inset transition-all duration-200 focus:ring-2 focus:ring-inset focus:outline-none text-gray-900 placeholder:text-gray-400';
-    
-    const iconPadding = this.icon ? '!pl-10' : '!pl-4';
-    const suffixPadding = (this.suffixIcon || this.type === 'password') ? '!pr-10' : '!pr-4';
-    const verticalPadding = '!py-3';
-    const padding = `${verticalPadding} ${iconPadding} ${suffixPadding}`;
-    
-    let stateClasses = '';
-    if (this.error) {
-      stateClasses = 'ring-red-300 focus:ring-red-500 bg-red-50';
-    } else if (this.focused) {
-      stateClasses = 'ring-iebem-primary focus:ring-iebem-primary bg-white';
-    } else {
-      stateClasses = 'ring-gray-300 focus:ring-iebem-primary bg-white hover:ring-gray-400';
-    }
+    // Base y variantes estandarizadas desde components.tailwind.scss
+    const variant = this.error ? 'input-error' : 'input-default';
 
-    const disabledClasses = this.disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed ring-gray-200' : '';
+    // Ajustes de padding según iconos presentes
+    const padLeft = this.icon ? 'pl-10' : 'pl-4';
+    const padRight = (this.suffixIcon || this.type === 'password') ? 'pr-10' : 'pr-4';
+    const padY = 'py-3';
 
-    return `${baseClasses} ${padding} ${stateClasses} ${disabledClasses}`;
+    // Estado disabled coherente
+    const disabled = this.disabled ? 'input-disabled' : '';
+
+    return [variant, padLeft, padRight, padY, disabled].filter(Boolean).join(' ');
   }
 
 
