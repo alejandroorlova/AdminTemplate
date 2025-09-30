@@ -20,6 +20,8 @@ import { FormFieldComponent } from '../form-field/form-field.component';
           (dragleave)="onDragLeave($event)"
           (drop)="onDrop($event)"
           (click)="markTouched(); fileInput.click()"
+          (keydown.enter)="markTouched(); fileInput.click()"
+          (keydown.space)="markTouched(); fileInput.click()"
         >
           <input 
             #fileInput
@@ -33,12 +35,12 @@ import { FormFieldComponent } from '../form-field/form-field.component';
           
           <div class="text-center">
             <i [class]="iconClass"></i>
-            <p class="text-gray-600 mt-3 font-medium">
+            <p class="fu-title">
               {{ dragActive ? 'Suelta los archivos aquí' : 'Arrastra archivos aquí o' }}
             </p>
             <button 
               type="button" 
-              class="text-iebem-primary hover:text-iebem-dark font-semibold mt-2 bg-iebem-light px-4 py-2 rounded-lg transition-colors duration-200"
+              class="fu-select-btn"
               *ngIf="!dragActive"
             >
               <i class="fas fa-folder-open mr-2"></i>
@@ -48,24 +50,24 @@ import { FormFieldComponent } from '../form-field/form-field.component';
         </div>
       </app-form-field>
 
-      <div *ngIf="selectedFiles.length > 0" class="mt-4 space-y-3">
+      <div *ngIf="selectedFiles.length > 0" class="fu-list">
         <h4 class="text-sm font-medium text-gray-700">Archivos seleccionados:</h4>
         <div 
           *ngFor="let file of selectedFiles; let i = index" 
-          class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200"
+          class="fu-file-row"
         >
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-lg flex items-center justify-center" [class]="getFileIconBackground(file.type)">
+            <div class="fu-file-pill" [class]="getFileIconBackground(file.type)">
               <i [class]="getFileIcon(file.type)"></i>
             </div>
             <div>
-              <p class="text-sm font-medium text-gray-900">{{ file.name }}</p>
-              <p class="text-xs text-gray-500">{{ formatFileSize(file.size) }}</p>
+              <p class="fu-file-name">{{ file.name }}</p>
+              <p class="fu-file-size">{{ formatFileSize(file.size) }}</p>
             </div>
           </div>
           <button 
             type="button" 
-            class="text-red-500 hover:text-red-700 hover:bg-red-100 p-2 rounded-lg transition-all duration-200"
+            class="fu-remove-btn"
             (click)="removeFile(i)"
           >
             <i class="fas fa-trash text-sm"></i>
@@ -97,13 +99,10 @@ export class FileUploadComponent {
   }
 
   get dropZoneClasses(): string {
-    const baseClasses = 'border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200';
-    const errorState = this.showError ? 'border-red-300 hover:border-red-400 bg-red-50' : '';
-    const dragState = this.dragActive ? 'border-iebem-primary bg-iebem-light scale-105' : '';
-    const normalState = !this.dragActive && !this.showError ? 'border-gray-300 hover:border-iebem-primary hover:bg-gray-50' : '';
-    const stateClasses = [dragState, errorState, normalState].filter(Boolean).join(' ');
-    
-    return `${baseClasses} ${stateClasses}`;
+    return [
+      'fu-dropzone',
+      this.dragActive ? 'fu-dropzone--drag' : (this.showError ? 'fu-dropzone--error' : 'fu-dropzone--normal')
+    ].join(' ');
   }
 
   markTouched(): void {
@@ -111,9 +110,8 @@ export class FileUploadComponent {
   }
 
   get iconClass(): string {
-    const baseClasses = 'text-4xl mb-3';
-    const colorClass = this.dragActive ? 'text-iebem-primary' : 'text-gray-400';
-    return `fas fa-cloud-upload-alt ${baseClasses} ${colorClass}`;
+    const colorClass = this.dragActive ? 'fu-icon fu-icon--active' : 'fu-icon';
+    return `fas fa-cloud-upload-alt ${colorClass}`;
   }
 
   onDragOver(event: DragEvent): void {
