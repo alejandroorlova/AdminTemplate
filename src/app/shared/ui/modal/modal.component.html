@@ -1,18 +1,12 @@
-<ng-template cdkConnectedOverlay
-             [cdkConnectedOverlayOpen]="isOpen"
-             [cdkConnectedOverlayHasBackdrop]="false"
-             [cdkConnectedOverlayBackdropClass]="'bg-black bg-opacity-50'">
-
+<div *ngIf="isOpen" class="fixed inset-0 z-[1070]" (keydown.escape)="onEsc()">
   <!-- Backdrop negro transparente -->
-  <div class="modal-overlay" data-role="modal-overlay" (click)="onBackdropClick()"
-       [@backdropAnimation]="'in'"></div>
+  <div class="modal-overlay" data-role="modal-overlay" (click)="onBackdropClick()" [@backdropAnimation]="'in'"></div>
 
   <div class="modal-wrapper" data-role="modal-wrapper"
        role="dialog"
        aria-modal="true"
        [attr.aria-labelledby]="title ? 'modal-title' : null"
-       [attr.aria-describedby]="subtitle ? 'modal-subtitle' : null"
-       (keydown.escape)="onEsc()">
+       [attr.aria-describedby]="subtitle ? 'modal-subtitle' : null">
 
     <!-- Contenedor (misma posición que antes) -->
     <div [class]="(getModalPositionClass() === 'items-center' ? 'modal-position-center' : 'modal-position-top')">
@@ -89,4 +83,4 @@
       </div>
     </div>
   </div>
-</ng-template>
+</div>
