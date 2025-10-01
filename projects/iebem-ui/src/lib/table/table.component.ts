@@ -142,4 +142,28 @@ export class TableComponent implements OnInit, OnChanges {
       soft: 'tbl-head tbl-head--soft',
     }[style];
   }
+
+  // Librería: utilidades para acciones y columnas
+  hasActionsColumn(): boolean {
+    return this.columns.some(c => c.type === 'actions' || c.key === 'actions');
+  }
+
+  getRenderColumns(): TableColumn[] { return this.columns; }
+
+  getActionBtnClasses(action: TableAction): string {
+    const colorKey = (action.color as string | undefined) || (action as any).variant || (action as any).type;
+    const map: Record<string, string> = {
+      primary: 'btn-primary',
+      secondary: 'btn-secondary',
+      success: 'btn-success',
+      warning: 'btn-warning',
+      danger: 'btn-danger',
+      info: 'btn-info',
+      dark: 'btn-dark',
+      light: 'btn-light',
+      outline: 'btn-outline'
+    };
+    const base = (colorKey && map[colorKey]) ? map[colorKey] : 'btn-outline';
+    return `${base} btn-icon tbl-action-btn`;
+  }
 }

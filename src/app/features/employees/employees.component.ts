@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
@@ -28,8 +28,6 @@ import { TableComponent, TableColumn, TableConfig, TableAction } from 'iebem-ui'
   styleUrls: ['./employees.component.scss']
 })
 export class EmployeesComponent implements OnInit {
-
-  @ViewChild('actionsTpl') actionsTpl!: TemplateRef<any>;
 
   // Estado de la aplicación
   activeTab: 'form' | 'list' = 'form';
@@ -292,7 +290,7 @@ export class EmployeesComponent implements OnInit {
 
     { key: 'hireDate', title: 'Ingreso', type: 'date', sortable: true, width: '110px', /* format: 'date' */ },
     { key: 'status', title: 'Estado', type: 'badge', sortable: true, align: 'center', width: '100px' },
-    { key: 'actions', title: 'Acciones', type: 'text', align: 'center', width: '160px' }
+    { key: 'actions', title: 'Acciones', type: 'actions', align: 'center', width: '64px' }
   ];
 
   // Configuración de la tabla
@@ -337,15 +335,6 @@ export class EmployeesComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.employeeForm = this.createForm();
-  }
-
-  ngAfterViewInit(): void {
-    const cols = [...this.employeeColumns];
-    const i = cols.findIndex(c => c.key === 'actions');
-    if (i >= 0) {
-      cols[i] = { ...cols[i], cellTemplate: this.actionsTpl };
-      this.employeeColumns = cols; // dispara cambio
-    }
   }
 
   ngOnInit(): void {

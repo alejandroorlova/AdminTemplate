@@ -148,16 +148,18 @@
 
 /* Table */
 @layer components {
-  .tbl-card { @apply bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden; }
+  /* Card: usa ring redondeado en lugar de borde para evitar líneas rectas en esquinas */
+  /* Tabla sin contenedor con borde/esquinas: fondo plano, sin bordes ni esquinas redondas */
+  .tbl-card { @apply bg-white rounded-none overflow-visible border-0; }
   .tbl { @apply w-full; }
-  .tbl-scroll { @apply w-full max-w-full overflow-x-auto overscroll-x-contain rounded-t-2xl; }
+  .tbl-scroll { @apply w-full max-w-full overflow-x-auto overscroll-x-contain; }
   .tbl-head { @apply bg-iebem-primary; }
   .tbl-head--primary { @apply bg-iebem-primary; }
-  .tbl-head--glass { @apply bg-white/80 backdrop-blur-md border-b border-gray-200; }
-  .tbl-head--soft { @apply bg-iebem-light border-b border-iebem-primary/20; }
+  .tbl-head--glass { @apply bg-white/80 backdrop-blur-md; }
+  .tbl-head--soft { @apply bg-iebem-light; }
   .tbl-head--gradient { @apply bg-gradient-to-r from-iebem-primary to-iebem-secondary; }
   .tbl-th { @apply px-4 py-5 text-left text-xs font-bold uppercase tracking-wider border-r last:border-r-0; border-color: rgb(255 255 255 / 0.2); }
-  .tbl-th--glass { @apply text-iebem-dark border-gray-200; }
+  .tbl-th--glass { @apply text-iebem-dark border-gray-100; }
   .tbl-th--primary { @apply text-white py-4; }
   .tbl-th--soft { @apply text-iebem-dark border-iebem-primary/10; }
   .tbl-th--gradient { @apply text-white border-white/20; }
@@ -169,10 +171,10 @@
   .tbl-td { @apply px-4 py-4 text-sm; }
   .tbl-td--compact { @apply px-3 py-2 text-sm; }
   .tbl-th--compact { @apply px-3 py-3; }
-  .tbl-td--bordered { @apply border-r last:border-r-0; border-color: rgb(229 231 235); }
+  .tbl-td--bordered { @apply border-r last:border-r-0; border-color: rgb(243 244 246); }
   .tbl-head--sticky { @apply sticky top-0 z-10; }
   .tbl-empty { @apply px-6 py-20 text-center; }
-  .tbl-search { @apply input-default pl-10 pr-4 py-3; }
+  .tbl-search { @apply input-default pl-10 pr-4 py-3 shadow-none ring-0 focus:ring-2 focus:ring-iebem-primary; }
   .tbl-search-icon { @apply absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 text-sm; }
   .tbl-sort-btn { @apply p-1.5 rounded-lg transition-all duration-200; }
   .tbl-sort-btn--primary { @apply hover:bg-white hover:bg-opacity-20; }

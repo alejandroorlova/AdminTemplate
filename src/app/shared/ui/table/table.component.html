@@ -1,5 +1,5 @@
 <!-- table.component.html - VERSIÓN LIMPIA SIN ERRORES -->
-<div class="w-full">
+<div class="w-full overflow-hidden">
   <!-- Header -->
   <div *ngIf="title || subtitle || config.filtering?.globalSearch"
     class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
@@ -45,7 +45,7 @@
             }">
             <tr>
               <!-- Columnas visibles en desktop -->
-              <th *ngFor="let column of getDesktopColumns(); trackBy: trackByColumn"
+              <th *ngFor="let column of getDesktopDataColumns(); trackBy: trackByColumn"
                 class="tbl-th"
                 [ngClass]="{
                   'tbl-th--compact': config.compact,
@@ -73,8 +73,8 @@
               </th>
 
               <!-- Columna de acciones -->
-              <th *ngIf="actions.length > 0"
-                class="tbl-th text-center w-32"
+              <th *ngIf="actions.length > 0 && !hasActionsColumn()"
+                class="tbl-th text-center w-20"
                 [ngClass]="{
                   'tbl-th--glass': config.headerStyle==='glass',
                   'tbl-th--primary': config.headerStyle==='primary',
@@ -91,7 +91,7 @@
           <tbody class="tbl-body">
             <!-- Empty state -->
             <tr *ngIf="processedData.length === 0 && !loading">
-              <td [attr.colspan]="getDesktopColumns().length + (actions.length > 0 ? 1 : 0)"
+              <td [attr.colspan]="getDesktopDataColumns().length + ((actions.length > 0 && !hasActionsColumn()) ? 1 : 0)"
                 class="tbl-empty">
                 <div class="flex flex-col items-center">
                   <div
@@ -111,7 +111,7 @@
               (click)="onRowClick(row)">
 
               <!-- Data cells Desktop -->
-              <td *ngFor="let column of getDesktopColumns(); trackBy: trackByColumn" class="tbl-td"
+              <td *ngFor="let column of getDesktopDataColumns(); trackBy: trackByColumn" class="tbl-td"
                   [ngClass]="{'tbl-td--compact': config.compact, 'tbl-td--bordered': config.bordered}">
 
                 <!-- NUEVO: si la columna trae plantilla, úsala -->
@@ -173,11 +173,11 @@
 
 
               <!-- Actions cell Desktop -->
-              <td *ngIf="actions.length > 0" class="tbl-td text-center">
+              <td *ngIf="actions.length > 0 && !hasActionsColumn()" class="tbl-td text-center">
                 <div class="flex justify-center gap-2">
                   <button *ngFor="let action of actions" (click)="onAction(action, row, $event)"
                     [class]="getActionBtnClasses(action)" [title]="action.label">
-                    <i *ngIf="action.icon" [class]="'fas fa-' + action.icon + ' text-xs'"></i>
+                    <i *ngIf="action.icon" [class]="'fas fa-' + action.icon + ' text-xs text-current'"></i>
                   </button>
                 </div>
               </td>

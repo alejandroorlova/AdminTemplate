@@ -326,6 +326,16 @@ export class TableComponent implements OnInit, OnChanges {
     return TableUtils.getDesktopColumns(this.columns);
   }
 
+  // Columnas visibles que excluyen una columna declarada como 'actions'
+  getDesktopDataColumns(): TableColumn[] {
+    return this.getDesktopColumns().filter(c => c.type !== 'actions' && c.key !== 'actions');
+  }
+
+  // Detectar si el consumidor ya definió una columna de acciones
+  hasActionsColumn(): boolean {
+    return this.columns.some(c => c.type === 'actions' || c.key === 'actions');
+  }
+
   getResponsiveWidth(column: TableColumn): string {
     return TableUtils.getResponsiveWidth(column);
   }
@@ -342,9 +352,9 @@ export class TableComponent implements OnInit, OnChanges {
     return TableUtils.getActionClasses(action.color);
   }
 
-  // Nuevo: usar botones estandarizados del sistema
+  // Nuevo: usar botones estandarizados del sistema (icon-only, compactos)
   getActionBtnClasses(action: TableAction): string {
-    const size = 'btn-sm';
+    const colorKey = (action.color || (action as any).variant || (action as any).type) as string | undefined;
     const map: Record<string, string> = {
       primary: 'btn-primary',
       secondary: 'btn-secondary',
@@ -355,8 +365,9 @@ export class TableComponent implements OnInit, OnChanges {
       dark: 'btn-dark',
       light: 'btn-light'
     };
-    const base = map[(action as any).color] || 'btn-outline';
-    return `${base} ${size} tbl-action-btn`;
+    const base = (colorKey && map[colorKey]) ? map[colorKey] : 'btn-outline';
+    // btn-icon asegura tamaño compacto y centrado; tbl-action-btn agrega transición sutil
+    return `${base} btn-icon tbl-action-btn`;
   }
 
 }

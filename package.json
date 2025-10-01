@@ -9,7 +9,8 @@
     "test": "ng test",
     "build:ui:css": "tailwindcss -c tailwind.lib.config.js -i projects/iebem-ui/src/lib/styles/index.tailwind.css -o projects/iebem-ui/src/lib/styles/iebem-ui.css --minify",
     "build:ui": "npm run build:ui:css && ng build iebem-ui",
-    "prepublishOnly": "npm run build:ui"
+    "prepublishOnly": "npm run build:ui",
+    "test:ui": "ng cache clean && npm run build:ui:css && ng build iebem-ui && ng serve -o"
   },
   "private": true,
   "dependencies": {

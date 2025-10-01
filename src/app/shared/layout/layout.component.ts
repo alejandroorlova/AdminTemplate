@@ -15,6 +15,7 @@ import { HeaderComponent } from '../header/header.component';
 export class LayoutComponent {
   isSidebarOpen = signal(true);
   isMobile = signal(false);
+  isCollapsed = signal(false);
 
   // Configuración del nuevo sidebar con submenús
   sidebarConfig: SidebarConfig = {
@@ -178,7 +179,7 @@ export class LayoutComponent {
   // Manejar cambios de colapso
   onSidebarCollapseChange(isCollapsed: boolean): void {
     console.log('Sidebar collapsed:', isCollapsed);
-    // Aquí puedes manejar cambios en el layout si es necesario
+    this.isCollapsed.set(isCollapsed);
   }
 
   // Manejar click en logo
@@ -191,5 +192,14 @@ export class LayoutComponent {
   private showHelp(): void {
     // Implementar modal de ayuda o navegación
     alert('Centro de Ayuda - Aquí se abriría un modal con ayuda contextual');
+  }
+
+  // Ancho máximo del contenido en función del estado del sidebar
+  getContentMaxWidth(): string {
+    // En móvil el sidebar es overlay, así que no reducimos el ancho
+    if (this.isMobile()) return '100vw';
+    // En desktop restar el ancho del sidebar cuando está abierto
+    const sidebarWidth = this.isSidebarOpen() ? (this.isCollapsed() ? 80 : 256) : 0;
+    return `calc(100vw - ${sidebarWidth}px)`;
   }
 }
