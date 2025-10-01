@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 // Importar nuestros componentes UI
-import { InputComponent } from '../../shared/ui/input/input.component';
-import { DatePickerComponent } from '../../shared/ui/date-picker/date-picker.component';
+import { InputComponent } from 'iebem-ui';
+import { DatePickerComponent } from 'iebem-ui';
 import { FileUploadComponent } from '../../shared/ui/file-upload/file-upload.component';
-import { MaskedInputComponent } from '../../shared/ui/masked-input/masked-input.component';
-import { ModernSelectComponent, SelectOption } from '../../shared';
+import { MaskedInputComponent } from 'iebem-ui';
+import { ModernSelectComponent } from 'iebem-ui';
+import { SelectOption } from '../../shared';
 import { TableComponent, TableColumn, TableConfig, TableAction } from '../../shared/ui/table/table.component';
 
 @Component({

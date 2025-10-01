@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 
 // Importar componentes personalizados
-import { InputComponent } from '../../shared/ui/input/input.component';
+import { InputComponent } from 'iebem-ui';
 import { ButtonComponent } from 'iebem-ui';
 import { CheckboxComponent } from '../../shared/ui/checkbox/checkbox.component';
 import { ModalComponent, ModalConfig, ModalButton } from '../../shared/ui/modal/modal.component';

@@ -41,50 +41,50 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Nombre -->
-                    <app-input label="Nombre(s)" type="text" placeholder="Ingrese el nombre" icon="user"
+                    <app-iebem-input label="Nombre(s)" type="text" placeholder="Ingrese el nombre" icon="user"
                         [required]="true" formControlName="firstName" [error]="getFieldError('firstName')"
-                        hint="Nombre completo del empleado"></app-input>
+                        hint="Nombre completo del empleado"></app-iebem-input>
 
                     <!-- Apellidos -->
-                    <app-input label="Apellidos" type="text" placeholder="Ingrese los apellidos" icon="user"
+                    <app-iebem-input label="Apellidos" type="text" placeholder="Ingrese los apellidos" icon="user"
                         [required]="true" formControlName="lastName"
-                        [error]="getFieldError('lastName')"></app-input>
+                        [error]="getFieldError('lastName')"></app-iebem-input>
 
                     <!-- Email -->
-                    <app-input label="Correo Electrónico" type="email" placeholder="correo@iebem.edu.mx"
+                    <app-iebem-input label="Correo Electrónico" type="email" placeholder="correo@iebem.edu.mx"
                         icon="envelope" [required]="true" formControlName="email"
                         [error]="getFieldError('email')"
-                        hint="Email institucional del empleado"></app-input>
+                        hint="Email institucional del empleado"></app-iebem-input>
 
                     <!-- Teléfono -->
-                    <app-masked-input label="Teléfono" type="number" maskType="phone"
+                    <app-iebem-masked-input label="Teléfono" type="number" maskType="phone"
                         placeholder="(777) 123-4567" icon="phone" [required]="true" formControlName="phone"
-                        [error]="getFieldError('phone')"></app-masked-input>
+                        [error]="getFieldError('phone')"></app-iebem-masked-input>
 
                     <!-- CURP -->
-                    <app-masked-input label="CURP" maskType="curp" placeholder="CURP180901HPLXXX09"
+                    <app-iebem-masked-input label="CURP" maskType="curp" placeholder="CURP180901HPLXXX09"
                         icon="id-card" [required]="true" formControlName="curp"
-                        [error]="getFieldError('curp')"></app-masked-input>
+                        [error]="getFieldError('curp')"></app-iebem-masked-input>
 
                     <!-- RFC -->
-                    <app-masked-input label="RFC" maskType="rfc" placeholder="XAXX010101000" icon="id-badge"
+                    <app-iebem-masked-input label="RFC" maskType="rfc" placeholder="XAXX010101000" icon="id-badge"
                         [required]="true" formControlName="rfc"
-                        [error]="getFieldError('rfc')"></app-masked-input>
+                        [error]="getFieldError('rfc')"></app-iebem-masked-input>
 
                     <!-- Género SIN búsqueda -->
-                    <app-modern-select label="Género" placeholder="Seleccione el género"
+                    <app-iebem-modern-select label="Género" placeholder="Seleccione el género"
                         [options]="genderOptions" [required]="true" formControlName="gender"
-                        [error]="getFieldError('gender')"></app-modern-select>
+                        [error]="getFieldError('gender')"></app-iebem-modern-select>
 
                     <!-- Fecha de Nacimiento -->
-                    <app-date-picker 
+                    <app-iebem-date-picker 
                         label="Fecha de Nacimiento" 
                         placeholder="Selecciona tu fecha de nacimiento"
                         [required]="true"
                         [clearable]="true"
                         formControlName="birthDate"
                         [error]="getFieldError('birthDate')">
-                    </app-date-picker>
+                    </app-iebem-date-picker>
                 </div>
             </div>
 
@@ -100,30 +100,30 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Departamento CON búsqueda -->
-                    <app-modern-select label="Departamento" placeholder="Seleccione el departamento"
+                    <app-iebem-modern-select label="Departamento" placeholder="Seleccione el departamento"
                         [options]="departmentOptions" [required]="true" [searchable]="true"
                         formControlName="department" [error]="getFieldError('department')"
-                        hint="Área de trabajo del empleado"></app-modern-select>
+                        hint="Área de trabajo del empleado"></app-iebem-modern-select>
 
                     <!-- Puesto CON búsqueda -->
-                    <app-modern-select label="Puesto" placeholder="Seleccione el puesto"
+                    <app-iebem-modern-select label="Puesto" placeholder="Seleccione el puesto"
                         [options]="positionOptions" [required]="true" [searchable]="true"
-                        formControlName="position" [error]="getFieldError('position')"></app-modern-select>
+                        formControlName="position" [error]="getFieldError('position')"></app-iebem-modern-select>
 
                     <!-- Salario -->
-                    <app-input label="Salario Mensual" type="number" placeholder="15000" icon="dollar-sign"
+                    <app-iebem-input label="Salario Mensual" type="number" placeholder="15000" icon="dollar-sign"
                         [required]="true" formControlName="salary" [error]="getFieldError('salary')"
-                        hint="Salario base mensual en pesos mexicanos"></app-input>
+                        hint="Salario base mensual en pesos mexicanos"></app-iebem-input>
 
                     <!-- Fecha de Contratación -->
-                    <app-date-picker 
+                    <app-iebem-date-picker 
                         label="Fecha de Contratación" 
                         placeholder="Selecciona la fecha de ingreso"
                         [required]="true"
                         [clearable]="true"
                         formControlName="hireDate"
                         [error]="getFieldError('hireDate')">
-                    </app-date-picker>
+                    </app-iebem-date-picker>
                 </div>
             </div>
 
@@ -139,24 +139,24 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Calle y Número -->
                     <div class="md:col-span-2">
-                        <app-input label="Calle y Número" placeholder="Av. Plan de Ayala No. 456"
+                        <app-iebem-input label="Calle y Número" placeholder="Av. Plan de Ayala No. 456"
                             icon="home" [required]="true" formControlName="street"
-                            [error]="getFieldError('street')"></app-input>
+                            [error]="getFieldError('street')"></app-iebem-input>
                     </div>
 
                     <!-- Código Postal -->
-                    <app-masked-input label="Código Postal" maskType="postal" placeholder="62000"
+                    <app-iebem-masked-input label="Código Postal" maskType="postal" placeholder="62000"
                         icon="mail-bulk" [required]="true" formControlName="postalCode"
-                        [error]="getFieldError('postalCode')"></app-masked-input>
+                        [error]="getFieldError('postalCode')"></app-iebem-masked-input>
 
                     <!-- Ciudad -->
-                    <app-input label="Ciudad" placeholder="Cuernavaca" icon="city" [required]="true"
-                        formControlName="city" [error]="getFieldError('city')"></app-input>
+                    <app-iebem-input label="Ciudad" placeholder="Cuernavaca" icon="city" [required]="true"
+                        formControlName="city" [error]="getFieldError('city')"></app-iebem-input>
 
                     <!-- Estado CON búsqueda -->
-                    <app-modern-select label="Estado" placeholder="Seleccione el estado"
+                    <app-iebem-modern-select label="Estado" placeholder="Seleccione el estado"
                         [options]="stateOptions" [required]="true" [searchable]="true"
-                        formControlName="state" [error]="getFieldError('state')"></app-modern-select>
+                        formControlName="state" [error]="getFieldError('state')"></app-iebem-modern-select>
                 </div>
             </div>
 
@@ -171,15 +171,15 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Nombre del Contacto -->
-                    <app-input label="Nombre del Contacto" placeholder="María García López"
+                    <app-iebem-input label="Nombre del Contacto" placeholder="María García López"
                         icon="user-friends" [required]="true" formControlName="emergencyContact"
-                        [error]="getFieldError('emergencyContact')"></app-input>
+                        [error]="getFieldError('emergencyContact')"></app-iebem-input>
 
                     <!-- Teléfono de Emergencia -->
-                    <app-masked-input label="Teléfono de Emergencia" maskType="phone"
+                    <app-iebem-masked-input label="Teléfono de Emergencia" maskType="phone"
                         placeholder="(777) 987-6543" icon="phone-alt" [required]="true"
                         formControlName="emergencyPhone"
-                        [error]="getFieldError('emergencyPhone')"></app-masked-input>
+                        [error]="getFieldError('emergencyPhone')"></app-iebem-masked-input>
                 </div>
             </div>
 

@@ -1,0 +1,114 @@
+<div class="w-full">
+  <app-iebem-form-field
+    [label]="label"
+    [controlId]="id"
+    [error]="error"
+    [hint]="hint"
+    [required]="required"
+    [touched]="touched"
+    [empty]="!selectedDate">
+    <div class="relative">
+      <div
+        [class]="inputClasses"
+        (click)="toggleCalendar($event)"
+        [attr.aria-invalid]="showError ? true : null"
+        [attr.aria-describedby]="(error ? id + '-error ' : '') + (hint ? id + '-hint' : '')"
+        [attr.aria-labelledby]="id + '-label'"
+      >
+        <div class="flex items-center justify-between">
+          <span class="text-gray-900" [class.text-gray-400]="!displayValue">
+            {{ displayValue || placeholder }}
+          </span>
+          <i class="fas fa-calendar-alt text-gray-400"></i>
+        </div>
+      </div>
+
+      <!-- Calendar Modal -->
+      <div
+      *ngIf="isOpen"
+      #calendarContainer
+      class="dp-container fixed z-[1060] p-4 w-80 transform transition-all duration-300 ease-out bg-white rounded-2xl shadow-2xl border border-gray-100"
+      [class.opacity-0]="!calendarVisible"
+      [class.scale-95]="!calendarVisible"
+      [class.opacity-100]="calendarVisible"
+      [class.scale-100]="calendarVisible"
+      [style.left.px]="calendarLeft"
+      [style.top.px]="calendarTop"
+    >
+      <!-- View: Calendar Days -->
+      <div *ngIf="currentView === 'days'">
+        <div class="flex items-center justify-between mb-4">
+          <button type="button" class="dp-nav-btn p-2 hover:bg-gray-100 rounded-lg" (click)="previousMonth()">
+            <i class="fas fa-chevron-left text-gray-600"></i>
+          </button>
+          <div class="text-center">
+            <button type="button" class="dp-header-title font-semibold text-gray-800" (click)="showMonthPicker()">{{ getMonthName() }}</button>
+            <button type="button" class="dp-header-title ml-2 font-semibold text-gray-800" (click)="showYearPicker()">{{ currentYear }}</button>
+          </div>
+          <button type="button" class="dp-nav-btn p-2 hover:bg-gray-100 rounded-lg" (click)="nextMonth()">
+            <i class="fas fa-chevron-right text-gray-600"></i>
+          </button>
+        </div>
+        <div class="grid grid-cols-7 gap-1 mb-2">
+          <div *ngFor="let day of daysOfWeek" class="text-center text-xs font-medium text-gray-500 py-2">{{ day }}</div>
+        </div>
+        <div class="grid grid-cols-7 gap-1">
+          <button *ngFor="let day of calendarDays" type="button" [class]="getDayClasses(day)" (click)="selectDate(day)" [disabled]="!day.isCurrentMonth || day.isOutOfRange">
+            {{ day.number }}
+          </button>
+        </div>
+      </div>
+
+      <!-- View: Month Picker -->
+      <div *ngIf="currentView === 'months'">
+        <div class="flex items-center justify-between mb-4">
+          <button type="button" class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200" (click)="showDayPicker()">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+          </button>
+          <h3 class="text-lg font-semibold text-gray-800">{{ currentYear }}</h3>
+          <div></div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <button *ngFor="let month of monthNames; let i = index" type="button" [class]="getMonthClasses(i)" (click)="selectMonth(i)">
+            {{ month.substring(0, 3) }}
+          </button>
+        </div>
+      </div>
+
+      <!-- View: Year Picker -->
+      <div *ngIf="currentView === 'years'">
+        <div class="flex items-center justify-between mb-4">
+          <button type="button" class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200" (click)="showDayPicker()">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+          </button>
+          <h3 class="text-lg font-semibold text-gray-800">{{ startYear }} - {{ endYear }}</h3>
+          <div class="flex space-x-1">
+            <button type="button" class="dp-nav-btn p-2 hover:bg-gray-100 rounded-lg" (click)="previousYearRange()">
+              <i class="fas fa-chevron-left text-gray-600"></i>
+            </button>
+            <button type="button" class="dp-nav-btn p-2 hover:bg-gray-100 rounded-lg" (click)="nextYearRange()">
+              <i class="fas fa-chevron-right text-gray-600"></i>
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-4 gap-2">
+          <button *ngFor="let year of yearRange" type="button" [class]="getYearClasses(year)" (click)="selectYear(year)">
+            {{ year }}
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+        <button type="button" class="text-iebem-primary hover:text-iebem-dark text-sm font-medium" (click)="selectToday()">Hoy</button>
+        <div class="flex space-x-2">
+          <button *ngIf="clearable" type="button" class="px-3 py-1 text-gray-600 hover:text-gray-800 text-sm" (click)="clearDate()">Limpiar</button>
+          <button type="button" class="px-4 py-2 bg-iebem-primary text-white rounded-lg hover:bg-iebem-dark transition-colors duration-200 text-sm" (click)="closeCalendar()">Listo</button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </app-iebem-form-field>
+</div>
+
+<!-- Dark overlay background -->
+<div *ngIf="isOpen" class="fixed inset-0 z-[1050] bg-black transition-opacity duration-300" [class.opacity-0]="!overlayVisible" [class.opacity-50]="overlayVisible" (click)="closeCalendar()"></div>

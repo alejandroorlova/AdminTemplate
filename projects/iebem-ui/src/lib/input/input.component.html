@@ -1,0 +1,50 @@
+<!-- iebem-ui: input.component.html using app-iebem-form-field -->
+<div class="w-full relative">
+  <app-iebem-form-field
+    [label]="label"
+    [controlId]="id"
+    [error]="error"
+    [hint]="hint"
+    [required]="required"
+    [touched]="touched"
+    [empty]="!value">
+    <div class="relative">
+      <input
+        #inputEl
+        [id]="id"
+        [type]="inputType"
+        [placeholder]="placeholder"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [class]="inputClasses"
+        [attr.aria-describedby]="(error ? id + '-error ' : '') + (hint ? id + '-hint' : '')"
+        [attr.aria-labelledby]="id + '-label'"
+        [value]="value"
+        (input)="onInput($event)"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+      />
+
+      <!-- Left icon -->
+      <div *ngIf="icon" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <i [class]="'fas fa-' + icon + ' text-gray-400'"></i>
+      </div>
+
+      <!-- Right icon -->
+      <div *ngIf="suffixIcon && type !== 'password'" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+        <i [class]="'fas fa-' + suffixIcon + ' text-gray-400'"></i>
+      </div>
+
+      <!-- Password toggle -->
+      <div *ngIf="type === 'password'" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+        <button type="button"
+          class="text-gray-400 hover:text-gray-600 transition-colors duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-iebem-primary focus:ring-offset-2 rounded-sm"
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          tabindex="0">
+          <i [class]="'fas fa-' + (showPassword ? 'eye-slash' : 'eye')"></i>
+        </button>
+      </div>
+    </div>
+  </app-iebem-form-field>
+</div>

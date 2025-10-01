@@ -43,7 +43,7 @@
         
         <!-- Campo de email -->
         <div>
-          <app-input
+          <app-iebem-input
             id="email"
             type="email"
             label="Correo Electrónico"
@@ -52,12 +52,12 @@
             [required]="true"
             [error]="emailError"
             formControlName="email">
-          </app-input>
+          </app-iebem-input>
         </div>
         
         <!-- Campo de contraseña -->
         <div>
-          <app-input
+          <app-iebem-input
             id="password"
             type="password"
             label="Contraseña"
@@ -66,7 +66,7 @@
             [required]="true"
             [error]="passwordError"
             formControlName="password">
-          </app-input>
+          </app-iebem-input>
         </div>
         
         <!-- Opciones adicionales -->
@@ -163,7 +163,7 @@
   <!-- Contenido del modal para recuperación -->
   <div *ngIf="!resetEmailSent">
     <form [formGroup]="resetPasswordForm">
-      <app-input
+      <app-iebem-input
         id="resetEmail"
         type="email"
         label="Correo Electrónico"
@@ -173,7 +173,7 @@
         [error]="resetEmailError"
         hint="Te enviaremos un enlace para restablecer tu contraseña"
         formControlName="email">
-      </app-input>
+      </app-iebem-input>
     </form>
   </div>
   

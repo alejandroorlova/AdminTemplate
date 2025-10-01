@@ -27,7 +27,14 @@ module.exports = {
     'btn-sm',
     'btn-md',
     'btn-lg',
-    'btn-xl'
+    'btn-xl',
+    // Inputs
+    'input-base',
+    'input-default',
+    'input-error',
+    'input-success',
+    'input-disabled',
+    'search-input'
   ],
   theme: {
     extend: {

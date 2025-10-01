@@ -1,0 +1,62 @@
+<div class="w-full relative">
+  <app-iebem-form-field
+    [label]="label"
+    [controlId]="id"
+    [error]="error"
+    [hint]="hint"
+    [required]="required"
+    [touched]="touched"
+    [empty]="value === null || value === undefined || value === ''">
+    <div
+      [class]="triggerClasses"
+      (click)="toggleDropdown()"
+      [attr.aria-invalid]="showError ? true : null"
+      [attr.aria-describedby]="(error ? id + '-error ' : '') + (hint ? id + '-hint' : '')"
+      [attr.aria-labelledby]="id + '-label'"
+    >
+      <div class="flex items-center flex-1 min-w-0">
+        <div *ngIf="selectedOption; else placeholderTemplate" class="flex items-center space-x-2 min-w-0">
+          <i *ngIf="selectedOption.icon" [class]="'fas fa-' + selectedOption.icon + ' text-gray-500 flex-shrink-0'"></i>
+          <span class="text-gray-900 font-medium truncate">{{ selectedOption.label }}</span>
+        </div>
+        <ng-template #placeholderTemplate>
+          <span class="text-gray-400 truncate">{{ placeholder }}</span>
+        </ng-template>
+      </div>
+      <div class="flex items-center ml-3 pl-3 flex-shrink-0">
+        <i [class]="arrowClasses"></i>
+      </div>
+    </div>
+
+    <!-- Dropdown -->
+    <div *ngIf="isOpen" class="absolute z-50 left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg max-h-64 overflow-hidden">
+      <div *ngIf="searchable" class="p-3 border-b border-gray-100">
+        <div class="relative">
+          <input #searchInput type="text" class="search-input" placeholder="Buscar..." [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-search text-gray-400 text-sm"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-h-48 overflow-y-auto custom-scrollbar">
+        <div *ngIf="getFilteredOptions().length === 0" class="p-4 text-center text-gray-500 text-sm">
+          <i class="fas fa-search-minus mb-2 text-lg"></i>
+          <p>No se encontraron opciones</p>
+        </div>
+        <button *ngFor="let option of getFilteredOptions()" type="button" [class]="getOptionClasses(option)" (click)="selectOption(option)">
+          <div class="flex items-center space-x-3 w-full min-w-0">
+            <i *ngIf="option.icon" [class]="'fas fa-' + option.icon + ' text-gray-500 flex-shrink-0'"></i>
+            <div class="flex-1 text-left min-w-0">
+              <div class="font-medium text-gray-900 truncate">{{ option.label }}</div>
+              <div *ngIf="option.description" class="text-xs text-gray-500 truncate">{{ option.description }}</div>
+            </div>
+            <i *ngIf="isSelected(option)" class="fas fa-check text-iebem-primary flex-shrink-0"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </app-iebem-form-field>
+
+  <div *ngIf="isOpen" class="fixed inset-0 z-40" (click)="closeDropdown()"></div>
+</div>
