@@ -67,7 +67,7 @@
       <!-- MODALES DECLARATIVOS -->
       
       <!-- 1. Modal de Información -->
-      <app-modal 
+      <app-iebem-modal 
         [isOpen]="showInfoModal"
         title="Información del Sistema"
         subtitle="Detalles sobre el funcionamiento del IEBEM"
@@ -100,10 +100,10 @@
             </div>
           </div>
         </div>
-      </app-modal>
+      </app-iebem-modal>
       
       <!-- 2. Modal de Confirmación -->
-      <app-modal 
+      <app-iebem-modal 
         [isOpen]="showConfirmModal"
         title="Confirmar Acción"
         subtitle="¿Estás seguro de que deseas continuar?"
@@ -140,10 +140,10 @@
             </ul>
           </div>
         </div>
-      </app-modal>
+      </app-iebem-modal>
       
       <!-- 3. Modal de Formulario -->
-      <app-modal 
+      <app-iebem-modal 
         [isOpen]="showFormModal"
         title="Editar Empleado"
         subtitle="Modifica la información del empleado seleccionado"
@@ -216,10 +216,10 @@
             </div>
           </div>
         </form>
-      </app-modal>
+      </app-iebem-modal>
       
       <!-- 4. Modal de Vista de Empleado -->
-      <app-modal 
+      <app-iebem-modal 
         [isOpen]="showViewModal"
         title="Información del Empleado"
         subtitle="Detalles completos del empleado"
@@ -286,10 +286,10 @@
             </div>
           </div>
         </div>
-      </app-modal>
+      </app-iebem-modal>
       
       <!-- 5. Modal de Eliminación -->
-      <app-modal 
+      <app-iebem-modal 
         [isOpen]="showDeleteModal"
         title="Confirmar Eliminación"
         subtitle="Esta acción no se puede deshacer"
@@ -342,7 +342,7 @@
             </ul>
           </div>
         </div>
-      </app-modal>
+      </app-iebem-modal>
       
       <!-- Notificaciones -->
       <div *ngIf="isNotificationVisible" 

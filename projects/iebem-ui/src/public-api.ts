@@ -16,3 +16,4 @@ export * from './lib/table/table.component';
 export * from './lib/table/table.interfaces';
 export * from './lib/checkbox/checkbox.component';
 export * from './lib/loader/loader.component';
+export * from './lib/modal/modal.component';

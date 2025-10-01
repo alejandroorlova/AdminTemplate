@@ -1,0 +1,63 @@
+<ng-template cdkConnectedOverlay
+             [cdkConnectedOverlayOpen]="isOpen"
+             [cdkConnectedOverlayHasBackdrop]="false"
+             [cdkConnectedOverlayBackdropClass]="'bg-black bg-opacity-50'">
+
+  <div class="modal-overlay" data-role="modal-overlay" (click)="onBackdropClick()" [@backdropAnimation]="'in'"></div>
+
+  <div class="modal-wrapper" data-role="modal-wrapper"
+       role="dialog" aria-modal="true"
+       [attr.aria-labelledby]="title ? 'modal-title' : null"
+       [attr.aria-describedby]="subtitle ? 'modal-subtitle' : null">
+
+    <div [class]="(getModalPositionClass() === 'items-center' ? 'modal-position-center' : 'modal-position-top')">
+      <div #modalContent #dialog cdkTrapFocus tabindex="-1"
+           class="modal-card transition-all duration-300 transform" data-role="modal-card"
+           [class]="getModalSizeClass() + ' ' + customClass"
+           [@modalAnimation]="'in'">
+
+        <div *ngIf="loading" class="absolute inset-0 bg-white bg-opacity-90 rounded-2xl z-10 flex items-center justify-center">
+          <div class="flex items-center gap-3">
+            <div class="animate-spin rounded-full h-6 w-6 border-2 border-iebem-light border-t-iebem-primary"></div>
+            <span class="text-sm text-iebem-dark font-medium">Cargando...</span>
+          </div>
+        </div>
+
+        <button *ngIf="config.closable" type="button" class="modal-close" (click)="close()" aria-label="Cerrar modal">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+
+        <div *ngIf="title || subtitle || icon" class="modal-header">
+          <div class="flex items-start gap-4">
+            <div *ngIf="icon" class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-iebem-light to-white rounded-xl flex items-center justify-center border border-iebem-primary border-opacity-20">
+              <i [class]="'fas fa-' + icon + ' text-xl ' + getIconColorClass()"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h2 *ngIf="title" id="modal-title" class="text-xl font-bold text-iebem-dark mb-1 font-heading">{{ title }}</h2>
+              <p *ngIf="subtitle" id="modal-subtitle" class="text-sm text-gray-600 leading-relaxed">{{ subtitle }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          <div><ng-content></ng-content></div>
+        </div>
+
+        <div *ngIf="buttons && buttons.length > 0" class="modal-footer">
+          <div [class]="getFooterLayoutClasses()">
+            <button *ngFor="let button of buttons" type="button"
+                    [class]="getButtonClasses(button)"
+                    [disabled]="button.disabled || loading"
+                    (click)="onButtonClick(button.action)">
+              <i *ngIf="button.loading" class="fas fa-spinner fa-spin mr-2"></i>
+              <i *ngIf="button.icon && !button.loading" [class]="'fas fa-' + button.icon + ' mr-2'"></i>
+              <span>{{ button.label }}</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ng-template>
+

@@ -1,0 +1,16 @@
+@use '../styles/index.tailwind.css';
+
+/* Reuse app modal styles by mirroring class names used in the app */
+.modal-overlay { @apply fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300; }
+.modal-wrapper { @apply fixed inset-0 z-[1070] overflow-y-auto; }
+.modal-position-center { @apply min-h-screen flex justify-center items-center px-4 py-6 sm:px-6 lg:px-8 pointer-events-none; }
+.modal-position-top { @apply min-h-screen flex justify-center items-start pt-20 px-4 py-6 sm:px-6 lg:px-8 pointer-events-none; }
+.modal-card { @apply bg-white rounded-2xl shadow-2xl border border-gray-100 w-full max-w-md relative pointer-events-auto; }
+.modal-header { @apply px-6 py-6 border-b border-gray-100; }
+.modal-body { @apply px-6 py-6 text-gray-700 leading-relaxed; }
+.modal-footer { @apply px-6 py-4 bg-gradient-to-r from-gray-50 to-iebem-light bg-opacity-30 border-t border-gray-100 rounded-b-2xl; }
+.modal-close { @apply btn-ghost btn-icon absolute top-4 right-4 z-20; }
+
+/* sr-only helper (avoid relying on app styles) */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+

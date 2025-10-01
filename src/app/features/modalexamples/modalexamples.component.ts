@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ModalComponent, ModalConfig, ModalButton } from '../../shared/ui/modal/modal.component';
+import { ModalComponent, ModalConfig, ModalButton } from 'iebem-ui';
 
 @Component({
   selector: 'app-modalexamples',
