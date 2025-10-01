@@ -1,8 +1,4 @@
-<ng-template cdkConnectedOverlay
-             [cdkConnectedOverlayOpen]="isOpen"
-             [cdkConnectedOverlayHasBackdrop]="false"
-             [cdkConnectedOverlayBackdropClass]="'bg-black bg-opacity-50'">
-
+<div *ngIf="isOpen" class="fixed inset-0 z-[1070]">
   <div class="modal-overlay" data-role="modal-overlay" (click)="onBackdropClick()" [@backdropAnimation]="'in'"></div>
 
   <div class="modal-wrapper" data-role="modal-wrapper"
@@ -59,5 +55,4 @@
       </div>
     </div>
   </div>
-</ng-template>
-
+</div>
