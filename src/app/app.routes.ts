@@ -21,6 +21,11 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'stepper',
+        loadComponent: () => import('./features/stepper/stepper.component').then(m => m.StepperDemoComponent),
+        title: 'IEBEM - Stepper'
+      },
+      {
         path: 'dashboard',
         loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
         title: 'IEBEM - Dashboard'

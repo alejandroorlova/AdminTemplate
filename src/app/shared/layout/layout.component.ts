@@ -99,6 +99,13 @@ export class LayoutComponent {
             tooltip: 'Miga de pan de navegación'
           },
           {
+            id: 'stepper',
+            label: 'Stepper',
+            icon: 'list-ol',
+            route: '/stepper',
+            tooltip: 'Progreso por pasos'
+          },
+          {
             id: 'checkboxes',
             label: 'CheckBoxes',
             icon: 'check-square',

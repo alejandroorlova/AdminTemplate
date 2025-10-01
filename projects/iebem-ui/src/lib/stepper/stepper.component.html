@@ -1,0 +1,51 @@
+<nav class="w-full" [attr.aria-label]="ariaLabel" data-role="stepper">
+  <!-- Horizontal -->
+  <ol *ngIf="orientation==='horizontal'; else verticalTpl" class="flex items-center w-full">
+    <ng-container *ngFor="let step of steps; let i = index">
+      <!-- Step -->
+      <li class="flex items-center">
+        <button type="button" class="group flex items-start" [ngClass]="compact ? 'gap-2' : sizeCfg[size].gap" [disabled]="isDisabled(step) || !clickable" (click)="onSelect(i)" [attr.aria-current]="currentIndex===i ? 'step' : null">
+          <span [ngClass]="circleClass(i, step)" [class.scale-90]="compact" aria-hidden="true">
+            <i *ngIf="step.icon; else numTpl" class="fas" [ngClass]="'fa-' + step.icon + ' ' + sizeCfg[size].icon"></i>
+            <ng-template #numTpl>
+              <span *ngIf="showNumbers" [ngClass]="numberClass()">{{ i + 1 }}</span>
+            </ng-template>
+          </span>
+          <span class="flex flex-col">
+            <span [ngClass]="labelClass(i, step)" class="truncate max-w-[24ch]">{{ step.label }}</span>
+            <span *ngIf="step.subtitle" class="text-gray-400" [ngClass]="sizeCfg[size].sub" [class.hidden]="compact">{{ step.subtitle }}</span>
+          </span>
+        </button>
+      </li>
+      <!-- Connector -->
+      <li *ngIf="i < steps.length - 1" class="flex-1 flex items-center">
+        <div [ngClass]="connectorClass(i)"></div>
+      </li>
+    </ng-container>
+  </ol>
+
+  <!-- Vertical -->
+  <ng-template #verticalTpl>
+    <ol class="flex flex-col">
+      <ng-container *ngFor="let step of steps; let i = index">
+        <li class="flex flex-col">
+          <div class="group flex items-start" [ngClass]="compact ? 'gap-2' : sizeCfg[size].gap">
+            <span [ngClass]="circleClass(i, step)" [class.scale-90]="compact" aria-hidden="true">
+              <i *ngIf="step.icon; else numTpl2" class="fas" [ngClass]="'fa-' + step.icon + ' ' + sizeCfg[size].icon"></i>
+              <ng-template #numTpl2>
+                <span *ngIf="showNumbers" [ngClass]="numberClass()">{{ i + 1 }}</span>
+              </ng-template>
+            </span>
+            <div class="flex flex-col">
+              <button type="button" class="text-left" [ngClass]="labelClass(i, step)" [disabled]="isDisabled(step) || !clickable" (click)="onSelect(i)">
+                {{ step.label }}
+              </button>
+              <span *ngIf="step.subtitle" class="text-gray-400" [ngClass]="sizeCfg[size].sub" [class.hidden]="compact">{{ step.subtitle }}</span>
+            </div>
+          </div>
+          <div *ngIf="i < steps.length - 1" [ngClass]="connectorClass(i)"></div>
+        </li>
+      </ng-container>
+    </ol>
+  </ng-template>
+</nav>

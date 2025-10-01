@@ -24,3 +24,5 @@ export * from './lib/confirm-dialog/confirm-dialog.service';
 export * from './lib/confirm-dialog/confirm-dialog.component';
 export * from './lib/breadcrumb/breadcrumb.component';
 export * from './lib/breadcrumb/breadcrumb.types';
+export * from './lib/stepper/stepper.component';
+export * from './lib/stepper/stepper.types';

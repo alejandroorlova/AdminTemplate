@@ -1,0 +1,38 @@
+<div class="space-y-8">
+  <h2 class="text-2xl font-bold text-gray-800">Stepper</h2>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Básico (Horizontal)</h3>
+    <app-iebem-stepper [steps]="stepsBasic" [currentIndex]="current()" (currentIndexChange)="setStep($event)"></app-iebem-stepper>
+    <div class="flex gap-2">
+      <button class="btn-primary btn-sm" (click)="prev()">Anterior</button>
+      <button class="btn-primary btn-sm" (click)="next()">Siguiente</button>
+    </div>
+  </section>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Con Iconos y Subtítulos</h3>
+    <app-iebem-stepper [steps]="stepsIcons" [currentIndex]="current()" size="md"></app-iebem-stepper>
+  </section>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Vertical</h3>
+    <app-iebem-stepper [steps]="stepsIcons" [currentIndex]="current()" orientation="vertical" size="md"></app-iebem-stepper>
+  </section>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Con pasos deshabilitados</h3>
+    <app-iebem-stepper [steps]="stepsDisabled" [currentIndex]="0" [clickable]="true"></app-iebem-stepper>
+  </section>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Estado de error</h3>
+    <app-iebem-stepper [steps]="stepsError" [currentIndex]="1" size="md"></app-iebem-stepper>
+  </section>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Variante compacta</h3>
+    <app-iebem-stepper [steps]="stepsIcons" [currentIndex]="current()" size="sm" [compact]="true"></app-iebem-stepper>
+    <app-iebem-stepper [steps]="stepsIcons" [currentIndex]="current()" size="sm" [compact]="true" orientation="vertical"></app-iebem-stepper>
+  </section>
+</div>
