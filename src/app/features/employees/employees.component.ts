@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 // Importar nuestros componentes UI
 import { InputComponent } from 'iebem-ui';
 import { DatePickerComponent } from 'iebem-ui';
-import { FileUploadComponent } from '../../shared/ui/file-upload/file-upload.component';
+import { FileUploadComponent } from 'iebem-ui';
 import { MaskedInputComponent } from 'iebem-ui';
 import { ModernSelectComponent } from 'iebem-ui';
 import { SelectOption } from '../../shared';

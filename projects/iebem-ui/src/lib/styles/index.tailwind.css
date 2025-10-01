@@ -125,3 +125,23 @@
   .input-disabled { @apply bg-gray-100 text-gray-500 cursor-not-allowed ring-gray-200; }
   .search-input { @apply input-default pl-8 pr-4 py-2 text-sm; }
 }
+
+/* File Upload */
+@layer components {
+  .fu-dropzone { @apply border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200 bg-white focus:outline-none focus:ring-2 focus:ring-iebem-primary; }
+  .fu-dropzone--normal { @apply border-gray-300 hover:border-iebem-primary hover:bg-gray-50; }
+  .fu-dropzone--drag { @apply border-iebem-primary bg-iebem-light scale-105; }
+  .fu-dropzone--error { @apply border-red-300 hover:border-red-400 bg-red-50; }
+
+  .fu-icon { @apply text-4xl mb-3 text-gray-400; }
+  .fu-icon--active { @apply text-iebem-primary; }
+  .fu-title { @apply text-gray-600 mt-3 font-medium; }
+  .fu-select-btn { @apply btn-light btn-sm mt-2; }
+
+  .fu-list { @apply mt-4 space-y-3; }
+  .fu-file-row { @apply flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200; }
+  .fu-file-pill { @apply w-10 h-10 rounded-lg flex items-center justify-center; }
+  .fu-file-name { @apply text-sm font-medium text-gray-900; }
+  .fu-file-size { @apply text-xs text-gray-500; }
+  .fu-remove-btn { @apply text-red-500 hover:text-red-700 hover:bg-red-100 p-2 rounded-lg transition-all duration-200; }
+}

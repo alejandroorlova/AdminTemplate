@@ -1,0 +1,64 @@
+<div class="w-full">
+  <app-iebem-form-field
+    [label]="label"
+    [controlId]="id"
+    [required]="required"
+    [hint]="hint"
+    [error]="error"
+    [touched]="touched"
+    [empty]="selectedFiles.length === 0">
+    <div
+      [class]="dropZoneClasses"
+      role="button"
+      tabindex="0"
+      data-role="file-dropzone"
+      [attr.aria-invalid]="showError ? true : null"
+      [attr.aria-describedby]="(error ? id + '-error ' : '') + (hint ? id + '-hint' : '')"
+      [attr.aria-labelledby]="id + '-label'"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      (click)="markTouched(); fileInput.click()"
+      (keydown.enter)="markTouched(); fileInput.click()"
+      (keydown.space)="markTouched(); fileInput.click()"
+    >
+      <input
+        #fileInput
+        type="file"
+        class="hidden"
+        [accept]="accept"
+        [multiple]="multiple"
+        (change)="onFileSelect($event)"
+        (blur)="markTouched()"
+      />
+
+      <div class="text-center">
+        <i [class]="iconClass"></i>
+        <p class="fu-title">{{ dragActive ? 'Suelta los archivos aquí' : 'Arrastra archivos aquí o' }}</p>
+        <button type="button" class="fu-select-btn" *ngIf="!dragActive">
+          <i class="fas fa-folder-open mr-2"></i>
+          Seleccionar archivos
+        </button>
+      </div>
+    </div>
+  </app-iebem-form-field>
+
+  <div *ngIf="selectedFiles.length > 0" class="fu-list">
+    <h4 class="text-sm font-medium text-gray-700">Archivos seleccionados:</h4>
+    <div *ngFor="let file of selectedFiles; let i = index" class="fu-file-row">
+      <div class="flex items-center space-x-3">
+        <div class="fu-file-pill" [class]="getFileIconBackground(file.type)">
+          <i [class]="getFileIcon(file.type)"></i>
+        </div>
+        <div>
+          <p class="fu-file-name">{{ file.name }}</p>
+          <p class="fu-file-size">{{ formatFileSize(file.size) }}</p>
+        </div>
+      </div>
+      <button type="button" class="fu-remove-btn" (click)="removeFile(i)">
+        <i class="fas fa-trash text-sm"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
