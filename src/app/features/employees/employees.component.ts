@@ -9,7 +9,7 @@ import { FileUploadComponent } from 'iebem-ui';
 import { MaskedInputComponent } from 'iebem-ui';
 import { ModernSelectComponent } from 'iebem-ui';
 import { SelectOption } from '../../shared';
-import { TableComponent, TableColumn, TableConfig, TableAction } from '../../shared/ui/table/table.component';
+import { TableComponent, TableColumn, TableConfig, TableAction } from 'iebem-ui';
 
 @Component({
   selector: 'app-employees',
@@ -523,6 +523,11 @@ export class EmployeesComponent implements OnInit {
         this.showDeleteConfirmation(row);
         break;
     }
+  }
+
+  onActionButtonClick(ev: MouseEvent, action: TableAction, row: any): void {
+    ev.stopPropagation();
+    this.onEmployeeActionClick({ action, row });
   }
 
   onSortChange(event: { column: string, direction: 'asc' | 'desc' }) {

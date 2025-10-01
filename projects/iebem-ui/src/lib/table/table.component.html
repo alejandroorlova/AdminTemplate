@@ -1,0 +1,119 @@
+<div class="tbl-card" data-role="table-card">
+  <!-- Header (optional title/subtitle) -->
+  <div *ngIf="title || subtitle || (config.filtering?.enabled && (config.filtering?.globalSearch || false))" class="px-6 py-4 border-b border-gray-200 bg-white">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <div>
+        <h3 *ngIf="title" class="text-lg font-bold text-gray-800">{{ title }}</h3>
+        <p *ngIf="subtitle" class="text-sm text-gray-500">{{ subtitle }}</p>
+      </div>
+      <div *ngIf="config.filtering?.enabled && (config.filtering?.globalSearch || false)" class="relative w-full lg:w-64">
+        <input type="text" class="tbl-search" placeholder="Buscar..." [(ngModel)]="globalSearch" (input)="onSearchChange()" />
+        <div class="tbl-search-icon">
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table scroll container -->
+  <div class="tbl-scroll" data-role="table-scroll">
+    <table class="tbl" data-role="table">
+      <thead [class]="getHeaderStyleClass()" [ngClass]="{'tbl-head--sticky': config.stickyHeader}">
+        <tr>
+          <th *ngFor="let col of columns" [style.width]="col.width" [style.minWidth]="col.minWidth" class="tbl-th" [ngClass]="{
+            'tbl-th--glass': config.headerStyle === 'glass',
+            'tbl-th--primary': config.headerStyle === 'primary',
+            'tbl-th--gradient': config.headerStyle === 'gradient',
+            'tbl-th--soft': config.headerStyle === 'soft',
+            'tbl-th--compact': config.compact
+          }">
+            <div class="tbl-th-label">
+              <span>{{ col.title }}</span>
+              <button *ngIf="config.sorting?.enabled && col.sortable" class="tbl-sort-btn" [ngClass]="{
+                'tbl-sort-btn--primary': config.headerStyle === 'primary',
+                'tbl-sort-btn--glass': config.headerStyle === 'glass',
+                'tbl-sort-btn--gradient': config.headerStyle === 'gradient',
+                'tbl-sort-btn--soft': config.headerStyle === 'soft'
+              }" (click)="toggleSort(col)">
+                <i class="tbl-sort-icon" [ngClass]="{
+                  'tbl-sort-icon--primary': config.headerStyle === 'primary',
+                  'tbl-sort-icon--glass': config.headerStyle === 'glass',
+                  'tbl-sort-icon--gradient': config.headerStyle === 'gradient',
+                  'tbl-sort-icon--soft': config.headerStyle === 'soft',
+                  'tbl-sort-icon--active-primary': sortColumn === col.key && config.headerStyle === 'primary',
+                  'tbl-sort-icon--active-glass': sortColumn === col.key && config.headerStyle === 'glass',
+                  'tbl-sort-icon--active-gradient': sortColumn === col.key && config.headerStyle === 'gradient',
+                  'tbl-sort-icon--active-soft': sortColumn === col.key && config.headerStyle === 'soft'
+                }" [class.fa-sort]='sortColumn !== col.key' [class.fa-sort-up]='sortColumn === col.key && sortDirection === "asc"' [class.fa-sort-down]='sortColumn === col.key && sortDirection === "desc"' class="fas"></i>
+              </button>
+            </div>
+          </th>
+          <th *ngIf="actions.length > 0" class="tbl-th tbl-th--compact" [style.width]="config.actions?.width || '80px'">
+            <span class="tbl-th-label">Acciones</span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="tbl-body">
+        <!-- Loading row -->
+        <tr *ngIf="loading">
+          <td [attr.colspan]="columns.length + (actions.length>0?1:0)" class="tbl-td text-center">
+            <div class="py-10" data-role="loader">
+              <i class="fas fa-spinner fa-spin text-iebem-primary text-xl"></i>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Empty state -->
+        <tr *ngIf="!loading && processedData.length === 0">
+          <td [attr.colspan]="columns.length + (actions.length>0?1:0)" class="tbl-td">
+            <div class="tbl-empty">
+              <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-iebem-primary to-iebem-secondary rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                  <i class="fas fa-table text-white text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-iebem-dark mb-1">{{ emptyMessage }}</h3>
+                <p class="text-gray-500 text-sm">Sin registros para mostrar</p>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Data rows -->
+        <tr *ngFor="let row of processedData; let i = index; trackBy: trackByIndex" class="tbl-row" [ngClass]="{'tbl-row--hover': config.hoverable, 'tbl-row--clickable': true}" (click)="onRowClick(row)">
+          <td *ngFor="let col of columns" class="tbl-td" [ngClass]="{'tbl-td--compact': config.compact, 'tbl-td--bordered': config.bordered}">
+            <ng-container *ngIf="col.template || col.cellTemplate; else builtInCell"
+              [ngTemplateOutlet]="col.template ?? col.cellTemplate ?? null"
+              [ngTemplateOutletContext]="{ $implicit: getColumnValue(row, col.key), row: row, col: col, value: getColumnValue(row, col.key) }">
+            </ng-container>
+            <ng-template #builtInCell>
+              <ng-container [ngSwitch]="col.type">
+                <span *ngSwitchCase="'text'">{{ getColumnValue(row, col.key) }}</span>
+                <span *ngSwitchCase="'number'">{{ getColumnValue(row, col.key) }}</span>
+                <span *ngSwitchCase="'date'">{{ getColumnValue(row, col.key) }}</span>
+                <span *ngSwitchCase="'boolean'">{{ getColumnValue(row, col.key) ? 'Sí' : 'No' }}</span>
+                <span *ngSwitchDefault>{{ getColumnValue(row, col.key) }}</span>
+              </ng-container>
+            </ng-template>
+          </td>
+          <td *ngIf="actions.length > 0" class="tbl-td text-right">
+            <button *ngFor="let action of actions" class="tbl-action-btn" (click)="onAction(action, row, $event)" [title]="action.label">
+              <i *ngIf="action.icon" [class]="'fas fa-' + action.icon"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer: pagination -->
+  <div *ngIf="config.pagination?.enabled && totalItems > 0" class="px-6 py-4 bg-gray-50 border-top border-gray-200">
+    <div class="flex items-center justify-center gap-2">
+      <button (click)="onPageChange(1)" [disabled]="currentPage === 1" class="pager-btn" title="Primera página"><i class="fas fa-angle-double-left"></i></button>
+      <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1" class="pager-btn"><i class="fas fa-angle-left"></i></button>
+      <span class="pager-current">{{ currentPage }}</span>
+      <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= getTotalPages()" class="pager-btn"><i class="fas fa-angle-right"></i></button>
+      <button (click)="onPageChange(getTotalPages())" [disabled]="currentPage >= getTotalPages()" class="pager-btn" title="Última página"><i class="fas fa-angle-double-right"></i></button>
+    </div>
+  </div>
+</div>

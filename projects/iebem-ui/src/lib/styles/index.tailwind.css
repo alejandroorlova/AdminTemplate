@@ -145,3 +145,51 @@
   .fu-file-size { @apply text-xs text-gray-500; }
   .fu-remove-btn { @apply text-red-500 hover:text-red-700 hover:bg-red-100 p-2 rounded-lg transition-all duration-200; }
 }
+
+/* Table */
+@layer components {
+  .tbl-card { @apply bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden; }
+  .tbl { @apply w-full; }
+  .tbl-scroll { @apply w-full max-w-full overflow-x-auto overscroll-x-contain rounded-t-2xl; }
+  .tbl-head { @apply bg-iebem-primary; }
+  .tbl-head--primary { @apply bg-iebem-primary; }
+  .tbl-head--glass { @apply bg-white/80 backdrop-blur-md border-b border-gray-200; }
+  .tbl-head--soft { @apply bg-iebem-light border-b border-iebem-primary/20; }
+  .tbl-head--gradient { @apply bg-gradient-to-r from-iebem-primary to-iebem-secondary; }
+  .tbl-th { @apply px-4 py-5 text-left text-xs font-bold uppercase tracking-wider border-r last:border-r-0; border-color: rgb(255 255 255 / 0.2); }
+  .tbl-th--glass { @apply text-iebem-dark border-gray-200; }
+  .tbl-th--primary { @apply text-white py-4; }
+  .tbl-th--soft { @apply text-iebem-dark border-iebem-primary/10; }
+  .tbl-th--gradient { @apply text-white border-white/20; }
+  .tbl-th-label { @apply flex items-center gap-2 truncate; }
+  .tbl-body { @apply bg-white divide-y divide-gray-100; }
+  .tbl-row { @apply transition-all duration-200; }
+  .tbl-row--hover { @apply hover:bg-iebem-light hover:bg-opacity-30; }
+  .tbl-row--clickable { @apply cursor-pointer; }
+  .tbl-td { @apply px-4 py-4 text-sm; }
+  .tbl-td--compact { @apply px-3 py-2 text-sm; }
+  .tbl-th--compact { @apply px-3 py-3; }
+  .tbl-td--bordered { @apply border-r last:border-r-0; border-color: rgb(229 231 235); }
+  .tbl-head--sticky { @apply sticky top-0 z-10; }
+  .tbl-empty { @apply px-6 py-20 text-center; }
+  .tbl-search { @apply input-default pl-10 pr-4 py-3; }
+  .tbl-search-icon { @apply absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 text-sm; }
+  .tbl-sort-btn { @apply p-1.5 rounded-lg transition-all duration-200; }
+  .tbl-sort-btn--primary { @apply hover:bg-white hover:bg-opacity-20; }
+  .tbl-sort-btn--glass { @apply hover:bg-gray-100; }
+  .tbl-sort-btn--gradient { @apply hover:bg-white/20; }
+  .tbl-sort-btn--soft { @apply hover:bg-iebem-primary/10; }
+  .tbl-sort-icon { @apply text-xs; }
+  .tbl-sort-icon--primary { @apply text-white/80; }
+  .tbl-sort-icon--glass { @apply text-gray-500; }
+  .tbl-sort-icon--soft { @apply text-iebem-dark/70; }
+  .tbl-sort-icon--active-primary { @apply text-white; }
+  .tbl-sort-icon--active-glass { @apply text-iebem-primary; }
+  .tbl-sort-icon--active-soft { @apply text-iebem-primary; }
+  .tbl-sort-icon--gradient { @apply text-white/80; }
+  .tbl-sort-icon--active-gradient { @apply text-white; }
+  .tbl-action-btn { @apply w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200 hover:scale-110; }
+  .pager { @apply flex items-center justify-center gap-2; }
+  .pager-btn { @apply px-3 py-2 text-sm bg-white border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200; }
+  .pager-current { @apply px-4 py-2 text-sm bg-iebem-primary text-white rounded-xl font-bold; }
+}

@@ -307,14 +307,29 @@
                 </div>
             </div>
 
+            <!-- Acciones personalizadas de la tabla -->
+            <ng-template #actionsTpl let-row="row">
+                <div class="flex justify-center gap-2">
+                    <button
+                        *ngFor="let action of employeeActions"
+                        type="button"
+                        class="tbl-action-btn"
+                        [title]="action.label"
+                        [disabled]="action.disabled ? action.disabled(row) : false"
+                        (click)="onActionButtonClick($event, action, row)">
+                        <i *ngIf="action.icon" [class]="'fas fa-' + action.icon"></i>
+                    </button>
+                </div>
+            </ng-template>
+
             <!-- Tabla de Empleados - Contenedor ajustado para evitar overflow -->
             <div class="w-full">
-                <app-table title="" subtitle="" [data]="employees" [columns]="employeeColumns" [config]="tableConfig"
+                <app-iebem-table title="" subtitle="" [data]="employees" [columns]="employeeColumns" [config]="tableConfig"
                     [actions]="employeeActions" [loading]="loadingEmployees"
                     emptyMessage="No hay empleados registrados en el sistema" (rowClick)="onEmployeeRowClick($event)"
                     (actionClick)="onEmployeeActionClick($event)" (sortChange)="onSortChange($event)"
                     (filterChange)="onFilterChange($event)" (pageChange)="onPageChange($event)">
-                </app-table>
+                </app-iebem-table>
             </div>
         </div>
     </div>
