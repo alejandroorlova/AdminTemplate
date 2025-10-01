@@ -1,0 +1,15 @@
+<div *ngIf="open" class="cdlg-overlay" role="dialog" aria-modal="true">
+  <div class="cdlg-card" role="document">
+    <div class="cdlg-header">
+      <h3 class="cdlg-title">{{ req?.title }}</h3>
+    </div>
+    <div class="cdlg-body">
+      <p>{{ req?.message }}</p>
+    </div>
+    <div class="cdlg-footer">
+      <button type="button" class="btn-outline btn-sm" (click)="onCancel()">{{ req?.cancelText }}</button>
+      <button type="button" [class]="req?.danger ? 'btn-danger btn-sm' : 'btn-primary btn-sm'" (click)="onConfirm()">{{ req?.confirmText }}</button>
+    </div>
+  </div>
+</div>
+

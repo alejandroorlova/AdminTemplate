@@ -18,3 +18,7 @@ export * from './lib/checkbox/checkbox.component';
 export * from './lib/loader/loader.component';
 export * from './lib/modal/modal.component';
 export * from './lib/sidebar/sidebar.component';
+export * from './lib/toast/toast.service';
+export * from './lib/toast/toast-container.component';
+export * from './lib/confirm-dialog/confirm-dialog.service';
+export * from './lib/confirm-dialog/confirm-dialog.component';

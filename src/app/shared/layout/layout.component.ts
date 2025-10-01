@@ -111,6 +111,13 @@ export class LayoutComponent {
             icon: 'spinner',
             route: '/loader',
             tooltip: 'Indicadores de carga'
+          },
+          {
+            id: 'notifications',
+            label: 'Notificaciones',
+            icon: 'bell',
+            route: '/notifications',
+            tooltip: 'Toasts y confirmaciones'
           }
         ]
       },

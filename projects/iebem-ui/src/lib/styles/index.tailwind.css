@@ -196,6 +196,24 @@
   .pager-current { @apply px-4 py-2 text-sm bg-iebem-primary text-white rounded-xl font-bold; }
 }
 
+/* Toasts */
+@layer components {
+  .toast-container { @apply fixed top-4 right-4 z-[1070] flex flex-col gap-3 pointer-events-none; }
+  .toast { @apply pointer-events-auto flex items-start gap-3 min-w-[260px] max-w-[360px] bg-white rounded-xl p-3 shadow-xl border border-gray-100; }
+  .toast-icon { @apply inline-flex items-center justify-center w-8 h-8 rounded-lg; }
+  .toast-title { @apply font-bold text-gray-900; }
+  .toast-message { @apply text-sm text-gray-700; }
+  .toast-close { @apply text-gray-500 p-1 rounded-lg hover:bg-gray-100; }
+  .toast-success { @apply border-green-200; }
+  .toast-success .toast-icon { @apply bg-green-100 text-green-600; }
+  .toast-info { @apply border-blue-200; }
+  .toast-info .toast-icon { @apply bg-blue-100 text-blue-600; }
+  .toast-warning { @apply border-yellow-200; }
+  .toast-warning .toast-icon { @apply bg-yellow-100 text-yellow-600; }
+  .toast-danger { @apply border-red-200; }
+  .toast-danger .toast-icon { @apply bg-red-100 text-red-600; }
+}
+
 /* Checkbox */
 @layer components {
   .chk-base { @apply relative inline-flex items-center justify-center border-2 rounded-md transition-all duration-200 cursor-pointer select-none bg-white; }

@@ -49,6 +49,11 @@ export const routes: Routes = [
         path: 'checkbox-examples',
         loadComponent: () => import('./features/checkbox-examples/checkbox-examples.component').then(m => m.CheckboxExamplesComponent),
         title: 'IEBEM - Ejemplos de Checkboxes'
+      },
+      {
+        path: 'notifications',
+        loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent),
+        title: 'IEBEM - Notificaciones y Confirmaciones'
       }
     ]
   },

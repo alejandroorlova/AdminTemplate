@@ -1,0 +1,29 @@
+<div class="space-y-6">
+  <h2 class="text-2xl font-bold text-gray-800">Notificaciones y Confirmaciones</h2>
+
+  <div class="bg-white rounded-2xl border border-gray-100 p-6">
+    <h3 class="text-lg font-semibold mb-3">Toasts</h3>
+    <p class="text-gray-600 mb-4">Mensajes no bloqueantes en la esquina superior derecha.</p>
+    <div class="flex flex-wrap gap-3">
+      <button class="btn-success btn-md" (click)="showSuccess()">Éxito</button>
+      <button class="btn-info btn-md" (click)="showInfo()">Info</button>
+      <button class="btn-warning btn-md" (click)="showWarning()">Advertencia</button>
+      <button class="btn-danger btn-md" (click)="showDanger()">Error</button>
+      <button class="btn-outline btn-md" (click)="showToasts()">Varios</button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-gray-100 p-6">
+    <h3 class="text-lg font-semibold mb-3">Confirmación</h3>
+    <p class="text-gray-600 mb-4">Diálogo ligero para confirmar acciones.</p>
+    <div class="flex flex-wrap gap-3">
+      <button class="btn-danger btn-md" (click)="askDelete()">
+        <i class="fas fa-trash mr-2"></i>Eliminar registro
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenedores (overlay) -->
+  <app-iebem-toast-container></app-iebem-toast-container>
+  <app-iebem-confirm-dialog></app-iebem-confirm-dialog>
+</div>

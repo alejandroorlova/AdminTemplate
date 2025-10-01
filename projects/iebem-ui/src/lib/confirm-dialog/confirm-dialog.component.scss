@@ -1,0 +1,7 @@
+.cdlg-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1060; }
+.cdlg-card { background: white; border-radius: 0.75rem; width: 100%; max-width: 420px; box-shadow: 0 20px 25px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); }
+.cdlg-header { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.cdlg-title { font-weight: 700; color: #111827; }
+.cdlg-body { padding: 1rem 1.25rem; color: #374151; }
+.cdlg-footer { padding: 0.75rem 1.25rem 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; }
+
