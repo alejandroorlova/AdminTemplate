@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoaderComponent, LoaderConfig } from '../../shared/ui/loader/loader.component';
+import { LoaderComponent, LoaderConfig } from 'iebem-ui';
 
 
 @Component({
