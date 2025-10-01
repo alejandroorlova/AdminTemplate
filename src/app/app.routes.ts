@@ -21,6 +21,11 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'toggle',
+        loadComponent: () => import('./features/toggle/toggle.component').then(m => m.ToggleDemoComponent),
+        title: 'IEBEM - Toggle'
+      },
+      {
         path: 'stepper',
         loadComponent: () => import('./features/stepper/stepper.component').then(m => m.StepperDemoComponent),
         title: 'IEBEM - Stepper'

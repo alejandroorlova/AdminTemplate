@@ -106,6 +106,13 @@ export class LayoutComponent {
             tooltip: 'Progreso por pasos'
           },
           {
+            id: 'toggle',
+            label: 'Toggle',
+            icon: 'toggle-on',
+            route: '/toggle',
+            tooltip: 'Interruptor on/off'
+          },
+          {
             id: 'checkboxes',
             label: 'CheckBoxes',
             icon: 'check-square',

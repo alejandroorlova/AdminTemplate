@@ -26,3 +26,4 @@ export * from './lib/breadcrumb/breadcrumb.component';
 export * from './lib/breadcrumb/breadcrumb.types';
 export * from './lib/stepper/stepper.component';
 export * from './lib/stepper/stepper.types';
+export * from './lib/toggle/toggle.component';

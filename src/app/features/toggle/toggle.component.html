@@ -1,0 +1,37 @@
+<div class="space-y-8">
+  <h2 class="text-2xl font-bold text-gray-800">Toggle</h2>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Tamaños</h3>
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-gray-500">sm</span>
+        <app-iebem-toggle [checked]="valSm()" (checkedChange)="valSm.set($event)" size="sm"></app-iebem-toggle>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-gray-500">md</span>
+        <app-iebem-toggle [checked]="valMd()" (checkedChange)="valMd.set($event)" size="md"></app-iebem-toggle>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-base text-gray-500">lg</span>
+        <app-iebem-toggle [checked]="valLg()" (checkedChange)="valLg.set($event)" size="lg"></app-iebem-toggle>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Con etiqueta</h3>
+    <div class="flex flex-col gap-3">
+      <app-iebem-toggle label="Notificaciones" [checked]="valMd()" (checkedChange)="valMd.set($event)"></app-iebem-toggle>
+      <app-iebem-toggle label="Modo compacto" labelPosition="left" size="sm" [checked]="valSm()" (checkedChange)="valSm.set($event)"></app-iebem-toggle>
+    </div>
+  </section>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Deshabilitado</h3>
+    <div class="flex items-center gap-6">
+      <app-iebem-toggle label="Solo lectura" [disabled]="true" [checked]="true"></app-iebem-toggle>
+      <app-iebem-toggle [disabled]="true"></app-iebem-toggle>
+    </div>
+  </section>
+</div>

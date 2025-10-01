@@ -1,0 +1,22 @@
+<div class="inline-flex items-center" [class.gap-2]="size==='sm'" [class.gap-3]="size!=='sm'" data-role="toggle">
+  <label *ngIf="label && labelPosition==='left'" [for]="id" [ngClass]="labelClass()">{{ label }}</label>
+
+  <button
+    type="button"
+    class="inline-flex items-center focus:outline-none focus:ring-2 focus:ring-iebem-primary/30 rounded-full"
+    [attr.aria-label]="ariaLabel"
+    role="switch"
+    [attr.aria-checked]="checked"
+    [attr.aria-disabled]="disabled || null"
+    [disabled]="disabled"
+    (click)="toggle()"
+  >
+    <span [ngClass]="trackClass()">
+      <span class="sr-only">{{ checked ? (onLabel || 'On') : (offLabel || 'Off') }}</span>
+      <span [ngClass]="thumbClass()"></span>
+    </span>
+  </button>
+
+  <label *ngIf="label && labelPosition==='right'" [for]="id" [ngClass]="labelClass()">{{ label }}</label>
+</div>
+
