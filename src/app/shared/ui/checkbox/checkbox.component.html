@@ -1,5 +1,5 @@
 <!-- checkbox.component.html - VERSIÓN LIMPIA DESDE CERO -->
-<div [class]="containerClasses">
+<label [class]="containerClasses" [attr.for]="checkboxId">
   <!-- Input checkbox oculto -->
   <input
     type="checkbox"
@@ -19,7 +19,7 @@
     class="sr-only">
 
   <!-- Checkbox visual personalizado -->
-  <div [class]="checkboxClasses" (click)="onLabelClick()">
+  <div [class]="checkboxClasses">
     <!-- Ícono de check -->
     <svg
       *ngIf="checked && !indeterminate"
@@ -46,15 +46,13 @@
   </div>
 
   <!-- Label -->
-  <label
+  <span
     *ngIf="label"
-    [for]="checkboxId"
-    [class]="labelClasses"
-    (click)="onLabelClick()">
+    [class]="labelClasses">
     {{ label }}
     <span *ngIf="required" class="text-red-500 ml-1">*</span>
-  </label>
-</div>
+  </span>
+</label>
 
 <!-- Texto de ayuda -->
 <div *ngIf="hasHelperText" [class]="helperTextClasses">

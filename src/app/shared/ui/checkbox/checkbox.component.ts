@@ -93,7 +93,8 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   get containerClasses(): string {
     return [
-      'inline-flex items-center gap-3',
+      'inline-flex items-center gap-3 align-middle',
+      'cursor-pointer select-none',
       this.labelPosition === 'left' ? 'flex-row-reverse' : 'flex-row',
       this.disabled ? 'opacity-50 pointer-events-none' : '',
       'transition-all duration-200'
@@ -101,7 +102,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   }
 
   get checkboxClasses(): string {
-    const classes = ['chk-base', this.sizeClasses];
+    const classes = ['chk-base', 'relative z-0', this.sizeClasses];
     const checked = this.checked || this.indeterminate;
     const variantMap: Record<string, string> = {
       primary: 'chk-checked-primary',
@@ -141,6 +142,7 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   get labelClasses(): string {
     return [
+      'relative z-10 pointer-events-auto',
       'text-gray-900 font-medium cursor-pointer select-none',
       'transition-colors duration-200',
       this.sizeTextClasses,
@@ -232,16 +234,7 @@ export class CheckboxComponent implements ControlValueAccessor {
     this.blur.emit();
   }
 
-  onLabelClick(): void {
-    if (this.disabled) return;
-    
-    this.checked = !this.checked;
-    this.indeterminate = false;
-    
-    this.onChange(this.checked);
-    this.change.emit(this.checked);
-    this.cdr.markForCheck();
-  }
+  onLabelClick(): void { /* noop (nativo por label) */ }
 
   // ControlValueAccessor implementation
   writeValue(value: boolean): void {

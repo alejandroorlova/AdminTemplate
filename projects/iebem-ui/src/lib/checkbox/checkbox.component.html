@@ -1,0 +1,19 @@
+<div class="w-full">
+  <label [attr.for]="checkboxId" class="sr-only" *ngIf="!label && ariaLabel">{{ ariaLabel }}</label>
+  <label [attr.for]="checkboxId" [class]="containerLabelClasses">
+    <input type="checkbox" class="sr-only" [id]="checkboxId" [name]="name" [checked]="checked" [disabled]="disabled" [attr.aria-describedby]="ariaDescribedBy" [tabindex]="tabIndex" (change)="onCheckboxChange($event)" (focus)="onFocus()" (blur)="onBlur()" />
+    <div [class]="checkboxClasses" role="checkbox" [attr.aria-checked]="checked" [attr.aria-label]="ariaLabel">
+      <svg *ngIf="checked && !indeterminate" [class]="iconClasses" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 010 1.415l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25A1 1 0 016.496 9.29L8.29 11.084l6.543-6.543a1 1 0 011.871.749z" clip-rule="evenodd" />
+      </svg>
+      <svg *ngIf="indeterminate" [class]="iconClasses" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <rect x="4" y="9" width="12" height="2" rx="1" />
+      </svg>
+    </div>
+    <span *ngIf="label" [class]="labelTextClasses">{{ label }}</span>
+  </label>
+  <div *ngIf="hasHelperText" [class]="helperTextClasses">
+    <i class="fas" [class]="showError ? 'fa-exclamation-circle' : 'fa-info-circle'"></i>
+    <span>{{ helperText }}</span>
+  </div>
+</div>

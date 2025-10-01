@@ -36,11 +36,11 @@
         <div *ngFor="let variant of allVariants" 
              class="p-4 border border-gray-200 rounded-lg bg-white">
           <div class="flex flex-col items-center space-y-3">
-            <app-checkbox
+            <app-iebem-checkbox
               [variant]="variant"
               [label]="variant.charAt(0).toUpperCase() + variant.slice(1)"
-              [(ngModel)]="isChecked">
-            </app-checkbox>
+              [(ngModel)]="checkedByVariant[variant]">
+            </app-iebem-checkbox>
             <code class="text-xs text-gray-600 px-2 py-1 bg-gray-100 rounded">
               variant="{{ variant }}"
             </code>
@@ -60,12 +60,12 @@
         <div *ngFor="let size of sizes" 
              class="p-4 border border-gray-200 rounded-lg bg-white text-center">
           <div class="flex flex-col items-center space-y-3">
-            <app-checkbox
+            <app-iebem-checkbox
               [size]="size"
               [label]="size.toUpperCase()"
               variant="primary"
-              [(ngModel)]="isChecked">
-            </app-checkbox>
+              [(ngModel)]="checkedBySize[size]">
+            </app-iebem-checkbox>
             <div class="text-xs text-gray-600">
               <code class="px-2 py-1 bg-gray-100 rounded">size="{{ size }}"</code>
               <p class="mt-1">{{ getSizeDescription(size) }}</p>
@@ -87,10 +87,10 @@
         <div class="p-4 border border-gray-200 rounded-lg bg-white">
           <div class="text-center space-y-3">
             <h3 class="font-medium text-gray-900">Normal</h3>
-            <app-checkbox
+            <app-iebem-checkbox
               label="Sin marcar"
               variant="primary">
-            </app-checkbox>
+            </app-iebem-checkbox>
             <code class="text-xs text-gray-600 block px-2 py-1 bg-gray-100 rounded">
               Estado por defecto
             </code>
@@ -101,11 +101,11 @@
         <div class="p-4 border border-gray-200 rounded-lg bg-white">
           <div class="text-center space-y-3">
             <h3 class="font-medium text-gray-900">Marcado</h3>
-            <app-checkbox
+            <app-iebem-checkbox
               label="Marcado"
               variant="primary"
               [checked]="true">
-            </app-checkbox>
+            </app-iebem-checkbox>
             <code class="text-xs text-gray-600 block px-2 py-1 bg-gray-100 rounded">
               [checked]="true"
             </code>
@@ -116,11 +116,11 @@
         <div class="p-4 border border-gray-200 rounded-lg bg-white">
           <div class="text-center space-y-3">
             <h3 class="font-medium text-gray-900">Indeterminado</h3>
-            <app-checkbox
+            <app-iebem-checkbox
               label="Indeterminado"
               variant="primary"
               [indeterminate]="true">
-            </app-checkbox>
+            </app-iebem-checkbox>
             <code class="text-xs text-gray-600 block px-2 py-1 bg-gray-100 rounded">
               [indeterminate]="true"
             </code>
@@ -131,12 +131,12 @@
         <div class="p-4 border border-gray-200 rounded-lg bg-white">
           <div class="text-center space-y-3">
             <h3 class="font-medium text-gray-900">Deshabilitado</h3>
-            <app-checkbox
+            <app-iebem-checkbox
               label="Deshabilitado"
               variant="primary"
               [disabled]="true"
               [checked]="true">
-            </app-checkbox>
+            </app-iebem-checkbox>
             <code class="text-xs text-gray-600 block px-2 py-1 bg-gray-100 rounded">
               [disabled]="true"
             </code>
@@ -156,44 +156,44 @@
         <!-- Con error -->
         <div class="p-6 border border-gray-200 rounded-lg bg-white">
           <h3 class="font-medium text-gray-900 mb-4">Con Error</h3>
-          <app-checkbox
+          <app-iebem-checkbox
             label="Acepto los términos y condiciones"
             variant="danger"
             [required]="true"
             error="Debe aceptar los términos para continuar">
-          </app-checkbox>
+          </app-iebem-checkbox>
         </div>
 
         <!-- Con hint -->
         <div class="p-6 border border-gray-200 rounded-lg bg-white">
           <h3 class="font-medium text-gray-900 mb-4">Con Ayuda</h3>
-          <app-checkbox
+          <app-iebem-checkbox
             label="Recibir notificaciones por email"
             variant="info"
             hint="Puede cambiar esta configuración en cualquier momento desde su perfil">
-          </app-checkbox>
+          </app-iebem-checkbox>
         </div>
 
         <!-- Requerido -->
         <div class="p-6 border border-gray-200 rounded-lg bg-white">
           <h3 class="font-medium text-gray-900 mb-4">Campo Requerido</h3>
-          <app-checkbox
+          <app-iebem-checkbox
             label="Confirmar información"
             variant="warning"
             [required]="true"
             hint="Este campo es obligatorio">
-          </app-checkbox>
+          </app-iebem-checkbox>
         </div>
 
         <!-- Validación exitosa -->
         <div class="p-6 border border-gray-200 rounded-lg bg-white">
           <h3 class="font-medium text-gray-900 mb-4">Validación Exitosa</h3>
-          <app-checkbox
+          <app-iebem-checkbox
             label="Datos verificados"
             variant="success"
             [checked]="true"
             hint="Información validada correctamente">
-          </app-checkbox>
+          </app-iebem-checkbox>
         </div>
       </div>
     </section>
@@ -210,18 +210,18 @@
         <div class="p-6 border border-gray-200 rounded-lg bg-white">
           <h3 class="font-medium text-gray-900 mb-4">Lista de Permisos</h3>
           <div class="space-y-3">
-            <app-checkbox
+            <app-iebem-checkbox
               label="Seleccionar todos"
               variant="primary"
               [indeterminate]="!allSelected"
               (change)="toggleAll($event)">
-            </app-checkbox>
+            </app-iebem-checkbox>
             <hr class="my-4">
             <div class="pl-6 space-y-2">
-              <app-checkbox label="Lectura" variant="success" size="sm"></app-checkbox>
-              <app-checkbox label="Escritura" variant="warning" size="sm"></app-checkbox>
-              <app-checkbox label="Eliminación" variant="danger" size="sm"></app-checkbox>
-              <app-checkbox label="Administración" variant="info" size="sm"></app-checkbox>
+              <app-iebem-checkbox label="Lectura" variant="success" size="sm"></app-iebem-checkbox>
+              <app-iebem-checkbox label="Escritura" variant="warning" size="sm"></app-iebem-checkbox>
+              <app-iebem-checkbox label="Eliminación" variant="danger" size="sm"></app-iebem-checkbox>
+              <app-iebem-checkbox label="Administración" variant="info" size="sm"></app-iebem-checkbox>
             </div>
           </div>
         </div>
@@ -230,27 +230,27 @@
         <div class="p-6 border border-gray-200 rounded-lg bg-white">
           <h3 class="font-medium text-gray-900 mb-4">Configuraciones de Usuario</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <app-checkbox 
+            <app-iebem-checkbox 
               label="Notificaciones push" 
               variant="primary"
               hint="Recibir notificaciones en el navegador">
-            </app-checkbox>
-            <app-checkbox 
+            </app-iebem-checkbox>
+            <app-iebem-checkbox 
               label="Modo oscuro" 
               variant="dark"
               hint="Cambiar apariencia de la aplicación">
-            </app-checkbox>
-            <app-checkbox 
+            </app-iebem-checkbox>
+            <app-iebem-checkbox 
               label="Compartir datos analíticos" 
               variant="info"
               hint="Ayudar a mejorar la aplicación">
-            </app-checkbox>
-            <app-checkbox 
+            </app-iebem-checkbox>
+            <app-iebem-checkbox 
               label="Recordar sesión" 
               variant="success"
               [checked]="true"
               hint="Mantener sesión activa">
-            </app-checkbox>
+            </app-iebem-checkbox>
           </div>
         </div>
 
@@ -258,16 +258,16 @@
         <div class="p-6 border border-gray-200 rounded-lg bg-white">
           <h3 class="font-medium text-gray-900 mb-4">Posiciones del Label</h3>
           <div class="space-y-4">
-            <app-checkbox 
+            <app-iebem-checkbox 
               label="Label a la derecha (por defecto)"
               variant="primary"
               labelPosition="right">
-            </app-checkbox>
-            <app-checkbox 
+            </app-iebem-checkbox>
+            <app-iebem-checkbox 
               label="Label a la izquierda"
               variant="secondary"
               labelPosition="left">
-            </app-checkbox>
+            </app-iebem-checkbox>
           </div>
         </div>
       </div>
@@ -378,19 +378,18 @@
           <div class="p-6 border border-gray-200 rounded-lg bg-white">
             <h3 class="font-medium text-gray-900 mb-4">Vista Previa</h3>
             <div class="flex items-center justify-center p-8 bg-gray-50 rounded-lg">
-              <app-checkbox
+              <app-iebem-checkbox
                 [variant]="selectedVariant"
                 [size]="selectedSize"
                 [label]="checkboxLabel || 'Checkbox de ejemplo'"
                 [labelPosition]="selectedLabelPosition"
-                [checked]="isChecked"
+                [(ngModel)]="isChecked"
                 [disabled]="isDisabled"
                 [indeterminate]="isIndeterminate"
                 [required]="isRequired"
                 [error]="hasError ? (errorMessage || 'Mensaje de error') : ''"
-                [hint]="!hasError ? hintMessage : ''"
-                (change)="onCheckboxChange($event)">
-              </app-checkbox>
+                [hint]="!hasError ? hintMessage : ''">
+              </app-iebem-checkbox>
             </div>
           </div>
 

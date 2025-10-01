@@ -2,7 +2,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CheckboxComponent, CheckboxVariant, CheckboxSize, CheckboxLabelPosition } from '../../shared/ui/checkbox/checkbox.component';
+import { CheckboxComponent, CheckboxVariant, CheckboxSize, CheckboxLabelPosition } from 'iebem-ui';
 
 @Component({
   selector: 'app-checkbox-examples',
@@ -43,6 +43,29 @@ export class CheckboxExamplesComponent {
   hasError = false;
   errorMessage = 'Este campo es requerido';
   hintMessage = 'Mensaje de ayuda opcional';
+
+  // Modelos independientes para ejemplos visuales
+  checkedByVariant: Record<CheckboxVariant, boolean> = {
+    primary: false,
+    secondary: false,
+    accent: false,
+    success: false,
+    warning: false,
+    danger: false,
+    info: false,
+    dark: false,
+    light: false,
+    gold: false,
+    gradient: false
+  };
+
+  checkedBySize: Record<CheckboxSize, boolean> = {
+    xs: false,
+    sm: false,
+    md: false,
+    lg: false,
+    xl: false
+  };
 
   // Estados para selección múltiple
   allSelected = false;
@@ -142,8 +165,8 @@ export class CheckboxExamplesComponent {
 
     const attributeString = attributes.length > 0 ? '\n  ' + attributes.join('\n  ') : '';
 
-    return `<app-checkbox${attributeString}${attributeString ? '\n' : ''}>
-</app-checkbox>`;
+    return `<app-iebem-checkbox${attributeString}${attributeString ? '\n' : ''}>
+</app-iebem-checkbox>`;
   }
 
   copyCode(): void {

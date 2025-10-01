@@ -18,6 +18,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Failsafe: asegurar que el label del checkbox sea clickeable y esté encima */
+app-iebem-checkbox label,
+app-checkbox label {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
 .body--locked {
   overflow: hidden;
 }
