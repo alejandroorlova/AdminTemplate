@@ -1,14 +1,14 @@
 <!-- layout.component.html - ACTUALIZADO -->
 <div class="min-h-screen flex bg-gray-100">
   <!-- Nuevo Sidebar con todas las funcionalidades -->
-  <app-sidebar
+  <app-iebem-sidebar
     [isOpen]="isSidebarOpen()"
     [config]="sidebarConfig"
     (toggleSidebar)="toggleSidebar()"
     (itemClick)="onSidebarItemClick($event)"
     (collapseChange)="onSidebarCollapseChange($event)"
     (logoClick)="onLogoClick()"
-  ></app-sidebar>
+  ></app-iebem-sidebar>
 
   <!-- Main Content -->
   <div class="flex-1 flex flex-col h-screen">

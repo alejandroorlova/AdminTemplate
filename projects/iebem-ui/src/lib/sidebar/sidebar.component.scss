@@ -1,0 +1,28 @@
+/* Sidebar styles rely on library Tailwind component classes (.sdb-*) */
+/* Custom scrollbar to match IEBEM styling */
+
+nav::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+nav::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox */
+nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}

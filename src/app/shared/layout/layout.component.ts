@@ -2,7 +2,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { SidebarComponent, SidebarConfig, SidebarMenuItem } from '../ui/sidebar/sidebar.component';
+import { SidebarComponent, SidebarConfig, SidebarMenuItem } from 'iebem-ui';
 import { HeaderComponent } from '../header/header.component';
 
 @Component({
