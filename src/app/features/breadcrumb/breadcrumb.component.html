@@ -1,0 +1,19 @@
+<div class="space-y-6">
+  <h2 class="text-2xl font-bold text-gray-800">Breadcrumb</h2>
+
+  <div class="bg-white rounded-2xl border border-gray-100 p-6">
+    <h3 class="text-lg font-semibold mb-3">Básico</h3>
+    <app-iebem-breadcrumb [items]="basic"></app-iebem-breadcrumb>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-gray-100 p-6">
+    <h3 class="text-lg font-semibold mb-3">Con separador "/"</h3>
+    <app-iebem-breadcrumb [items]="basic" separator="slash"></app-iebem-breadcrumb>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-gray-100 p-6">
+    <h3 class="text-lg font-semibold mb-3">Labels largos (truncate)</h3>
+    <app-iebem-breadcrumb [items]="long"></app-iebem-breadcrumb>
+  </div>
+</div>
+

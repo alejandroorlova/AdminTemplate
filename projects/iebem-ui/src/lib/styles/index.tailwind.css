@@ -214,6 +214,16 @@
   .toast-danger .toast-icon { @apply bg-red-100 text-red-600; }
 }
 
+/* Breadcrumb */
+@layer components {
+  .bdc { @apply text-sm text-gray-500; }
+  .bdc-list { @apply flex items-center gap-2; }
+  .bdc-item { @apply inline-flex items-center gap-1; }
+  .bdc-link { @apply text-gray-600 hover:text-iebem-primary transition-colors; }
+  .bdc-current { @apply text-gray-900 font-medium; }
+  .bdc-sep { @apply text-gray-300; }
+}
+
 /* Checkbox */
 @layer components {
   .chk-base { @apply relative inline-flex items-center justify-center border-2 rounded-md transition-all duration-200 cursor-pointer select-none bg-white; }

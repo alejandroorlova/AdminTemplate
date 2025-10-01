@@ -46,6 +46,11 @@ export const routes: Routes = [
         title: 'IEBEM - Ejemplos de Botones'
       },
       {
+        path: 'breadcrumb',
+        loadComponent: () => import('./features/breadcrumb/breadcrumb.component').then(m => m.BreadcrumbDemoComponent),
+        title: 'IEBEM - Breadcrumb'
+      },
+      {
         path: 'checkbox-examples',
         loadComponent: () => import('./features/checkbox-examples/checkbox-examples.component').then(m => m.CheckboxExamplesComponent),
         title: 'IEBEM - Ejemplos de Checkboxes'

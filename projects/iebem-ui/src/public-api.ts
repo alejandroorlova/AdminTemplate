@@ -22,3 +22,5 @@ export * from './lib/toast/toast.service';
 export * from './lib/toast/toast-container.component';
 export * from './lib/confirm-dialog/confirm-dialog.service';
 export * from './lib/confirm-dialog/confirm-dialog.component';
+export * from './lib/breadcrumb/breadcrumb.component';
+export * from './lib/breadcrumb/breadcrumb.types';

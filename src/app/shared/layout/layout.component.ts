@@ -92,6 +92,13 @@ export class LayoutComponent {
             tooltip: 'Ejemplos de botones'
           },
           {
+            id: 'breadcrumb',
+            label: 'Breadcrumb',
+            icon: 'ellipsis-h',
+            route: '/breadcrumb',
+            tooltip: 'Miga de pan de navegación'
+          },
+          {
             id: 'checkboxes',
             label: 'CheckBoxes',
             icon: 'check-square',

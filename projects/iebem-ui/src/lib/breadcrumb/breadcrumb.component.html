@@ -1,0 +1,30 @@
+<nav class="bdc" [attr.aria-label]="ariaLabel">
+  <ol class="bdc-list">
+    <ng-container *ngFor="let item of items; let i = index">
+      <li class="bdc-item" [attr.aria-current]="isLast(i) ? 'page' : null">
+        <ng-container *ngIf="!isLast(i); else current">
+          <a *ngIf="item.route; else plain" [routerLink]="item.route" class="bdc-link">
+            <i *ngIf="item.icon" class="fas" [ngClass]="'fa-' + item.icon"></i>
+            <span [class.truncate]="truncate" [class.ml-1]="item.icon" class="max-w-[22ch] inline-block align-bottom">{{ item.label }}</span>
+          </a>
+          <ng-template #plain>
+            <span class="bdc-link">
+              <i *ngIf="item.icon" class="fas" [ngClass]="'fa-' + item.icon"></i>
+              <span [class.truncate]="truncate" [class.ml-1]="item.icon" class="max-w-[22ch] inline-block align-bottom">{{ item.label }}</span>
+            </span>
+          </ng-template>
+        </ng-container>
+        <ng-template #current>
+          <span class="bdc-current">
+            <i *ngIf="item.icon" class="fas" [ngClass]="'fa-' + item.icon"></i>
+            <span [class.truncate]="truncate" [class.ml-1]="item.icon" class="max-w-[22ch] inline-block align-bottom">{{ item.label }}</span>
+          </span>
+        </ng-template>
+      </li>
+      <li *ngIf="!isLast(i)" class="bdc-sep" aria-hidden="true">
+        <span *ngIf="separator==='slash'">/</span>
+        <i *ngIf="separator==='chevron'" class="fas fa-chevron-right"></i>
+      </li>
+    </ng-container>
+  </ol>
+</nav>
