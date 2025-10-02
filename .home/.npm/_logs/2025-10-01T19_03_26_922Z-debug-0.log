@@ -1,0 +1,18 @@
+0 verbose cli /usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@10.9.3
+2 info using node@v22.18.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/Alex/Documents/IEBEM/iebem-admin-system/.npmrc
+5 silly config load:file:/Users/Alex/Documents/IEBEM/iebem-admin-system/.home/.npmrc
+6 silly config load:file:/usr/local/etc/npmrc
+7 verbose title npm exec storybook build
+8 verbose argv "exec" "--" "storybook" "build"
+9 verbose logfile logs-max:10 dir:/Users/Alex/Documents/IEBEM/iebem-admin-system/.home/.npm/_logs/2025-10-01T19_03_26_922Z-
+10 verbose logfile /Users/Alex/Documents/IEBEM/iebem-admin-system/.home/.npm/_logs/2025-10-01T19_03_26_922Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd /Users/Alex/Documents/IEBEM/iebem-admin-system
+13 verbose os Darwin 25.0.0
+14 verbose node v22.18.0
+15 verbose npm  v10.9.3
+16 verbose exit 1
+17 verbose code 1

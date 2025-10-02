@@ -1,0 +1,22 @@
+<nav class="inline-flex items-center gap-2" aria-label="Paginación" data-role="pagination">
+  <button *ngIf="showFirstLast" class="btn-outline btn-sm" [disabled]="isFirst" (click)="first()" aria-label="Primera">
+    <i class="fas fa-angles-left"></i>
+  </button>
+  <button *ngIf="showPrevNext" class="btn-outline btn-sm" [disabled]="isFirst" (click)="prev()" aria-label="Anterior">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <ng-container *ngFor="let p of pages">
+    <button *ngIf="p !== '...'" class="{{ btnClass(p===currentPage) }}" (click)="goTo(p)" [attr.aria-current]="p===currentPage ? 'page' : null">
+      {{ p }}
+    </button>
+    <span *ngIf="p === '...'" class="px-2 text-gray-400 select-none">…</span>
+  </ng-container>
+
+  <button *ngIf="showPrevNext" class="btn-outline btn-sm" [disabled]="isLast" (click)="next()" aria-label="Siguiente">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+  <button *ngIf="showFirstLast" class="btn-outline btn-sm" [disabled]="isLast" (click)="last()" aria-label="Última">
+    <i class="fas fa-angles-right"></i>
+  </button>
+</nav>

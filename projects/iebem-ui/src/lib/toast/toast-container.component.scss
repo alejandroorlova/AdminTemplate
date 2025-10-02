@@ -11,7 +11,7 @@
 
 .toast {
   display: flex;
-  align-items: flex-start;
+  align-items: center; /* Centrar verticalmente icono, texto y botón */
   gap: 0.75rem;
   min-width: 260px;
   max-width: 360px;
@@ -28,7 +28,7 @@
   width: 2rem; height: 2rem; border-radius: 0.5rem;
 }
 
-.toast-body { flex: 1; }
+.toast-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 .toast-title { font-weight: 700; margin-bottom: 2px; }
 .toast-message { font-size: 0.875rem; color: #374151; }
 .toast-close { background: transparent; border: 0; color: #64748b; padding: 0.25rem; border-radius: 0.5rem; }
@@ -46,4 +46,3 @@
 
 .toast-danger { border-color: #EF444433; }
 .toast-danger .toast-icon { background: #EF44441a; color: #EF4444; }
-

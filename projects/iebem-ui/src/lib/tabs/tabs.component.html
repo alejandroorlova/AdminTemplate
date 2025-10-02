@@ -1,0 +1,20 @@
+<div class="w-full" data-role="tabs">
+  <div role="tablist" class="flex border-b border-gray-200" [class.justify-between]="fitted" [class.\!gap-0]="fitted" [class.gap-4]="!fitted">
+    <button
+      *ngFor="let t of tabs; let i = index"
+      type="button"
+      role="tab"
+      [attr.aria-selected]="i===activeIndex"
+      [disabled]="t.disabled"
+      [ngClass]="btnClass(i, t)"
+      (click)="select(i)"
+    >
+      <span class="inline-flex items-center gap-2">
+        <i *ngIf="t.icon" class="fas" [ngClass]="'fa-' + t.icon"></i>
+        <span>{{ t.label }}</span>
+        <span *ngIf="t.badge!=null" class="inline-flex items-center rounded-full bg-gray-100 text-gray-700 {{sizes[size].badge}}">{{ t.badge }}</span>
+      </span>
+    </button>
+  </div>
+</div>
+

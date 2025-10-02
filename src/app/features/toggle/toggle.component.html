@@ -34,4 +34,12 @@
       <app-iebem-toggle [disabled]="true"></app-iebem-toggle>
     </div>
   </section>
+
+  <section class="space-y-3">
+    <h3 class="text-lg font-semibold">Con FormControl (CVA)</h3>
+    <div class="flex items-center gap-4">
+      <app-iebem-toggle label="Activado" [formControl]="ctrl"></app-iebem-toggle>
+      <span class="text-sm text-gray-600">Valor: {{ ctrl.value ? 'On' : 'Off' }}</span>
+    </div>
+  </section>
 </div>

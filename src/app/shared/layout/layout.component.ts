@@ -113,6 +113,27 @@ export class LayoutComponent {
             tooltip: 'Interruptor on/off'
           },
           {
+            id: 'tabs',
+            label: 'Tabs',
+            icon: 'folder',
+            route: '/tabs',
+            tooltip: 'Pestañas'
+          },
+          {
+            id: 'pagination',
+            label: 'Paginación',
+            icon: 'angles-right',
+            route: '/pagination',
+            tooltip: 'Paginación externa'
+          },
+          {
+            id: 'alerts',
+            label: 'Alerts',
+            icon: 'exclamation-circle',
+            route: '/alerts',
+            tooltip: 'Mensajes de alerta'
+          },
+          {
             id: 'checkboxes',
             label: 'CheckBoxes',
             icon: 'check-square',

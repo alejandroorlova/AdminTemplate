@@ -1,0 +1,14 @@
+<div [ngClass]="containerClass()" role="alert" data-role="alert">
+  <div class="flex-shrink-0">
+    <i class="fas" [ngClass]="icon"></i>
+  </div>
+  <div class="flex-1">
+    <div *ngIf="title" class="font-semibold mb-0.5">{{ title }}</div>
+    <div *ngIf="message" class="text-sm leading-snug">{{ message }}</div>
+    <ng-content></ng-content>
+  </div>
+  <button *ngIf="dismissible" type="button" class="ml-2 text-inherit/70 hover:text-inherit" aria-label="Cerrar" (click)="dismissed.emit()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+

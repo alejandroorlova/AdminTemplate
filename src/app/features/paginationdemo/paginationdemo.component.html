@@ -1,0 +1,8 @@
+<div class="space-y-6">
+  <h2 class="text-2xl font-bold text-gray-800">Paginación</h2>
+  <app-iebem-table [title]="'Usuarios'" [columns]="columns" [data]="pagedData()" [config]="config" [actions]="actions"></app-iebem-table>
+  <div class="flex justify-end">
+    <app-iebem-pagination [totalItems]="data.length" [pageSize]="pageSize()" [currentPage]="page()" (pageChange)="page.set($event)"></app-iebem-pagination>
+  </div>
+</div>
+

@@ -4,6 +4,10 @@ module.exports = {
     "./src/**/*.{html,ts}",
     "./projects/**/*.{html,ts}"
   ],
+  safelist: [
+    'fas', 'far', 'fab',
+    { pattern: /^fa-[a-z0-9-]+$/ },
+  ],
   theme: {
     extend: {
       colors: {

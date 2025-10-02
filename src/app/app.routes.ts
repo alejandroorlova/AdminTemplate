@@ -21,6 +21,21 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'tabs',
+        loadComponent: () => import('./features/tabsdemo/tabsdemo.component').then(m => m.TabsDemoComponent),
+        title: 'IEBEM - Tabs'
+      },
+      {
+        path: 'pagination',
+        loadComponent: () => import('./features/paginationdemo/paginationdemo.component').then(m => m.PaginationDemoComponent),
+        title: 'IEBEM - Paginación'
+      },
+      {
+        path: 'alerts',
+        loadComponent: () => import('./features/alertsdemo/alertsdemo.component').then(m => m.AlertsDemoComponent),
+        title: 'IEBEM - Alerts'
+      },
+      {
         path: 'toggle',
         loadComponent: () => import('./features/toggle/toggle.component').then(m => m.ToggleDemoComponent),
         title: 'IEBEM - Toggle'

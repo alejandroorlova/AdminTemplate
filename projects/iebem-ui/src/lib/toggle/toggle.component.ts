@@ -1,4 +1,5 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 type ToggleSize = 'sm' | 'md' | 'lg';
@@ -8,9 +9,14 @@ type LabelPosition = 'left' | 'right';
   selector: 'app-iebem-toggle',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './toggle.component.html'
+  templateUrl: './toggle.component.html',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => ToggleComponent),
+    multi: true
+  }]
 })
-export class ToggleComponent {
+export class ToggleComponent implements ControlValueAccessor {
   @Input() checked = false;
   @Output() checkedChange = new EventEmitter<boolean>();
 
@@ -24,6 +30,10 @@ export class ToggleComponent {
   @Input() name?: string;
   @Input() id?: string;
 
+  private onChange: (val: boolean) => void = () => {};
+  private onTouched: () => void = () => {};
+  private isTouched = false;
+
   // clases por tamaño
   sizeCfg = {
     // Dejar un pequeño margen (≈2px) al extremo derecho
@@ -36,6 +46,8 @@ export class ToggleComponent {
     if (this.disabled) return;
     this.checked = !this.checked;
     this.checkedChange.emit(this.checked);
+    this.onChange(this.checked);
+    this.markTouched();
   }
 
   @HostListener('keydown', ['$event'])
@@ -44,6 +56,27 @@ export class ToggleComponent {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       this.toggle();
+    }
+  }
+
+  // ControlValueAccessor
+  writeValue(val: boolean): void {
+    this.checked = !!val;
+  }
+  registerOnChange(fn: (val: boolean) => void): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  private markTouched() {
+    if (!this.isTouched) {
+      this.onTouched();
+      this.isTouched = true;
     }
   }
 
